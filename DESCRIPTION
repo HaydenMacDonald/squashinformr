@@ -10,6 +10,7 @@ Description: This package allows sports enthusiasts to easily access data relate
 Depends: R (>= 3.4.0),
          magrittr
 Imports: dplyr,
+         plyr,
          lubridate,
          stringr,
          tidyr,
