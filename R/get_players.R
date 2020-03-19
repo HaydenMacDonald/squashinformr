@@ -1,22 +1,40 @@
+#' Get PSA Squash Player Data from SquashInfo
+#'
+#' Returns scraped profile data men and/or women players in PSA World Tour competitions
 #'
 #'
+#' @param top integer indicating the number of top PSA players to return
+#' 
+#' @param category character string indicating the competition category
 #'
 #'
+#' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
 #'
+#' @examples 
+#' 
+#' get_players(top = 25, category = "women")
+#' 
+#' both <- get_players(5, "both")
 #'
+#' @note This function only returns players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
+#' 
+#' @references 
+#' 
+#'     \url{http://www.squashinfo.com/rankings/men}
+#'     \url{http://www.squashinfo.com/rankings/women}
+#' 
+#' 
+#' @import tibble
+#' @import rvest
+#' @import httr
+#' @import xml2
+#' @import polite
+#' @importFrom plyr round_any
+#' @import dplyr
+#' @import stringr
+#' @import tidyr
 #'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
-#'
+#' @export
 
 get_players <- function(top = 25, category = c("both", "men", "women")) {
   
@@ -42,7 +60,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
         rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
         
         ## Scrape table for player profile hrefs
-        results <- read_html(rankings_url) %>% 
+        results <- read_html(rankings_url, encoding = "UTF-8") %>% 
                       html_nodes(xpath = "//td/a") %>% 
                       html_attr("href")
         
@@ -64,7 +82,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
         message("Scraping ", profile_url)
         
         ## Extract player name from profile header
-        player_name <- read_html(profile_url) %>%
+        player_name <- read_html(profile_url, encoding = "UTF-8") %>%
                           html_nodes("h1")
         
         ## Extract player nationality from profile header
@@ -87,7 +105,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
         last <- gsub(".* ","\\2", player_name)
         
         ## Extract player profile info
-        result <- read_html(profile_url) %>%
+        result <- read_html(profile_url, encoding = "UTF-8") %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
         
@@ -173,7 +191,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       
       
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url) %>% 
+      results <- read_html(rankings_url, encoding = "UTF-8") %>% 
                     html_nodes(xpath = "//td/a") %>% 
                     html_attr("href")
       
@@ -194,7 +212,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       message("Scraping ", profile_url)
       
       ## Extract player name from profile header
-      player_name <- read_html(profile_url) %>%
+      player_name <- read_html(profile_url, encoding = "UTF-8") %>%
                         html_nodes("h1")
       
       ## Extract player nationality from profile header
@@ -217,7 +235,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       last <- gsub(".* ","\\2", player_name)
       
       ## Extract player profile info
-      result <- read_html(profile_url) %>%
+      result <- read_html(profile_url, encoding = "UTF-8") %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
       
@@ -306,7 +324,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       
       
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url) %>% 
+      results <- read_html(rankings_url, encoding = "UTF-8") %>% 
                     html_nodes(xpath = "//td/a") %>% 
                     html_attr("href")
       
@@ -328,7 +346,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       message("Scraping ", profile_url)
       
       ## Extract player name from profile header
-      player_name <- read_html(profile_url) %>%
+      player_name <- read_html(profile_url, encoding = "UTF-8") %>%
                         html_nodes("h1")
       
       ## Extract player nationality from profile header
@@ -351,7 +369,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       last <- gsub(".* ","\\2", player_name)
       
       ## Extract player profile info
-      result <- read_html(profile_url) %>%
+      result <- read_html(profile_url, encoding = "UTF-8") %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
       
@@ -432,7 +450,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       
       
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url) %>% 
+      results <- read_html(rankings_url, encoding = "UTF-8") %>% 
                     html_nodes(xpath = "//td/a") %>% 
                     html_attr("href")
       
@@ -453,7 +471,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       message("Scraping ", profile_url)
       
       ## Extract player name from profile header
-      player_name <- read_html(profile_url) %>%
+      player_name <- read_html(profile_url, encoding = "UTF-8") %>%
                           html_nodes("h1")
       
       ## Extract player nationality from profile header
@@ -476,7 +494,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       last <- gsub(".* ","\\2", player_name)
       
       ## Extract player profile info
-      result <- read_html(profile_url) %>%
+      result <- read_html(profile_url, encoding = "UTF-8") %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
       
@@ -547,7 +565,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     
   } else {
     
-    break
+    stop("category not one of 'both', 'men', or 'women'")
     
   }
     

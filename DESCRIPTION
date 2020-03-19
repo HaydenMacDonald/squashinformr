@@ -30,3 +30,4 @@ License: MIT License
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/HaydenMacDonald/squashinformr
+RoxygenNote: 7.1.0
