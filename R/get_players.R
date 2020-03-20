@@ -20,7 +20,7 @@
 #' 
 #' @references 
 #' 
-#'     \url{http://www.squashinfo.com/rankings/men}
+#'     \url{http://www.squashinfo.com/rankings/men}  
 #'     \url{http://www.squashinfo.com/rankings/women}
 #' 
 #' 
@@ -49,7 +49,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       rankings_url <- "http://www.squashinfo.com/rankings/men"
       
       ## Check URL for Robots.txt
-      session <- bow(rankings_url)
+      suppressMessages(session <- bow(rankings_url))
       
       ## Create mens_profile_urls
       mens_profile_urls <- c()
@@ -179,7 +179,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     rankings_url <- "http://www.squashinfo.com/rankings/women"
     
     ## Check URL for Robots.txt
-    session <- bow(rankings_url)
+    supressMessages(session <- bow(rankings_url))
     
     ## Create womens_profile_urls
     womens_profile_urls <- c()
@@ -312,7 +312,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     rankings_url <- "http://www.squashinfo.com/rankings/men"
     
     ## Check URL for Robots.txt
-    session <- bow(rankings_url)
+    supressMessages(session <- bow(rankings_url))
     
     ## Create mens_profile_urls
     mens_profile_urls <- c()
@@ -438,7 +438,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     rankings_url <- "http://www.squashinfo.com/rankings/women"
     
     ## Check URL for Robots.txt
-    session <- bow(rankings_url)
+    suppressMessages(session <- bow(rankings_url))
     
     ## Create womens_profile_urls
     womens_profile_urls <- c()
