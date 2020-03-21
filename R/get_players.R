@@ -7,12 +7,11 @@
 #'
 #' @param category character string indicating the competition category
 #'
-#'
 #' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
 #'
 #' @examples
 #'
-#' get_players(top = 25, category = "women")
+#' get_players(top = 25, category = "womens")
 #'
 #' both <- get_players(5, "both")
 #'
@@ -36,14 +35,14 @@
 #'
 #' @export
 
-get_players <- function(top = 25, category = c("both", "men", "women")) {
+get_players <- function(rank = NULL, top = NULL, category = c("both", "mens", "womens")) {
 
-  stopifnot(is.numeric(top), is.character(category))
+  stopifnot(is.numeric(top) | is.null(top), is.character(category), sum(is.null(top), is.null(rank)) == 1)
 
 
 # Men's
 
-  if (category == "men") {
+  if (category == "mens") {
 
       ## Get profile URLs for top n men
       rankings_url <- "http://www.squashinfo.com/rankings/men"
@@ -54,7 +53,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       ## Create mens_profile_urls
       mens_profile_urls <- c()
 
-      for (i in 1:(round_any(top, 50, ceiling)/50)) {
+      for (i in if (is.null(top) == TRUE) {1:(round_any(rank, 50, ceiling)/50)} else {1:(round_any(top, 50, ceiling)/50)}) {
 
         ## Next tab in rankings table
         rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
@@ -74,16 +73,26 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
       ## Create mens_profiles
       mens_profiles <- c()
 
-      for (i in 1:top) {
+      for (i in if (is.null(top) == TRUE) {rank:rank} else {1:top}) {
 
         profile_url <- sprintf("http://www.squashinfo.com%s", mens_profile_urls[i])
 
         ## Verbose
         message("Scraping ", profile_url)
 
+        ## Read profile
+        profile <- read_html(profile_url, encoding = "UTF-8")
+
         ## Extract player name from profile header
-        player_name <- read_html(profile_url, encoding = "UTF-8") %>%
+        player_name <- profile %>%
                           html_nodes("h1")
+
+        ## Extract rank
+        rank <- profile %>%
+                    html_nodes("div.content_column") %>%
+                    html_nodes(xpath = '//*[@id="world_ranking"]') %>%
+                    html_text() %>%
+                    as.numeric()
 
         ## Extract player nationality from profile header
         nationality <- player_name %>%
@@ -101,11 +110,11 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
                           str_replace_all(" $", "")
 
         ## Parse player name into first and last names
-        first <- gsub(" .*","\\1", player_name)
-        last <- gsub(".* ","\\2", player_name)
+        first <- str_extract(player_name, "([^ ]+)")
+        last <- str_trim(str_extract(player_name, " (.*)"), side = "left")
 
         ## Extract player profile info
-        result <- read_html(profile_url, encoding = "UTF-8") %>%
+        result <- profile %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
 
@@ -173,18 +182,18 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
 # Womens
 
 
-  } else if (category == "women") {
+  } else if (category == "womens") {
 
     ## Get profile URLs for top n women
     rankings_url <- "http://www.squashinfo.com/rankings/women"
 
     ## Check URL for Robots.txt
-    supressMessages(session <- bow(rankings_url))
+    suppressMessages(session <- bow(rankings_url))
 
     ## Create womens_profile_urls
     womens_profile_urls <- c()
 
-    for (i in 1:(round_any(top, 50, ceiling)/50)) {
+    for (i in if (is.null(top) == TRUE) {1:(round_any(rank, 50, ceiling)/50)} else {1:(round_any(top, 50, ceiling)/50)}) {
 
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
@@ -204,16 +213,26 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     ## Create mens_profiles
     womens_profiles <- c()
 
-    for (i in 1:top) {
+    for (i in if (is.null(top) == TRUE) {rank:rank} else {1:top}) {
 
       profile_url <- sprintf("http://www.squashinfo.com%s", womens_profile_urls[i])
 
       ## Verbose
       message("Scraping ", profile_url)
 
+      ## Read profile
+      profile <- read_html(profile_url, encoding = "UTF-8")
+
       ## Extract player name from profile header
-      player_name <- read_html(profile_url, encoding = "UTF-8") %>%
+      player_name <- profile %>%
                         html_nodes("h1")
+
+      ## Extract rank
+      rank <- profile %>%
+                  html_nodes("div.content_column") %>%
+                  html_nodes(xpath = '//*[@id="world_ranking"]') %>%
+                  html_text() %>%
+                  as.numeric()
 
       ## Extract player nationality from profile header
       nationality <- player_name %>%
@@ -224,25 +243,25 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
 
       ## Clean player name
       player_name <- player_name %>%
-                        html_text(trim = TRUE) %>%
-                        str_replace_all(nationality, "") %>%
-                        str_replace_all("\\(", "") %>%
-                        str_replace_all("\\)", "") %>%
-                        str_replace_all(" $", "")
+                          html_text(trim = TRUE) %>%
+                          str_replace_all(nationality, "") %>%
+                          str_replace_all("\\(", "") %>%
+                          str_replace_all("\\)", "") %>%
+                          str_replace_all(" $", "")
 
       ## Parse player name into first and last names
-      first <- gsub(" .*","\\1", player_name)
-      last <- gsub(".* ","\\2", player_name)
+      first <- str_extract(player_name, "([^ ]+)")
+      last <- str_trim(str_extract(player_name, " (.*)"), side = "left")
 
       ## Extract player profile info
-      result <- read_html(profile_url, encoding = "UTF-8") %>%
+      result <- profile %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
 
       ## Extract player profile info
       result <- result %>%
-                    html_nodes("span") %>%
-                    html_text()
+                  html_nodes("span") %>%
+                  html_text()
 
       ## Extract and clean variable names from profile info into vector
       vars <- result %>%
@@ -312,12 +331,12 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     rankings_url <- "http://www.squashinfo.com/rankings/men"
 
     ## Check URL for Robots.txt
-    supressMessages(session <- bow(rankings_url))
+    suppressMessages(session <- bow(rankings_url))
 
     ## Create mens_profile_urls
     mens_profile_urls <- c()
 
-    for (i in 1:(round_any(top, 50, ceiling)/50)) {
+    for (i in if (is.null(top) == TRUE) {1:(round_any(rank, 50, ceiling)/50)} else {1:(round_any(top, 50, ceiling)/50)}) {
 
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
@@ -338,16 +357,26 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     ## Create mens_profiles
     mens_profiles <- c()
 
-    for (i in 1:top) {
+    for (i in if (is.null(top) == TRUE) {rank:rank} else {1:top}) {
 
       profile_url <- sprintf("http://www.squashinfo.com%s", mens_profile_urls[i])
 
       ## Verbose
       message("Scraping ", profile_url)
 
+      ## Read profile
+      profile <- read_html(profile_url, encoding = "UTF-8")
+
       ## Extract player name from profile header
-      player_name <- read_html(profile_url, encoding = "UTF-8") %>%
+      player_name <- profile %>%
                         html_nodes("h1")
+
+      ## Extract rank
+      rank <- profile %>%
+                  html_nodes("div.content_column") %>%
+                  html_nodes(xpath = '//*[@id="world_ranking"]') %>%
+                  html_text() %>%
+                  as.numeric()
 
       ## Extract player nationality from profile header
       nationality <- player_name %>%
@@ -358,18 +387,18 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
 
       ## Clean player name
       player_name <- player_name %>%
-                        html_text(trim = TRUE) %>%
-                        str_replace_all(nationality, "") %>%
-                        str_replace_all("\\(", "") %>%
-                        str_replace_all("\\)", "") %>%
-                        str_replace_all(" $", "")
+                          html_text(trim = TRUE) %>%
+                          str_replace_all(nationality, "") %>%
+                          str_replace_all("\\(", "") %>%
+                          str_replace_all("\\)", "") %>%
+                          str_replace_all(" $", "")
 
       ## Parse player name into first and last names
-      first <- gsub(" .*","\\1", player_name)
-      last <- gsub(".* ","\\2", player_name)
+      first <- str_extract(player_name, "([^ ]+)")
+      last <- str_trim(str_extract(player_name, " (.*)"), side = "left")
 
       ## Extract player profile info
-      result <- read_html(profile_url, encoding = "UTF-8") %>%
+      result <- profile %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
 
@@ -380,10 +409,10 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
 
       ## Extract and clean variable names from profile info into vector
       vars <- result %>%
-                  .[c(TRUE, FALSE)] %>%
-                  str_replace_all(pattern = ":", replacement = "") %>%
-                  str_replace_all(pattern = " ", replacement = "_") %>%
-                  tolower()
+                .[c(TRUE, FALSE)] %>%
+                str_replace_all(pattern = ":", replacement = "") %>%
+                str_replace_all(pattern = " ", replacement = "_") %>%
+                tolower()
 
       ## Extract and clean data from profile info into vector
       metrics <- result %>%
@@ -392,8 +421,8 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
 
       ## Create data frame from profile data
       metrics <- tibble::enframe(metrics, name = NULL) %>%
-                      rowid_to_column() %>%
-                      spread(key = rowid, value = value)
+                                    rowid_to_column() %>%
+                                    spread(key = rowid, value = value)
 
       ## Assign variable names to profile data frame
       names(metrics) <- vars
@@ -443,7 +472,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     ## Create womens_profile_urls
     womens_profile_urls <- c()
 
-    for (i in 1:(round_any(top, 50, ceiling)/50)) {
+    for (i in if (is.null(top) == TRUE) {1:(round_any(rank, 50, ceiling)/50)} else {1:(round_any(top, 50, ceiling)/50)}) {
 
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
@@ -463,16 +492,26 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
     ## Create mens_profiles
     womens_profiles <- c()
 
-    for (i in 1:top) {
+    for (i in if (is.null(top) == TRUE) {rank:rank} else {1:top}) {
 
       profile_url <- sprintf("http://www.squashinfo.com%s", womens_profile_urls[i])
 
       ## Verbose
       message("Scraping ", profile_url)
 
+      ## Read profile
+      profile <- read_html(profile_url, encoding = "UTF-8")
+
       ## Extract player name from profile header
-      player_name <- read_html(profile_url, encoding = "UTF-8") %>%
-                          html_nodes("h1")
+      player_name <- profile %>%
+                        html_nodes("h1")
+
+      ## Extract rank
+      rank <- profile %>%
+                  html_nodes("div.content_column") %>%
+                  html_nodes(xpath = '//*[@id="world_ranking"]') %>%
+                  html_text() %>%
+                  as.numeric()
 
       ## Extract player nationality from profile header
       nationality <- player_name %>%
@@ -490,25 +529,25 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
                           str_replace_all(" $", "")
 
       ## Parse player name into first and last names
-      first <- gsub(" .*","\\1", player_name)
-      last <- gsub(".* ","\\2", player_name)
+      first <- str_extract(player_name, "([^ ]+)")
+      last <- str_trim(str_extract(player_name, " (.*)"), side = "left")
 
       ## Extract player profile info
-      result <- read_html(profile_url, encoding = "UTF-8") %>%
+      result <- profile %>%
                     html_nodes("div.content_column") %>%
                     html_nodes(xpath = '//*[@class="row"]')
 
       ## Extract player profile info
       result <- result %>%
-                  html_nodes("span") %>%
-                  html_text()
+                    html_nodes("span") %>%
+                    html_text()
 
       ## Extract and clean variable names from profile info into vector
       vars <- result %>%
-                  .[c(TRUE, FALSE)] %>%
-                  str_replace_all(pattern = ":", replacement = "") %>%
-                  str_replace_all(pattern = " ", replacement = "_") %>%
-                  tolower()
+                .[c(TRUE, FALSE)] %>%
+                str_replace_all(pattern = ":", replacement = "") %>%
+                str_replace_all(pattern = " ", replacement = "_") %>%
+                tolower()
 
       ## Extract and clean data from profile info into vector
       metrics <- result %>%
@@ -517,8 +556,8 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
 
       ## Create data frame from profile data
       metrics <- tibble::enframe(metrics, name = NULL) %>%
-                    rowid_to_column() %>%
-                    spread(key = rowid, value = value)
+                                      rowid_to_column() %>%
+                                      spread(key = rowid, value = value)
 
       ## Assign variable names to profile data frame
       names(metrics) <- vars
@@ -567,7 +606,7 @@ get_players <- function(top = 25, category = c("both", "men", "women")) {
 
     cat("\n")
 
-    stop("category must be one of 'both', 'men', or 'women'")
+    stop("category must be one of 'both', 'mens', or 'womens'")
 
   }
 
