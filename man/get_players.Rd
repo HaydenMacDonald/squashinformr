@@ -4,30 +4,33 @@
 \alias{get_players}
 \title{Get PSA Squash Player Data from SquashInfo}
 \usage{
-get_players(top = 25, category = c("both", "men", "women"))
+get_players(top = NULL, rank = NULL, category = "both")
 }
 \arguments{
-\item{top}{integer indicating the number of top PSA players to return}
+\item{top}{integer indicating the number of top PSA players by rank to return.}
 
-\item{category}{character string indicating the competition category}
+\item{rank}{integer indicating the rank of the PSA player(s) to return.}
+
+\item{category}{character string indicating the competition category. Must be one of "both", "mens", or "womens".}
 }
 \value{
 Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
 }
 \description{
-Returns scraped profile data men and/or women players in PSA World Tour competitions
+Given the rank(s) and competition category, \code{get_players()} returns profile data of ranked players in PSA World Tour competitions.
 }
 \note{
 This function only returns players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
 }
 \examples{
+## Return the top 25 ranked players from PSA Women's PSA rankings
+get_players(top = 25, category = "womens")
 
-get_players(top = 25, category = "women")
-
-both <- get_players(5, "both")
+## Return the 5th ranked player from both Men's and Women's PSA rankings
+get_players(rank = 5)
 
 }
 \references{
-\url{http://www.squashinfo.com/rankings/men}
+\url{http://www.squashinfo.com/rankings/men} \cr
     \url{http://www.squashinfo.com/rankings/women}
 }

@@ -1,25 +1,28 @@
 #' Get PSA Squash Player Data from SquashInfo
 #'
-#' Returns scraped profile data men and/or women players in PSA World Tour competitions
+#' Given the rank(s) and competition category, \code{get_players()} returns profile data of ranked players in PSA World Tour competitions.
 #'
 #'
-#' @param top integer indicating the number of top PSA players to return
+#' @param rank integer indicating the rank of the PSA player(s) to return.
 #'
-#' @param category character string indicating the competition category
+#' @param top integer indicating the number of top PSA players by rank to return.
+#'
+#' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
 #'
 #' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
 #'
 #' @examples
-#'
+#' ## Return the top 25 ranked players from PSA Women's PSA rankings
 #' get_players(top = 25, category = "womens")
 #'
-#' both <- get_players(5, "both")
+#' ## Return the 5th ranked player from both Men's and Women's PSA rankings
+#' get_players(rank = 5)
 #'
 #' @note This function only returns players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
 #'
 #' @references
 #'
-#'     \url{http://www.squashinfo.com/rankings/men}
+#'     \url{http://www.squashinfo.com/rankings/men} \cr
 #'     \url{http://www.squashinfo.com/rankings/women}
 #'
 #'
@@ -35,9 +38,15 @@
 #'
 #' @export
 
-get_players <- function(rank = NULL, top = NULL, category = c("both", "mens", "womens")) {
+get_players <- function(top = NULL, rank = NULL, category = "both") {
 
-  stopifnot(is.numeric(top) | is.null(top), is.character(category), sum(is.null(top), is.null(rank)) == 1)
+  stopifnot(is.numeric(top) | is.null(top), is.character(category), is.numeric(rank) | is.null(rank), length(rank) == 1 | is.null(rank))
+
+  if (sum(is.null(top), is.null(rank)) != 1) {
+
+    stop("Please use one of rank or top arguments")
+
+  }
 
 
 # Men's
@@ -160,8 +169,8 @@ get_players <- function(rank = NULL, top = NULL, category = c("both", "mens", "w
 
         ## Add first name, last name, nationality and arrange variables
         metrics <- metrics %>%
-                      mutate(first = first, last = last, nationality = nationality) %>%
-                      select(first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
+                      mutate(rank = rank, first = first, last = last, nationality = nationality) %>%
+                      select(rank, first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
 
         ## Bind player profile to mens_profiles
         mens_profiles <- bind_rows(mens_profiles, metrics)
@@ -300,8 +309,8 @@ get_players <- function(rank = NULL, top = NULL, category = c("both", "mens", "w
 
       ## Add first name, last name, nationality and arrange variables
       metrics <- metrics %>%
-                    mutate(first = first, last = last, nationality = nationality) %>%
-                    select(first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
+                    mutate(rank = rank, first = first, last = last, nationality = nationality) %>%
+                    select(rank = rank, first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
 
       ## Bind player profile to womens_profiles
       womens_profiles <- bind_rows(womens_profiles, metrics)
@@ -444,8 +453,8 @@ get_players <- function(rank = NULL, top = NULL, category = c("both", "mens", "w
 
       ## Add first name, last name, nationality and arrange variables
       metrics <- metrics %>%
-                    mutate(first = first, last = last, nationality = nationality) %>%
-                    select(first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
+                    mutate(rank = rank, first = first, last = last, nationality = nationality) %>%
+                    select(rank, first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
 
       ## Bind player profile to mens_profiles
       mens_profiles <- bind_rows(mens_profiles, metrics)
@@ -579,8 +588,8 @@ get_players <- function(rank = NULL, top = NULL, category = c("both", "mens", "w
 
       ## Add first name, last name, nationality and arrange variables
       metrics <- metrics %>%
-                    mutate(first = first, last = last, nationality = nationality) %>%
-                    select(first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
+                    mutate(rank = rank, first = first, last = last, nationality = nationality) %>%
+                    select(rank, first, last, age, gender, birthplace, nationality, residence, height, weight, plays, racket, joined_psa, coach, university, club)
 
       ## Bind player profile to womens_profiles
       womens_profiles <- bind_rows(womens_profiles, metrics)
@@ -603,8 +612,6 @@ get_players <- function(rank = NULL, top = NULL, category = c("both", "mens", "w
 
 
   } else {
-
-    cat("\n")
 
     stop("category must be one of 'both', 'mens', or 'womens'")
 
