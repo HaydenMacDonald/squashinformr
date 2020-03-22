@@ -1,2 +1,2 @@
 # squashinformr
-A Package for Scraping Squash Data from SquashInfo in R
+Web scrape squash data from SquashInfo in R
