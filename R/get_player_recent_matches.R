@@ -272,7 +272,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
                                      date = ymd(parse_date_time(date, orders = "bY"))) %>%
                               select(rank, player, everything())
 
-        mens_recent_matches <- bind_rows(mens_recent_matches, recent_result)
+        mens_recent_matches <- rbind(mens_recent_matches, recent_result)
 
       }
 
@@ -311,7 +311,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
                                      date = ymd(parse_date_time(date, orders = "bY"))) %>%
                               select(rank, player, everything())
 
-        womens_recent_matches <- bind_rows(womens_recent_matches, recent_result)
+        womens_recent_matches <- rbind(womens_recent_matches, recent_result)
 
       }
 

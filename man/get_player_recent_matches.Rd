@@ -17,7 +17,7 @@ get_player_recent_matches(player = NULL, rank = NULL, category = NULL)
 Tibble containing the player rank, name, opponent, match result, games won, games lost, match time, date, tournament round, event, PSA designation, and event location.
 }
 \description{
-Given the full name or rank of a player and the competition category, \code{get_player_recent_matches()} returns scraped recent match data for PSA ranked players.
+Given the full name or rank of a player and the competition category, \code{get_player_recent_matches()} returns recent match data for PSA ranked players.
 }
 \note{
 This function only returns data from players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
