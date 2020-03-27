@@ -1,40 +1,27 @@
-#' Get a player's PSA ranking history from SquashInfo
+#' Get recent PSA rankings from SquashInfo
 #'
-#' Given a player name or rank, and a competition category, \code{get_player_rankings_history()} returns a tidy version of the PSA rankings history table for that player(s).
+#' Given a competition category, \code{get_rankings()} returns the most recent PSA rankings table.
 #'
-#' @param player character string of player name(s).
 #'
-#' @param rank integer indicating the rank of the PSA player(s) to return.
+#' @param top integer indicating the number of top PSA players by rank to return.
 #'
 #' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
 #'
 #'
-#' @return Tibble containing the year, month, exact date, rank, player name and player's current rank.
+#' @return Tibble containing the player rank, previous month's rank, name, highest ranking achieved, date of highest ranking, nationality, and competition category.
 #'
 #' @examples
 #'
-#' ## Get the rankings history for the top three women's singles players
-#' top_two <- get_player_rankings_history(rank = 1:2, category = "mens")
+#' ## Get the top 25 ranked men's singles players
+#' get_rankings(top = 25, category = "men")
 #'
-#' ggplot(top_two) +
-#'  geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-#'  scale_y_reverse()
-#'
-#' ## Get the rankings history for the top three women's singles players
-#' top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
-#'
-#' ggplot(top_three) +
-#'   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-#'   scale_y_reverse()
+#' ## Get the top 100 ranked women's singles players
+#' get_rankings(top = 100, category = "womens")
 #'
 #' ## Get the top 50 players in both men's and women's singles competitions
-#' best <- get_player_rankings_history(rank = 1, category = "both")
+#' get_rankings(top = 50, category = "both")
 #'
-#' ggplot(best) +
-#'   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-#'   scale_y_reverse()
-#'
-#' @note This function only returns PSA ranking histories for players currently ranked in PSA Men's and Women's singles competitions.
+#' @note This function only returns the most recent PSA rankings table for Men's and Women's singles competitions.
 #'
 #' @references
 #'
@@ -53,18 +40,13 @@
 #'
 #' @export
 
-get_player_rankings_history <- function(player = NULL, rank = NULL, category = NULL) {
+get_rankings2 <- function(year = NULL, month = NULL, top = NULL, category = NULL) {
 
-  stopifnot(is.character(player) | is.null(player), nchar(player) > 0, is.numeric(rank) | is.null(rank), is.character(category))
-
-  if (is.null(player) == TRUE & is.null(rank) == TRUE) {
-
-    stop("Either a player's full name or rank is required")
-
-  }
+  stopifnot(is.numeric(year), is.character(month), nchar(month) == 3, is.numeric(top) | is.null(top), is.character(category))
 
   category <- tolower(category)
 
+  month <- paste(toupper(substr(month, 1, 1)), substr(month, 2, nchar(month)), sep = "")
 
   if (category == "mens") {
 
@@ -79,7 +61,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     ## Create mens_profile_urls
     mens_ranking_table <- c()
 
-    for (i in if (is.null(rank) == TRUE) {1:10} else {1:(round_any(max(rank), 50, ceiling)/50)}) {
+    for (i in 1:10) {
 
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
@@ -107,8 +89,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
     ## Men's profile urls
     mens_profile_urls <- mens_ranking_table %>%
-                              filter(Name %in% player | Rank %in% rank) %>%
-                              mutate(profile_slugs = str_replace(profile_slugs, pattern = "players", replacement = "rankings"))
+                                mutate(profile_slugs = str_replace(profile_slugs, pattern = "players", replacement = "rankings"))
 
     womens_profile_urls <- c()
 
@@ -129,7 +110,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     ## Create mens_profile_urls
     womens_ranking_table <- c()
 
-    for (i in if (is.null(rank) == TRUE) {1:8} else {1:(round_any(max(rank), 50, ceiling)/50)}) {
+    for (i in 1:8) {
 
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
@@ -156,7 +137,6 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
     ## Women's profile urls
     womens_profile_urls <- womens_ranking_table %>%
-                                    filter(Name %in% player | Rank %in% rank) %>%
                                     mutate(profile_slugs = str_replace(profile_slugs, pattern = "players", replacement = "rankings"))
 
     mens_profile_urls <- c()
@@ -179,7 +159,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     ## Create mens_profile_urls
     mens_ranking_table <- c()
 
-    for (i in if (is.null(rank) == TRUE) {1:10} else {1:(round_any(max(rank), 50, ceiling)/50)}) {
+    for (i in 1:10) {
 
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
@@ -207,7 +187,6 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
     ## Men's profile urls
     mens_profile_urls <- mens_ranking_table %>%
-                                  filter(Name %in% player | Rank %in% rank) %>%
                                   mutate(profile_slugs = str_replace(profile_slugs, pattern = "players", replacement = "rankings"))
 
     # Women slugs
@@ -221,7 +200,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     ## Create mens_profile_urls
     womens_ranking_table <- c()
 
-    for (i in if (is.null(rank) == TRUE) {1:8} else {1:(round_any(max(rank), 50, ceiling)/50)}) {
+    for (i in 1:8) {
 
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
@@ -248,7 +227,6 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
     ## Womens profile urls
     womens_profile_urls <- womens_ranking_table %>%
-                                    filter(Name %in% player | Rank %in% rank) %>%
                                     mutate(profile_slugs = str_replace(profile_slugs, pattern = "players", replacement = "rankings"))
 
     ## Combine men and women's profile urls
@@ -261,9 +239,9 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
   }
 
 
-## Rankings History
+  ## Rankings
 
-  rankings_history <- c()
+  rankings <- c()
 
   for (i in 1:length(all_profile_urls$profile_slugs)) {
 
@@ -274,30 +252,29 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     rankings_history_url <- sprintf("http://www.squashinfo.com%s", all_profile_urls$profile_slugs[i])
 
     result <- read_html(rankings_history_url) %>%
-                  html_nodes("table")
+                                  html_nodes("table")
 
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
                   gather(key = month, value = rank, -Year) %>%
                   rename(year = Year) %>%
+                  filter(year == year, month == month) %>%
                   mutate(name = player_name,
                          current_rank = current_rank,
                          rank = if_else(rank == "-", NA_character_, rank),
                          rank = as.numeric(rank),
-                         month = factor(month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")),
                          exact_date = paste(month, year),
                          exact_date = ymd(parse_date_time(exact_date, orders = "bY"))) %>%
-                  select(year, month, exact_date, rank, name, current_rank) %>%
-                  arrange(year, month)
+                  select(year, month, exact_date, rank, name, current_rank)
 
-    rankings_history <- bind_rows(rankings_history, result)
+    rankings <- bind_rows(rankings, result)
 
   }
 
-  return(rankings_history)
+  rankings <- rankings %>%
+                  arrange(rank)
+
+  return(rankings)
 
 }
-
-
-

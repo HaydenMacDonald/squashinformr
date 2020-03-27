@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_player_rankings_history.R
 \name{get_player_rankings_history}
 \alias{get_player_rankings_history}
-\title{Get recent PSA rankings from SquashInfo}
+\title{Get a player's PSA ranking history from SquashInfo}
 \usage{
 get_player_rankings_history(player = NULL, rank = NULL, category = NULL)
 }
@@ -14,13 +14,13 @@ get_player_rankings_history(player = NULL, rank = NULL, category = NULL)
 \item{category}{character string indicating the competition category. Must be one of "both", "mens", or "womens".}
 }
 \value{
-Tibble containing the player rank, player name, player's seeding, round reached, event name, event date, event location, and event tour.
+Tibble containing the year, month, exact date, rank, player name and player's current rank.
 }
 \description{
-Given a competition category, \code{get_player_rankings_history()} returns the most recent PSA rankings table.
+Given a player name or rank, and a competition category, \code{get_player_rankings_history()} returns a tidy version of the PSA rankings history table for that player(s).
 }
 \note{
-This function only returns the most recent PSA rankings table for Men's and Women's singles competitions.
+This function only returns PSA ranking histories for players currently ranked in PSA Men's and Women's singles competitions.
 }
 \examples{
 
