@@ -8,7 +8,7 @@
 #' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
 #'
 #'
-#' @return Tibble containing the player rank, player name, player's seeding, round reached, event name, event date, event location, and event tour.
+#' @return Tibble containing the player rank, previous month's rank, name, highest ranking achieved, date of highest ranking, nationality, and competition category.
 #'
 #' @examples
 #'
@@ -41,6 +41,10 @@
 #' @export
 
 get_rankings <- function(top = NULL, category = NULL) {
+
+  stopifnot(is.numeric(top) | is.null(top), is.character(category))
+
+  category <- tolower(category)
 
   if (category == "mens") {
 
@@ -198,9 +202,9 @@ get_rankings <- function(top = NULL, category = NULL) {
                           mutate(category = "Women's",
                                  date = ymd(parse_date_time(date, orders = "bY"))) %>%
                           rename(previous_rank = prev,
-                                 highest_world_ranking = hwr,
+                                 highest_ranking = hwr,
                                  hwr_date = date) %>%
-                          select(rank, previous_rank, name, highest_world_ranking, hwr_date, country, category) %>%
+                          select(rank, previous_rank, name, highest_ranking, hr_date, country, category) %>%
                           as_tibble()
 
 
