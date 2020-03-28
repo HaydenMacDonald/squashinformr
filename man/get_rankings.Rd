@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_rankings.R
 \name{get_rankings}
 \alias{get_rankings}
-\title{Get recent PSA rankings from SquashInfo}
+\title{Get the most recent PSA rankings from SquashInfo}
 \usage{
 get_rankings(top = NULL, category = NULL)
 }

@@ -1,4 +1,4 @@
-#' Get recent PSA rankings from SquashInfo
+#' Get the most recent PSA rankings from SquashInfo
 #'
 #' Given a competition category, \code{get_rankings()} returns the most recent PSA rankings table.
 #'

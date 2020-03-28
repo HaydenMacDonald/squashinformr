@@ -22,7 +22,8 @@ Imports: dplyr,
          naniar,
          gtools,
          gsubfn,
-         janitor
+         janitor,
+         Rcpp (>= 1.0.3)
 Suggests: testthat,
           knitr,
           rmarkdown
