@@ -4,7 +4,7 @@
 \alias{get_tournaments}
 \title{Get tournaments from SquashInfo}
 \usage{
-get_tournaments(year = 2020, world_tour = TRUE)
+get_tournaments(year = 2020, world_tour = FALSE)
 }
 \arguments{
 \item{year}{integer indicating the tournament year. Must be one of 2019 or 2020.}

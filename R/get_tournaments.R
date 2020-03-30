@@ -34,7 +34,7 @@
 #'
 #' @export
 
-get_tournaments <- function(year = 2020, world_tour = TRUE) {
+get_tournaments <- function(year = 2020, world_tour = FALSE) {
 
   stopifnot(is.numeric(year) | is.null(year), is.logical(world_tour))
 
