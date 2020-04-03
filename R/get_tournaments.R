@@ -22,19 +22,35 @@
 #'
 #'     \url{http://www.squashinfo.com/results}
 #'
-#' @import tibble
-#' @import rvest
-#' @import httr
-#' @import xml2
-#' @import polite
-#' @importFrom plyr round_any
-#' @import dplyr
-#' @import stringr
-#' @import tidyr
+#' @importFrom dplyr %>%
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr filter
+#' @importFrom dplyr if_else
+#' @importFrom dplyr desc
+#' @importFrom dplyr arrange
+#' @importFrom polite bow
+#' @importFrom polite nod
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_attr
+#' @importFrom rvest html_table
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr regex
+#' @importFrom stringr str_trim
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_remove
+#' @importFrom stringr str_count
+#' @importFrom lubridate year
+#' @importFrom lubridate ymd
+#' @importFrom janitor clean_names
+#' @importFrom tibble as_tibble
 #'
 #' @export
 
-get_tournaments <- function(year = 2020, world_tour = FALSE) {
+get_tournaments <- function(year = 2020, world_tour = TRUE) {
 
   stopifnot(is.numeric(year) | is.null(year), is.logical(world_tour))
 
@@ -110,8 +126,8 @@ get_tournaments <- function(year = 2020, world_tour = FALSE) {
                            category = if_else(str_detect(name, regex("\\(M\\)")), "Men's", if_else(str_detect(name, regex("\\(W\\)")), "Women's", NA_character_)),
                            name = str_replace_all(name, pattern = regex(" \\(M\\)"), ""),
                            name = str_replace_all(name, pattern = regex(" \\(W\\)"), ""),
-                           city = str_replace_all(gsub(" .*","\\1", location), ",", replacement = ""),
-                           country = gsub(".* ","\\2", location)) %>%
+                           city = str_extract(location, "(.*)(?=, )"),
+                           country = if_else(str_count(location, ",") == 2, str_trim(str_remove(location, "([^,]+,[^,]+),."), side = "left"), str_trim(str_extract(location, "(?<=, )(.*)"), side = "left"))) %>%
                     filter(date >= ymd('2019-01-01')) %>%
                     arrange(desc(date)) %>%
                     select(league, category, name, date, city, country)

@@ -28,15 +28,21 @@
 #'     \url{http://www.squashinfo.com/rankings/men} \cr
 #'     \url{http://www.squashinfo.com/rankings/women}
 #'
-#' @import tibble
-#' @import rvest
-#' @import httr
-#' @import xml2
-#' @import polite
+#' @importFrom dplyr %>%
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr filter
+#' @importFrom dplyr bind_rows
 #' @importFrom plyr round_any
-#' @import dplyr
-#' @import stringr
-#' @import tidyr
+#' @importFrom polite bow
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_table
+#' @importFrom tibble as_tibble
+#' @importFrom janitor clean_names
+#' @importFrom lubridate ymd
+#' @importFrom lubridate parse_date_time
 #'
 #' @export
 
@@ -63,7 +69,10 @@ get_rankings <- function(top = NULL, category = NULL) {
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
 
       ## Scrape rankings table
-      results <- read_html(rankings_url) %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table()
 
@@ -104,7 +113,10 @@ get_rankings <- function(top = NULL, category = NULL) {
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
 
       ## Scrape rankings table
-      results <- read_html(rankings_url) %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                        scrape()
+
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table()
 
@@ -147,7 +159,10 @@ get_rankings <- function(top = NULL, category = NULL) {
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
 
       ## Scrape rankings table
-      results <- read_html(rankings_url) %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table()
 
@@ -186,7 +201,10 @@ get_rankings <- function(top = NULL, category = NULL) {
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
 
       ## Scrape rankings table
-      results <- read_html(rankings_url) %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table()
 
@@ -204,7 +222,7 @@ get_rankings <- function(top = NULL, category = NULL) {
                           rename(previous_rank = prev,
                                  highest_ranking = hwr,
                                  hwr_date = date) %>%
-                          select(rank, previous_rank, name, highest_ranking, hr_date, country, category) %>%
+                          select(rank, previous_rank, name, highest_ranking, hwr_date, country, category) %>%
                           as_tibble()
 
 

@@ -41,15 +41,27 @@
 #'     \url{http://www.squashinfo.com/rankings/men} \cr
 #'     \url{http://www.squashinfo.com/rankings/women}
 #'
-#' @import tibble
-#' @import rvest
-#' @import httr
-#' @import xml2
-#' @import polite
+#' @importFrom dplyr %>%
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr filter
+#' @importFrom dplyr arrange
+#' @importFrom dplyr if_else
+#' @importFrom dplyr bind_rows
+#' @importFrom tidyr pivot_longer
 #' @importFrom plyr round_any
-#' @import dplyr
-#' @import stringr
-#' @import tidyr
+#' @importFrom polite bow
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_attr
+#' @importFrom rvest html_table
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_replace
+#' @importFrom lubridate ymd
+#' @importFrom lubridate parse_date_time
+#' @importFrom tibble as_tibble
+#' @import ggplot2
 #'
 #' @export
 
@@ -84,15 +96,18 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
       ## Next tab in rankings table
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
 
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                        scrape()
+
       ## Scrape table for player rank and name
-      results <- read_html(rankings_url) %>%
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table() %>%
                     as.data.frame() %>%
                     select(Rank, Name)
 
       ## Scrape table for player profile hrefs
-      profile_slugs <- read_html(rankings_url) %>%
+      profile_slugs <- current_page %>%
                           html_nodes(xpath = "//td/a") %>%
                           html_attr("href")
 
@@ -124,7 +139,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     rankings_url <- "http://www.squashinfo.com/rankings/women"
 
     ## Check URL for Robots.txt
-    suppressMessages(session <- bow(rankings_url, verbose = FALSE))
+    suppressMessages(session <- bow(rankings_url))
 
     ## Create mens_profile_urls
     womens_ranking_table <- c()
@@ -135,14 +150,18 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
 
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url) %>%
+
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                        scrape()
+
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table() %>%
                     as.data.frame() %>%
                     select(Rank, Name)
 
       ## Scrape table for player profile hrefs
-      profile_slugs <- read_html(rankings_url) %>%
+      profile_slugs <- current_page %>%
                           html_nodes(xpath = "//td/a") %>%
                           html_attr("href")
 
@@ -185,14 +204,17 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
 
       ## Scrape table for player rank and name
-      results <- read_html(rankings_url) %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table() %>%
                     as.data.frame() %>%
                     select(Rank, Name)
 
       ## Scrape table for player profile hrefs
-      profile_slugs <- read_html(rankings_url) %>%
+      profile_slugs <- current_page %>%
                           html_nodes(xpath = "//td/a") %>%
                           html_attr("href")
 
@@ -227,14 +249,17 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
       rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
 
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url) %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+      results <- current_page %>%
                     html_nodes("table") %>%
                     html_table() %>%
                     as.data.frame() %>%
                     select(Rank, Name)
 
       ## Scrape table for player profile hrefs
-      profile_slugs <- read_html(rankings_url) %>%
+      profile_slugs <- current_page %>%
                           html_nodes(xpath = "//td/a") %>%
                           html_attr("href")
 
@@ -273,13 +298,16 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
     rankings_history_url <- sprintf("http://www.squashinfo.com%s", all_profile_urls$profile_slugs[i])
 
-    result <- read_html(rankings_history_url) %>%
+    current_page <- suppressMessages(bow(rankings_history_url)) %>%
+                                        scrape()
+
+    result <- current_page %>%
                   html_nodes("table")
 
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
-                  gather(key = month, value = rank, -Year) %>%
+                  pivot_longer(-Year, names_to = month, values_to = rank) %>%
                   rename(year = Year) %>%
                   mutate(name = player_name,
                          current_rank = current_rank,

@@ -29,15 +29,28 @@
 #'
 #'     \url{http://www.squashinfo.com/players}
 #'
-#' @import tibble
-#' @import rvest
-#' @import httr
-#' @import xml2
-#' @import polite
-#' @importFrom plyr round_any
-#' @import dplyr
-#' @import stringr
-#' @import tidyr
+#' @importFrom dplyr %>%
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr filter
+#' @importFrom dplyr arrange
+#' @importFrom dplyr if_else
+#' @importFrom dplyr bind_rows
+#' @importFrom tidyr pivot_longer
+#' @importFrom polite bow
+#' @importFrom polite nod
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_attr
+#' @importFrom rvest html_table
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_replace
+#' @importFrom lubridate ymd
+#' @importFrom lubridate parse_date_time
+#' @importFrom janitor clean_names
+#' @importFrom tibble as_tibble
+#' @importFrom rlang is_empty
 #'
 #' @export
 
@@ -335,7 +348,7 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
-                  gather(key = ranking_month, value = rank, -Year) %>%
+                  pivot_longer(-Year, names_to = ranking_month, values_to = rank) %>%
                   rename(ranking_year = Year) %>%
                   filter(ranking_year == year, ranking_month == month) %>%
                   rename(year = ranking_year, month = ranking_month) %>%

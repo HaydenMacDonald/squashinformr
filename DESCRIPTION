@@ -7,10 +7,11 @@ Maintainer: Hayden MacDonald <hayden.macdonald.8778@gmail.com>
 Description: This package allows sports enthusiasts to easily access data related to 
     the Professional Squash Association's World Tour from SquashInfo. The functions within this package
     scrape, parse, and clean data associated with players, tournaments, and rankings data.
-Depends: R (>= 3.4.0),
-         magrittr
-Imports: dplyr,
+Depends: R (>= 3.4.0)
+Imports: magrittr,
+         dplyr,
          plyr,
+         tibble,
          lubridate,
          stringr,
          tidyr,
@@ -27,7 +28,7 @@ Imports: dplyr,
 Suggests: testthat,
           knitr,
           rmarkdown
-License: MIT License
+License: MIT License + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/HaydenMacDonald/squashinformr

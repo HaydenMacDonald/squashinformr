@@ -26,15 +26,25 @@
 #'     \url{http://www.squashinfo.com/rankings/women}
 #'
 #'
-#' @import tibble
-#' @import rvest
-#' @import httr
-#' @import xml2
-#' @import polite
+#' @importFrom dplyr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr if_else
+#' @importFrom dplyr bind_rows
 #' @importFrom plyr round_any
-#' @import dplyr
-#' @import stringr
-#' @import tidyr
+#' @importFrom tidyr pivot_wider
+#' @importFrom polite bow
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_attr
+#' @importFrom rvest html_text
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_trim
+#' @importFrom stringr regex
+#' @importFrom tibble rowid_to_column
+#' @importFrom tibble enframe
 #'
 #' @export
 
@@ -68,7 +78,10 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
         rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
 
         ## Scrape table for player profile hrefs
-        results <- read_html(rankings_url, encoding = "UTF-8") %>%
+        current_page <- suppressMessages(bow(rankings_url)) %>%
+                                            scrape()
+
+        results <- current_page %>%
                       html_nodes(xpath = "//td/a") %>%
                       html_attr("href")
 
@@ -90,7 +103,8 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
         message("Scraping ", profile_url)
 
         ## Read profile
-        profile <- read_html(profile_url, encoding = "UTF-8")
+        profile <- suppressMessages(bow(profile_url)) %>%
+                                            scrape()
 
         ## Extract player name from profile header
         player_name <- profile %>%
@@ -147,7 +161,7 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
         ## Create data frame from profile data
         metrics <- tibble::enframe(metrics, name = NULL) %>%
                       rowid_to_column() %>%
-                      spread(key = rowid, value = value)
+                      pivot_wider(names_from = rowid, values_from = value)
 
         ## Assign variable names to profile data frame
         names(metrics) <- vars
@@ -209,7 +223,10 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
 
 
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url, encoding = "UTF-8") %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+      results <- current_page %>%
                     html_nodes(xpath = "//td/a") %>%
                     html_attr("href")
 
@@ -230,7 +247,8 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
       message("Scraping ", profile_url)
 
       ## Read profile
-      profile <- read_html(profile_url, encoding = "UTF-8")
+      profile <- suppressMessages(bow(profile_url)) %>%
+                                    scrape()
 
       ## Extract player name from profile header
       player_name <- profile %>%
@@ -287,7 +305,7 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
       ## Create data frame from profile data
       metrics <- tibble::enframe(metrics, name = NULL) %>%
                     rowid_to_column() %>%
-                    spread(key = rowid, value = value)
+                    pivot_wider(names_from = rowid, values_from = value)
 
       ## Assign variable names to profile data frame
       names(metrics) <- vars
@@ -352,7 +370,10 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
 
 
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url, encoding = "UTF-8") %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                        scrape()
+
+      results <- current_page %>%
                     html_nodes(xpath = "//td/a") %>%
                     html_attr("href")
 
@@ -374,7 +395,8 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
       message("Scraping ", profile_url)
 
       ## Read profile
-      profile <- read_html(profile_url, encoding = "UTF-8")
+      profile <- suppressMessages(bow(profile_url)) %>%
+                                    scrape()
 
       ## Extract player name from profile header
       player_name <- profile %>%
@@ -431,7 +453,7 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
       ## Create data frame from profile data
       metrics <- tibble::enframe(metrics, name = NULL) %>%
                                     rowid_to_column() %>%
-                                    spread(key = rowid, value = value)
+                                    pivot_wider(names_from = rowid, values_from = value)
 
       ## Assign variable names to profile data frame
       names(metrics) <- vars
@@ -488,7 +510,10 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
 
 
       ## Scrape table for player profile hrefs
-      results <- read_html(rankings_url, encoding = "UTF-8") %>%
+      current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+      results <- current_page %>%
                     html_nodes(xpath = "//td/a") %>%
                     html_attr("href")
 
@@ -509,7 +534,8 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
       message("Scraping ", profile_url)
 
       ## Read profile
-      profile <- read_html(profile_url, encoding = "UTF-8")
+      profile <- suppressMessages(bow(profile_url)) %>%
+                                    scrape()
 
       ## Extract player name from profile header
       player_name <- profile %>%
@@ -566,7 +592,7 @@ get_players <- function(top = NULL, rank = NULL, category = "both") {
       ## Create data frame from profile data
       metrics <- tibble::enframe(metrics, name = NULL) %>%
                                       rowid_to_column() %>%
-                                      spread(key = rowid, value = value)
+                                      pivot_wider(names_from = rowid, values_from = value)
 
       ## Assign variable names to profile data frame
       names(metrics) <- vars

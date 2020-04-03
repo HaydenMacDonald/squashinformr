@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_tournament_players.R
 \name{get_tournament_players}
 \alias{get_tournament_players}
-\title{Get tournament players from SquashInfo}
+\title{Get a tournament's players from SquashInfo}
 \usage{
 get_tournament_players(tournament = NULL, year = 2020, world_tour = TRUE)
 }
@@ -20,7 +20,7 @@ Tibble containing the tournament name, competition category, tournament date, pl
 Given a tournament name or a year, \code{get_tournament_players()} returns player registrants for PSA World Tour tournaments and other events.
 }
 \note{
-This function only returns tournaments from 2019 and 2020, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
+This function only returns player registrant data from tournaments in 2019 and 2020, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 }
 \examples{
 ## Who played in the Tournament of Champions in 2019?
