@@ -2,7 +2,9 @@
 #'
 #' Given the full names or ranks of players, and the competition category, \code{get_matchup()} returns recent matchup data for PSA ranked players.
 #'
-#' @param players character strings of player names.
+#' @param player_1 character string of the first player's name.
+#'
+#' @param player_2 character string of the second player's name.
 #'
 #' @param ranks integers indicating the rank of the PSA players to return.
 #'
@@ -11,18 +13,18 @@
 #' @param tidy logical indicating whether to organize results according to tidy principles.
 #'
 #'
-#' @return Tibble containing the player rank, name, opponent, points won, points lost, game result, tournament round, event, PSA designation, and event location.
+#' @return Tibble containing each player's rank, name, total matches played, number of matches won, the match results spread (relative to player 1), the average match time, the number of games played, the number of games won, average point advantage in a won game, the average point difference in final scores, the number of tie-break wins, and the percentage of games that go to a tie-breaker.
 #'
 #' @examples
 #'
 #' ## Get non-tidy matchup data for Mohamed Elshorbagy vs Ali Farag
-#' get_matchup(players = c("Mohamed Elshorbagy", "Ali Farag"), category = "mens")
+#' get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = "mens")
 #'
 #' ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
-#' get_matchup(players = c("Raneem El Welily", "Nouran Gohar"), category = "womens")
+#' get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens")
 #'
 #' ## Get tidy matchup data for Paul Coll vs Diego Elias
-#' get_matchup(players = c("Paul Coll", "Diego Elias"), category = "mens", tidy = TRUE)
+#' get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 #'
 #'
 #' @note This function only returns data from players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
@@ -43,7 +45,10 @@
 #' @importFrom dplyr everything
 #' @importFrom dplyr row_number
 #' @importFrom dplyr n
+#' @importFrom dplyr left_join
+#' @importFrom tidyr gather
 #' @importFrom tidyr unnest
+#' @importFrom tidyr pivot_longer
 #' @importFrom plyr round_any
 #' @importFrom polite bow
 #' @importFrom polite scrape
@@ -62,7 +67,11 @@
 #'
 #' @export
 
-get_matchup <- function(players = NULL, ranks = NULL, category = NULL, tidy = FALSE) {
+get_matchup <- function(player_1, player_2, ranks = NULL, category = NULL, tidy = FALSE) {
+
+  stopifnot(is.character(player_1), is.character(player_2))
+
+  players <- c(player_1, player_2)
 
   stopifnot(is.character(players) | is.null(players), nchar(players) > 0, is.numeric(ranks) | is.null(ranks))
 
@@ -783,8 +792,10 @@ get_matchup <- function(players = NULL, ranks = NULL, category = NULL, tidy = FA
                                   player_2_games_won = sum(game_result == "L", na.rm = TRUE),
                                   player_1_avg_advantage = mean(player_1_advantage, na.rm = TRUE),
                                   player_2_avg_advantage = mean(player_2_advantage, na.rm = TRUE),
-                                  avg_point_diff = mean(point_diff, na.rm = TRUE),
-                                  pct_games_overtime = sum(points_won > 11 | points_lost > 11, na.rm = TRUE) / n() * 100)
+                                  avg_point_diff = round(mean(point_diff, na.rm = TRUE), 2),
+                                  player_1_tiebreak_wins = sum(points_won > 11, na.rm = TRUE),
+                                  player_2_tiebreak_wins = sum(points_lost > 11, na.rm = TRUE),
+                                  pct_games_tiebreak = round(sum(points_won > 11 | points_lost > 11, na.rm = TRUE) / n() * 100, 2))
 
 
   matchup <- recent_matches %>%
@@ -802,5 +813,6 @@ get_matchup <- function(players = NULL, ranks = NULL, category = NULL, tidy = FA
 
 
   return(matchup)
+
 
 }

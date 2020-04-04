@@ -61,7 +61,6 @@
 #' @importFrom lubridate ymd
 #' @importFrom lubridate parse_date_time
 #' @importFrom tibble as_tibble
-#' @import ggplot2
 #'
 #' @export
 
@@ -307,7 +306,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
-                  pivot_longer(-Year, names_to = month, values_to = rank) %>%
+                  pivot_longer(-Year, names_to = "month", values_to = "rank") %>%
                   rename(year = Year) %>%
                   mutate(name = player_name,
                          current_rank = current_rank,

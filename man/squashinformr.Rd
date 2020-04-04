@@ -5,7 +5,7 @@
 \alias{squashinformr}
 \title{\code{squashinformr} package}
 \description{
-Google spreadsheets R API
+The squashinformr package allows sports enthusiasts to easily access data related to the Professional Squash Association's World Tour and other squash tournaments from SquashInfo. The functions within this package scrape, parse, and clean data associated with players, tournaments, and rankings data.
 }
 \details{
 See the README on \href{https://github.com/HaydenMacDonald/squashinformr}{GitHub}

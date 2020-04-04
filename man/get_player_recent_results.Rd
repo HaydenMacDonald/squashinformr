@@ -7,9 +7,9 @@
 get_player_recent_results(player = NULL, rank = NULL, category = NULL)
 }
 \arguments{
-\item{player}{character string of player name(s).}
+\item{player}{character string of player name.}
 
-\item{rank}{integer indicating the rank of the PSA player(s) to return.}
+\item{rank}{integer indicating the rank of the PSA player to return.}
 
 \item{category}{character string indicating the competition category. Must be one of "both", "mens", or "womens".}
 }
@@ -25,16 +25,13 @@ This function only returns results data from players ranked in the most recent P
 \examples{
 
 ## Get Mohamed Elshorbagy's most recent results data
-get_player_recent_results(player = "Mohamed Elshorbagy", category = "men")
+get_player_recent_results(player = "Mohamed Elshorbagy", category = "mens")
 
-## Get recent results data from the 4th ranked player in Women's competitions
-get_player_recent_results(rank = 4, category = "womens")
+## Get Nour El Tayeb's recent results data
+get_player_recent_results("El Tayeb", category = "womens")
 
-## Get recent results data for Ali Farag and Nour El Tayeb
-get_player_recent_results(player = c("Ali Farag", "Nour El Tayeb"), category = "both")
-
-## Get recent results data from the top 5 players in both Men's and Women's competitions
-get_player_recent_results(rank = 1:5, category = "both")
+## Get recent results data from the top players in both Men's and Women's competitions
+get_player_recent_results(rank = 1, category = "both")
 
 }
 \references{

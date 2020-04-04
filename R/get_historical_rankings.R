@@ -348,7 +348,19 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
-                  pivot_longer(-Year, names_to = ranking_month, values_to = rank) %>%
+                  mutate(Jan = as.character(Jan),
+                         Feb = as.character(Feb),
+                         Mar = as.character(Mar),
+                         Apr = as.character(Apr),
+                         May = as.character(May),
+                         Jun = as.character(Jun),
+                         Jul = as.character(Jul),
+                         Aug = as.character(Aug),
+                         Sep = as.character(Sep),
+                         Oct = as.character(Oct),
+                         Nov = as.character(Nov),
+                         Dec = as.character(Dec)) %>%
+                  pivot_longer(-Year, names_to = "ranking_month", values_to = "rank") %>%
                   rename(ranking_year = Year) %>%
                   filter(ranking_year == year, ranking_month == month) %>%
                   rename(year = ranking_year, month = ranking_month) %>%
@@ -363,12 +375,12 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
                   select(year, month, exact_date, rank, name, current_rank) %>%
                   arrange(year, month)
 
-    rankings_history <- bind_rows(rankings_history, result)
+    rankings_history <- rbind(rankings_history, result)
 
   }
 
   rankings <- rankings_history %>%
-                    arrange(rank)
+                          arrange(rank)
 
   return(rankings)
 

@@ -1,6 +1,6 @@
 #' \code{squashinformr} package
 #'
-#' Google spreadsheets R API
+#' The squashinformr package allows sports enthusiasts to easily access data related to the Professional Squash Association's World Tour and other squash tournaments from SquashInfo. The functions within this package scrape, parse, and clean data associated with players, tournaments, and rankings data.
 #'
 #' See the README on \href{https://github.com/HaydenMacDonald/squashinformr}{GitHub}
 #'
@@ -84,4 +84,29 @@ if(getRversion() >= "3.4.0")  utils::globalVariables(c(".",
                                                        "game",
                                                        "game_winner",
                                                        "player_nationality",
-                                                       "nationality"))
+                                                       "nationality",
+                                                       "opponent_rank",
+                                                       "get_matchup",
+                                                       "player_1",
+                                                       "player_2",
+                                                       "opponent_rank",
+                                                       "player_1_rank",
+                                                       "player_2_rank",
+                                                       "player_1_advantage",
+                                                       "player_2_advantage",
+                                                       "point_diff",
+                                                       "month",
+                                                       "location",
+                                                       "vars",
+                                                       "Jan",
+                                                       "Feb",
+                                                       "Mar",
+                                                       "Apr",
+                                                       "May",
+                                                       "Jun",
+                                                       "Jul",
+                                                       "Aug",
+                                                       "Sep",
+                                                       "Oct",
+                                                       "Nov",
+                                                       "Dec"))

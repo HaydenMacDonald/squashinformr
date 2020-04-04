@@ -11,7 +11,7 @@ Depends: R (>= 3.4.0)
 Imports: magrittr,
          dplyr,
          plyr,
-         tibble,
+         tibble (>= 2.1.3),
          lubridate,
          stringr,
          tidyr,
@@ -24,8 +24,12 @@ Imports: magrittr,
          gtools,
          gsubfn,
          janitor,
-         Rcpp (>= 1.0.3)
+         Rcpp (>= 1.0.3),
+         Hmisc,
+         rlang,
+         ggplot2
 Suggests: testthat,
+          ggplot2,
           knitr,
           rmarkdown
 License: MIT License + file LICENSE
