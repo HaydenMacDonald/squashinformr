@@ -1,27 +1,29 @@
-#' Get a player's recent games from SquashInfo
+#' Get a player matchup data from SquashInfo
 #'
-#' Given the full name or rank of a player and the competition category, \code{get_player_recent_games()} returns recent game data for PSA ranked players.
+#' Given the full names or ranks of players, and the competition category, \code{get_matchup()} returns recent matchup data for PSA ranked players.
 #'
+#' @param players character strings of player names.
 #'
-#' @param player character string of player name.
+#' @param ranks integers indicating the rank of the PSA players to return.
 #'
-#' @param rank integer indicating the rank of the PSA player to return.
+#' @param category character string indicating the competition category. Must be one of "mens", or "womens".
 #'
-#' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
+#' @param tidy logical indicating whether to organize results according to tidy principles.
 #'
 #'
 #' @return Tibble containing the player rank, name, opponent, points won, points lost, game result, tournament round, event, PSA designation, and event location.
 #'
 #' @examples
 #'
-#' ## Get Mohamed Elshorbagy's most recent game data
-#' get_player_recent_games(player = "Mohamed Elshorbagy", category = "mens")
+#' ## Get non-tidy matchup data for Mohamed Elshorbagy vs Ali Farag
+#' get_matchup(players = c("Mohamed Elshorbagy", "Ali Farag"), category = "mens")
 #'
-#' ## Get Nour El Tayeb's recent game data
-#' get_player_recent_games("El Tayeb", category = "womens")
+#' ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
+#' get_matchup(players = c("Raneem El Welily", "Nouran Gohar"), category = "womens")
 #'
-#' ## Get recent game data from the top players in both Men's and Women's competitions
-#' get_player_recent_games(rank = 1, category = "both")
+#' ## Get tidy matchup data for Paul Coll vs Diego Elias
+#' get_matchup(players = c("Paul Coll", "Diego Elias"), category = "mens", tidy = TRUE)
+#'
 #'
 #' @note This function only returns data from players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
 #'
@@ -60,20 +62,19 @@
 #'
 #' @export
 
+get_matchup <- function(players = NULL, ranks = NULL, category = NULL, tidy = FALSE) {
 
-get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL) {
+  stopifnot(is.character(players) | is.null(players), nchar(players) > 0, is.numeric(ranks) | is.null(ranks))
 
-  stopifnot(is.character(player) | is.null(player), nchar(player) > 0, is.numeric(rank) | is.null(rank))
+  if (is.null(players) == TRUE & is.null(ranks) == TRUE) {
 
-  if (is.null(player) == TRUE & is.null(rank) == TRUE) {
-
-    stop("Either a player's full name or rank is required")
+    stop("Either the players' full names or ranks are required")
 
   }
 
-  if ((length(rank) == 1 & is.null(player)) | (length(player) == 1 & is.null(rank))) {
+  if (length(ranks) != 2 & is.null(players) | length(players) != 2 & is.null(ranks)) {
 
-    stop("A single rank or player's full name is required")
+    stop("Either two player names or two ranks are required")
 
   }
 
@@ -96,9 +97,9 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     ## Rankings table url
     rankings_url <- "http://www.squashinfo.com/rankings/men/1"
 
-    if (is.null(player) == FALSE & is.null(rank) == TRUE) {
+    if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(TRUE %nin% str_detect(mens_ranking_table$Name, player)) {
+      while(sum(str_detect(mens_ranking_table$Name, players), na.rm = TRUE) != 2) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -137,16 +138,16 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
       }
 
-    } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
+    } else if (is.null(players) == TRUE & is.null(ranks) == FALSE) {
 
-      while(rank %nin% mens_ranking_table$Rank) {
+      while(ranks[1] %nin% mens_ranking_table$Rank & ranks[2] %nin% mens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
 
         ## Scrape table for player rank and name
         current_page <- suppressMessages(bow(rankings_url)) %>%
-                                            scrape()
+                                          scrape()
 
         results <- current_page %>%
                       html_nodes("table") %>%
@@ -161,7 +162,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
         ## Combine player rank, name, and profile slug
         results <- cbind(results, profile_slugs) %>%
-                                          as.data.frame()
+                                        as.data.frame()
 
         ## Store data in mens_ranking_table
         mens_ranking_table <- rbind(mens_ranking_table, results)
@@ -171,7 +172,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
                               html_nodes("a")
 
         rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                                    html_attr("href")
+                              html_attr("href")
 
         ## Replace t_url with url in Next page button
         rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
@@ -181,7 +182,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     }
 
     mens_profile_urls <- mens_ranking_table %>%
-                                  filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+                                filter(if (is.null(ranks)) {str_detect(Name, players)} else if (is.null(players)) {Rank %in% ranks})
 
     womens_profile_urls <- c()
 
@@ -203,16 +204,16 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     ## Rankings table url
     rankings_url <- "http://www.squashinfo.com/rankings/women/1"
 
-    if (is.null(player) == FALSE & is.null(rank) == TRUE) {
+    if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(TRUE %nin% str_detect(womens_ranking_table$Name, player)) {
+      while(sum(str_detect(mens_ranking_table$Name, players), na.rm = TRUE) != 2) {
 
         ## Verbose
         message("Scraping ", rankings_url)
 
         ## Scrape table for player rank and name
         current_page <- suppressMessages(bow(rankings_url)) %>%
-                                          scrape()
+                                            scrape()
 
         results <- current_page %>%
                       html_nodes("table") %>%
@@ -237,23 +238,23 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
                               html_nodes("a")
 
         rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                                html_attr("href")
+                                  html_attr("href")
 
         ## Replace t_url with url in Next page button
         rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
 
       }
 
-    } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
+    } else if (is.null(players) == TRUE & is.null(ranks) == FALSE) {
 
-      while(rank %nin% womens_ranking_table$Rank) {
+      while(ranks[1] %nin% mens_ranking_table$Rank & ranks[2] %nin% mens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
 
         ## Scrape table for player rank and name
         current_page <- suppressMessages(bow(rankings_url)) %>%
-                                            scrape()
+                                          scrape()
 
         results <- current_page %>%
                       html_nodes("table") %>%
@@ -275,10 +276,10 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
         # Find url in "Next" button
         rankings_url <- current_page %>%
-                                html_nodes("a")
+                              html_nodes("a")
 
         rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                              html_attr("href")
+                                  html_attr("href")
 
         ## Replace t_url with url in Next page button
         rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
@@ -288,13 +289,13 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     }
 
     womens_profile_urls <- womens_ranking_table %>%
-                                    filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+                                    filter(if (is.null(ranks)) {str_detect(Name, players)} else if (is.null(players)) {Rank %in% ranks})
 
     mens_profile_urls <- c()
 
 
 
-  } else if (category == "both" | is.null(category) == TRUE) {
+  } else if (is.null(category) == TRUE) {
 
     # Men profile slugs
 
@@ -310,9 +311,50 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     ## Rankings table url
     rankings_url <- "http://www.squashinfo.com/rankings/men/1"
 
-    if (is.null(player) == FALSE & is.null(rank) == TRUE) {
+    if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(TRUE %nin% str_detect(mens_ranking_table$Name, player)) {
+      while(sum(str_detect(mens_ranking_table$Name, players), na.rm = TRUE) != 2) {
+
+        ## Verbose
+        message("Scraping ", rankings_url)
+
+        ## Scrape table for player rank and name
+        current_page <- suppressMessages(bow(rankings_url)) %>%
+                                          scrape()
+
+        results <- current_page %>%
+                      html_nodes("table") %>%
+                      html_table() %>%
+                      as.data.frame() %>%
+                      select(Rank, Name)
+
+        ## Scrape table for player profile hrefs
+        profile_slugs <- current_page %>%
+                            html_nodes(xpath = "//td/a") %>%
+                            html_attr("href")
+
+        ## Combine player rank, name, and profile slug
+        results <- cbind(results, profile_slugs) %>%
+                                        as.data.frame()
+
+        ## Store data in mens_ranking_table
+        mens_ranking_table <- rbind(mens_ranking_table, results)
+
+        # Find url in "Next" button
+        rankings_url <- current_page %>%
+                              html_nodes("a")
+
+        rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
+                                  html_attr("href")
+
+        ## Replace t_url with url in Next page button
+        rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
+
+      }
+
+    } else if (is.null(players) == TRUE & is.null(ranks) == FALSE) {
+
+      while(ranks[1] %nin% mens_ranking_table$Rank & ranks[2] %nin% mens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -351,51 +393,10 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
       }
 
-    } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
-
-      while(rank %nin% mens_ranking_table$Rank) {
-
-        ## Verbose
-        message("Scraping ", rankings_url)
-
-        ## Scrape table for player rank and name
-        current_page <- suppressMessages(bow(rankings_url)) %>%
-                                          scrape()
-
-        results <- current_page %>%
-                      html_nodes("table") %>%
-                      html_table() %>%
-                      as.data.frame() %>%
-                      select(Rank, Name)
-
-        ## Scrape table for player profile hrefs
-        profile_slugs <- current_page %>%
-                            html_nodes(xpath = "//td/a") %>%
-                            html_attr("href")
-
-        ## Combine player rank, name, and profile slug
-        results <- cbind(results, profile_slugs) %>%
-                                          as.data.frame()
-
-        ## Store data in mens_ranking_table
-        mens_ranking_table <- rbind(mens_ranking_table, results)
-
-        # Find url in "Next" button
-        rankings_url <- current_page %>%
-                              html_nodes("a")
-
-        rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                              html_attr("href")
-
-        ## Replace t_url with url in Next page button
-        rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
-
-      }
-
     }
 
     mens_profile_urls <- mens_ranking_table %>%
-                                  filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+                                  filter(if (is.null(ranks)) {str_detect(Name, players)} else if (is.null(players)) {Rank %in% ranks})
 
     # Women slugs
 
@@ -411,9 +412,9 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     ## Rankings table url
     rankings_url <- "http://www.squashinfo.com/rankings/women/1"
 
-    if (is.null(player) == FALSE & is.null(rank) == TRUE) {
+    if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(TRUE %nin% str_detect(womens_ranking_table$Name, player)) {
+      while(sum(str_detect(mens_ranking_table$Name, players), na.rm = TRUE) != 2) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -442,26 +443,26 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
         # Find url in "Next" button
         rankings_url <- current_page %>%
-                                html_nodes("a")
+                              html_nodes("a")
 
         rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                                html_attr("href")
+                              html_attr("href")
 
         ## Replace t_url with url in Next page button
         rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
 
       }
 
-    } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
+    } else if (is.null(players) == TRUE & is.null(ranks) == FALSE) {
 
-      while(rank %nin% womens_ranking_table$Rank) {
+      while(ranks[1] %nin% mens_ranking_table$Rank & ranks[2] %nin% mens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
 
         ## Scrape table for player rank and name
         current_page <- suppressMessages(bow(rankings_url)) %>%
-                                            scrape()
+                                          scrape()
 
         results <- current_page %>%
                       html_nodes("table") %>%
@@ -476,7 +477,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
         ## Combine player rank, name, and profile slug
         results <- cbind(results, profile_slugs) %>%
-                                        as.data.frame()
+                                          as.data.frame()
 
         ## Store data in mens_ranking_table
         womens_ranking_table <- rbind(womens_ranking_table, results)
@@ -486,7 +487,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
                               html_nodes("a")
 
         rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                                html_attr("href")
+                              html_attr("href")
 
         ## Replace t_url with url in Next page button
         rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
@@ -496,19 +497,14 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     }
 
     womens_profile_urls <- womens_ranking_table %>%
-                                    filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+                                    filter(if (is.null(ranks)) {str_detect(Name, players)} else if (is.null(players)) {Rank %in% ranks})
 
   } else {
 
-    stop("category must be one of 'both', 'mens', or 'womens'")
+    stop("category must be one of 'mens', or 'womens'")
 
 
   }
-
-
-
-
-
 
 
   ## Recent Matches
@@ -525,22 +521,30 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
       Rank <- mens_profile_urls$Rank[i]
 
+      ## Verbose
+      message("Scraping ", player_name, "'s profile")
+
       profile_url <- sprintf("http://www.squashinfo.com%s", mens_profile_urls$profile_slugs[i])
 
       current_page <- suppressMessages(bow(profile_url)) %>%
-                                          scrape()
+                                        scrape()
 
       recent_result <- current_page %>%
-                              html_nodes("table") %>%
-                              .[[4]] %>%
-                              html_table() %>%
-                              filter(row_number() != n()) %>%
-                              as_tibble() %>%
-                              clean_names() %>%
-                              mutate(player = player_name,
-                                     rank = Rank,
-                                     date = ymd(parse_date_time(date, orders = "bY"))) %>%
-                              select(rank, player, everything())
+                          html_nodes("table") %>%
+                          .[[4]] %>%
+                          html_table() %>%
+                          filter(row_number() != n()) %>%
+                          as_tibble() %>%
+                          clean_names() %>%
+                          mutate(player = player_name,
+                                 rank = Rank,
+                                 date = ymd(parse_date_time(date, orders = "bY"))) %>%
+                          select(rank, player, everything())
+
+
+      recent_result <- recent_result %>%
+                          left_join(mens_profile_urls[,-3], by = c("opponent" = "Name")) %>%
+                          rename(opponent_rank = Rank)
 
       mens_recent_matches <- rbind(mens_recent_matches, recent_result)
 
@@ -567,10 +571,13 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
       Rank <- womens_profile_urls$Rank[i]
 
+      ## Verbose
+      message("Scraping ", player_name, "'s profile")
+
       profile_url <- sprintf("http://www.squashinfo.com%s", womens_profile_urls$profile_slugs[i])
 
       current_page <- suppressMessages(bow(profile_url)) %>%
-                                          scrape()
+                                        scrape()
 
       recent_result <- current_page %>%
                           html_nodes("table") %>%
@@ -583,6 +590,10 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
                                  rank = Rank,
                                  date = ymd(parse_date_time(date, orders = "bY"))) %>%
                           select(rank, player, everything())
+
+      recent_result <- recent_result %>%
+                          left_join(womens_profile_urls[,-3], by = c("opponent" = "Name")) %>%
+                          rename(opponent_rank = Rank)
 
       womens_recent_matches <- rbind(womens_recent_matches, recent_result)
 
@@ -597,9 +608,60 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
   }
 
-  recent_games <- bind_rows(mens_recent_matches, womens_recent_matches) %>%
+  if (is.null(ranks)) {
+
+    recent_matches <- bind_rows(mens_recent_matches, womens_recent_matches) %>%
+                        filter(str_detect(player, players[1]) & str_detect(opponent, players[2])) %>%
                         rename(round = rnd, country = ctry, result = w_l) %>%
                         mutate(round = toupper(round),
+                               match = row_number(),
+                               match_time = if_else(opponent == "bye", NA_character_, str_extract(score, pattern = regex("[:digit:]{2,}m"))),
+                               match_time = as.numeric(str_remove(match_time, pattern = regex("m", ignore_case = TRUE))),
+                               score = str_replace_all(score, pattern = regex(" \\([:digit:]{2,}m\\)"), replacement = ""),
+                               score = str_extract_all(score, pattern = "[0-9]+\\-[0-9]+"),
+                               games_won = NA_real_,
+                               games_lost = NA_real_)
+
+    for (j in 1:length(recent_matches$score)) {
+
+      if (length(recent_matches$score[[j]]) == 0) { next } else { match <- recent_matches$score[[j]] }
+
+      wins <- 0
+
+      losses <- 0
+
+
+      for (i in 1:length(match)) {
+
+
+        if (as.numeric(str_extract(match[i], pattern = "^[0-9]+")) >= as.numeric(str_extract(match[i], pattern = "[0-9]+$"))) {
+
+          wins <- wins + 1
+
+        } else {
+
+          losses <- losses + 1
+
+        }
+
+
+      }
+
+      recent_matches$games_won[j] <- wins
+
+      recent_matches$games_lost[j] <- losses
+
+    }
+
+    recent_matches <- recent_matches %>%
+                          select(match, rank, player, opponent_rank, opponent, games_won, games_lost, result, match_time, round, event, tournament_date = date, country, psa)
+
+
+    recent_games <- bind_rows(mens_recent_matches, womens_recent_matches) %>%
+                        filter(str_detect(player, players[1]) & str_detect(opponent, players[2])) %>%
+                        rename(round = rnd, country = ctry, result = w_l) %>%
+                        mutate(round = toupper(round),
+                               match = row_number(),
                                match_time = if_else(opponent == "bye", NA_character_, str_extract(score, pattern = regex("[:digit:]{2,}m"))),
                                match_time = as.numeric(str_remove(match_time, pattern = regex("m", ignore_case = TRUE))),
                                score = str_replace_all(score, pattern = regex(" \\([:digit:]{2,}m\\)"), replacement = ""),
@@ -609,10 +671,136 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
                                points_lost = as.numeric(str_extract(score, "[0-9]+$")),
                                game_result = if_else(points_won > points_lost, "W", "L"))
 
+    recent_games <- recent_games %>%
+                        select(rank, player, opponent_rank, opponent, points_won, points_lost, game_result, round, event, tournament_date = date, country, psa)
 
+  } else if (is.null(players)) {
+
+    recent_matches <- bind_rows(mens_recent_matches, womens_recent_matches) %>%
+                      filter(rank %in% ranks[1] & opponent_rank %in% ranks[2])  %>%
+                      rename(round = rnd, country = ctry, result = w_l) %>%
+                      mutate(round = toupper(round),
+                             match = n() + 1 - row_number(),
+                             match_time = if_else(opponent == "bye", NA_character_, str_extract(score, pattern = regex("[:digit:]{2,}m"))),
+                             match_time = as.numeric(str_remove(match_time, pattern = regex("m", ignore_case = TRUE))),
+                             score = str_replace_all(score, pattern = regex(" \\([:digit:]{2,}m\\)"), replacement = ""),
+                             score = str_extract_all(score, pattern = "[0-9]+\\-[0-9]+"),
+                             games_won = NA_real_,
+                             games_lost = NA_real_)
+
+    for (j in 1:length(recent_matches$score)) {
+
+      if (length(recent_matches$score[[j]]) == 0) { next } else { match <- recent_matches$score[[j]] }
+
+      wins <- 0
+
+      losses <- 0
+
+
+      for (i in 1:length(match)) {
+
+
+        if (as.numeric(str_extract(match[i], pattern = "^[0-9]+")) >= as.numeric(str_extract(match[i], pattern = "[0-9]+$"))) {
+
+          wins <- wins + 1
+
+        } else {
+
+          losses <- losses + 1
+
+        }
+
+
+      }
+
+      recent_matches$games_won[j] <- wins
+
+      recent_matches$games_lost[j] <- losses
+
+    }
+
+    recent_matches <- recent_matches %>%
+                        select(match, rank, player, opponent_rank, opponent, games_won, games_lost, result, match_time, round, event, tournament_date = date, country, psa)
+
+
+    recent_games <- bind_rows(mens_recent_matches, womens_recent_matches) %>%
+                        filter(rank %in% ranks[1] & opponent_rank %in% ranks[2]) %>%
+                        rename(round = rnd, country = ctry, result = w_l) %>%
+                        mutate(round = toupper(round),
+                               match = n() + 1 - row_number(),
+                               match_time = if_else(opponent == "bye", NA_character_, str_extract(score, pattern = regex("[:digit:]{2,}m"))),
+                               match_time = as.numeric(str_remove(match_time, pattern = regex("m", ignore_case = TRUE))),
+                               score = str_replace_all(score, pattern = regex(" \\([:digit:]{2,}m\\)"), replacement = ""),
+                               score = strsplit(score, ", ")) %>%
+                        unnest(score) %>%
+                        mutate(points_won = as.numeric(str_extract(score, "^[0-9]+")),
+                               points_lost = as.numeric(str_extract(score, "[0-9]+$")),
+                               game_result = if_else(points_won > points_lost, "W", "L"))
+
+    recent_games <- recent_games %>%
+                        select(rank, player, opponent_rank, opponent, points_won, points_lost, game_result, round, event, tournament_date = date, country, psa)
+
+  }
+
+
+  ## Summarize Match Data
+  recent_matches <- recent_matches %>%
+                        rename(player_1_rank = rank,
+                               player_1 = player,
+                               player_2_rank = opponent_rank,
+                               player_2 = opponent) %>%
+                        summarize(player_1_rank = max(player_1_rank, na.rm = TRUE),
+                                  player_1 = max(player_1),
+                                  player_2_rank = max(player_2_rank, na.rm = TRUE),
+                                  player_2 = max(player_2),
+                                  matches_played = n(),
+                                  player_1_matches_won = sum(result == "W", na.rm = TRUE),
+                                  player_2_matches_won = sum(result == "L", na.rm = TRUE),
+                                  matches_3_2 = sum(games_won == 3 & games_lost == 2, na.rm = TRUE),
+                                  match_3_1 = sum(games_won == 3 & games_lost == 1, na.rm = TRUE),
+                                  match_3_0 = sum(games_won == 3 & games_lost == 0, na.rm = TRUE),
+                                  match_0_3 = sum(games_won == 0 & games_lost == 3, na.rm = TRUE),
+                                  match_1_3 = sum(games_won == 1 & games_lost == 3, na.rm = TRUE),
+                                  match_2_3 = sum(games_won == 2 & games_lost == 3, na.rm = TRUE),
+                                  avg_match_time = mean(match_time, na.rm = TRUE))
+
+
+  ## Summarize Game Data
   recent_games <- recent_games %>%
-                          select(rank, player, opponent, points_won, points_lost, game_result, round, event, tournament_date = date, country, psa)
+                        rename(player_1_rank = rank,
+                               player_1 = player,
+                               player_2_rank = opponent_rank,
+                               player_2 = opponent) %>%
+                        mutate(point_diff = abs(points_won - points_lost),
+                               player_1_advantage = if_else(points_won > points_lost, points_won - points_lost, NA_real_),
+                               player_2_advantage = if_else(points_won < points_lost, points_lost - points_won, NA_real_)) %>%
+                        summarize(player_1_rank = max(player_1_rank, na.rm = TRUE),
+                                  player_1 = max(player_1),
+                                  player_2_rank = max(player_2_rank, na.rm = TRUE),
+                                  player_2 = max(player_2),
+                                  games_played = n(),
+                                  player_1_games_won = sum(game_result == "W", na.rm = TRUE),
+                                  player_2_games_won = sum(game_result == "L", na.rm = TRUE),
+                                  player_1_avg_advantage = mean(player_1_advantage, na.rm = TRUE),
+                                  player_2_avg_advantage = mean(player_2_advantage, na.rm = TRUE),
+                                  avg_point_diff = mean(point_diff, na.rm = TRUE),
+                                  pct_games_overtime = sum(points_won > 11 | points_lost > 11, na.rm = TRUE) / n() * 100)
 
-  return(recent_games)
+
+  matchup <- recent_matches %>%
+                  left_join(recent_games, by = c("player_1_rank" = "player_1_rank",
+                                                 "player_1" = "player_1",
+                                                 "player_2_rank" = "player_2_rank",
+                                                 "player_2" = "player_2"))
+
+  if (tidy == FALSE) {
+
+    matchup <- matchup %>%
+                  gather(key = "metric", value = "value")
+
+  }
+
+
+  return(matchup)
 
 }

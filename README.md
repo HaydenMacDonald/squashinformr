@@ -1,2 +1,2 @@
 # squashinformr
-Web scrape squash data from SquashInfo in R
+Politely web scrape data from SquashInfo in R

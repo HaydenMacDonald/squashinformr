@@ -3,9 +3,9 @@
 #' Given the full name or rank of a player and the competition category, \code{get_player_recent_results()} returns the recent event results table for PSA ranked players.
 #'
 #'
-#' @param player character string of player name(s).
+#' @param player character string of player name.
 #'
-#' @param rank integer indicating the rank of the PSA player(s) to return.
+#' @param rank integer indicating the rank of the PSA player to return.
 #'
 #' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
 #'
@@ -19,9 +19,6 @@
 #'
 #' ## Get Nour El Tayeb's recent results data
 #' get_player_recent_results("El Tayeb", category = "womens")
-#'
-#' ## Get recent results data for Lucas and Camille Serme
-#' get_player_recent_results(player = "Serme", category = "both")
 #'
 #' ## Get recent results data from the top players in both Men's and Women's competitions
 #' get_player_recent_results(rank = 1, category = "both")
@@ -61,11 +58,17 @@
 
 get_player_recent_results <- function(player = NULL, rank = NULL, category = NULL) {
 
-  stopifnot(is.character(player) | is.null(player), nchar(player) > 0, is.numeric(rank) | is.null(rank), length(rank) == 1)
+  stopifnot(is.character(player) | is.null(player), nchar(player) > 0, is.numeric(rank) | is.null(rank))
 
   if (is.null(player) == TRUE & is.null(rank) == TRUE) {
 
     stop("Either a player's full name or rank is required")
+
+  }
+
+  if ((length(rank) == 1 & is.null(player)) | (length(player) == 1 & is.null(rank))) {
+
+    stop("A single rank or player's full name is required")
 
   }
 
