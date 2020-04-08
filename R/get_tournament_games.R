@@ -32,6 +32,7 @@
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
 #' @importFrom dplyr mutate_at
+#' @importFrom dplyr vars
 #' @importFrom dplyr filter
 #' @importFrom dplyr if_else
 #' @importFrom dplyr row_number
@@ -328,6 +329,9 @@ get_tournament_games <- function(tournament = NULL, year = 2020, world_tour = TR
                        X2 = if_else(str_detect(X2, " v "), NA_character_, str_replace_all(X2, pattern = regex(" \\([:digit:]{2,}m\\)$"), replacement = "")),
                        round = factor(round,
                                       labels = if (length(unique(result$round)) == 6) {c("1st", "2nd", "3rd", "QF", "SF", "F")}
+                                      else if (6 %in% result$round & length(unique(result$round)) == 8) {c("1st", "2nd", "3rd", "4th", "QF", "SF", "3rd place match", "F")}
+                                      else if (6 %in% result$round & length(unique(result$round)) == 7) {c("1st", "2nd", "3rd", "QF", "SF", "3rd place match", "F")}
+                                      else if (6 %in% result$round & length(unique(result$round)) == 6) {c("1st", "2nd", "QF", "SF", "3rd place match", "F")}
                                       else if (6 %in% result$round & length(unique(result$round)) == 5) {c("2nd", "QF", "SF", "3rd place match", "F")}
                                       else if (length(unique(result$round)) == 5) {c("1st", "2nd", "QF", "SF", "F")}
                                       else if (6 %in% result$round & length(unique(result$round)) == 4) {c("QF", "SF", "3rd place match", "F")}

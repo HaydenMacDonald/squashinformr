@@ -23,7 +23,7 @@ This function only returns the most recent PSA rankings table for Men's and Wome
 \examples{
 
 ## Get the top 25 ranked men's singles players
-get_rankings(top = 25, category = "men")
+get_rankings(top = 25, category = "mens")
 
 ## Get the top 100 ranked women's singles players
 get_rankings(top = 100, category = "womens")

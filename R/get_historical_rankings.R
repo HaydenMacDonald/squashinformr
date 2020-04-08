@@ -15,13 +15,13 @@
 #' @examples
 #'
 #' ## Who were the top 20 ranked men's singles players in December 2015?
-#' top20 <- get_historical_rankings(2015, "Dec", "mens", 20)
+#' \dontrun{top20 <- get_historical_rankings(2015, "Dec", "mens", 20)}
 #'
 #' ## Who were the top 50 ranked women's singles players in January 2018?
-#' top50 <- get_historical_rankings(2018, "Jan", "womens", 50)
+#' \dontrun{top50 <- get_historical_rankings(2018, "Jan", "womens", 50)}
 #'
 #' ## Who were the top 10 players in both men's and women's singles in January 2019?
-#' top10 <- get_historical_rankings(2019, "Jan", "both", 10)
+#' \dontrun{top10 <- get_historical_rankings(2019, "Jan", "both", 10)}
 #'
 #' @note This function takes substantial time to scrape the corresponding data because historical ranking tables are not available to non-premium members on SquashInfo. The historical rankings returned by this function are reverse-engineered from individual player ranking histories.
 #'

@@ -32,6 +32,7 @@
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
 #' @importFrom dplyr mutate_at
+#' @importFrom dplyr vars
 #' @importFrom dplyr filter
 #' @importFrom dplyr if_else
 #' @importFrom dplyr funs_
@@ -324,13 +325,16 @@ get_tournament_players <- function(tournament = NULL, year = 2020, world_tour = 
                        player_2 = str_trim(str_remove(player_2, pattern = regex("[A-Z]{2,}$")), side = "both"),
                        round = factor(round,
                                       labels = if (length(unique(result$round)) == 6) {c("1st", "2nd", "3rd", "QF", "SF", "F")}
-                                               else if (6 %in% result$round & length(unique(result$round)) == 5) {c("2nd", "QF", "SF", "3rd place match", "F")}
-                                               else if (length(unique(result$round)) == 5) {c("1st", "2nd", "QF", "SF", "F")}
-                                               else if (6 %in% result$round & length(unique(result$round)) == 4) {c("QF", "SF", "3rd place match", "F")}
-                                               else if (length(unique(result$round)) == 4) {c("1st", "QF", "SF", "F")}
-                                               else if (length(unique(result$round)) == 3) {c("QF", "SF", "F")}
-                                               else if (length(unique(result$round)) == 2) {c("SF", "F")}
-                                               else if (length(unique(result$round)) == 1) {c("F")},
+                                      else if (6 %in% result$round & length(unique(result$round)) == 8) {c("1st", "2nd", "3rd", "4th", "QF", "SF", "3rd place match", "F")}
+                                      else if (6 %in% result$round & length(unique(result$round)) == 7) {c("1st", "2nd", "3rd", "QF", "SF", "3rd place match", "F")}
+                                      else if (6 %in% result$round & length(unique(result$round)) == 6) {c("1st", "2nd", "QF", "SF", "3rd place match", "F")}
+                                      else if (6 %in% result$round & length(unique(result$round)) == 5) {c("2nd", "QF", "SF", "3rd place match", "F")}
+                                      else if (length(unique(result$round)) == 5) {c("1st", "2nd", "QF", "SF", "F")}
+                                      else if (6 %in% result$round & length(unique(result$round)) == 4) {c("QF", "SF", "3rd place match", "F")}
+                                      else if (length(unique(result$round)) == 4) {c("1st", "QF", "SF", "F")}
+                                      else if (length(unique(result$round)) == 3) {c("QF", "SF", "F")}
+                                      else if (length(unique(result$round)) == 2) {c("SF", "F")}
+                                      else if (length(unique(result$round)) == 1) {c("F")},
                                       ordered = TRUE)) %>%
                 select(player_1, player_2, player_1_seed, player_2_seed, player_1_nationality, player_2_nationality, round)
 

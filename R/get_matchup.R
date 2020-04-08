@@ -215,7 +215,7 @@ get_matchup <- function(player_1, player_2, ranks = NULL, category = NULL, tidy 
 
     if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(sum(str_detect(mens_ranking_table$Name, players), na.rm = TRUE) != 2) {
+      while(sum(str_detect(womens_ranking_table$Name, players), na.rm = TRUE) != 2) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -256,7 +256,7 @@ get_matchup <- function(player_1, player_2, ranks = NULL, category = NULL, tidy 
 
     } else if (is.null(players) == TRUE & is.null(ranks) == FALSE) {
 
-      while(ranks[1] %nin% mens_ranking_table$Rank & ranks[2] %nin% mens_ranking_table$Rank) {
+      while(ranks[1] %nin% womens_ranking_table$Rank & ranks[2] %nin% womens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -407,7 +407,7 @@ get_matchup <- function(player_1, player_2, ranks = NULL, category = NULL, tidy 
     mens_profile_urls <- mens_ranking_table %>%
                                   filter(if (is.null(ranks)) {str_detect(Name, players)} else if (is.null(players)) {Rank %in% ranks})
 
-    # Women slugs
+  # Women slugs
 
     ## Get profile URLs for top n women
     rankings_url <- "http://www.squashinfo.com/rankings/women"
@@ -423,7 +423,7 @@ get_matchup <- function(player_1, player_2, ranks = NULL, category = NULL, tidy 
 
     if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(sum(str_detect(mens_ranking_table$Name, players), na.rm = TRUE) != 2) {
+      while(sum(str_detect(womens_ranking_table$Name, players), na.rm = TRUE) != 2) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -464,7 +464,7 @@ get_matchup <- function(player_1, player_2, ranks = NULL, category = NULL, tidy 
 
     } else if (is.null(players) == TRUE & is.null(ranks) == FALSE) {
 
-      while(ranks[1] %nin% mens_ranking_table$Rank & ranks[2] %nin% mens_ranking_table$Rank) {
+      while(ranks[1] %nin% womens_ranking_table$Rank & ranks[2] %nin% womens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)

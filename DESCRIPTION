@@ -26,10 +26,8 @@ Imports: magrittr,
          janitor,
          Rcpp (>= 1.0.3),
          Hmisc,
-         rlang,
-         ggplot2
+         rlang
 Suggests: testthat,
-          ggplot2,
           knitr,
           rmarkdown
 License: MIT License + file LICENSE

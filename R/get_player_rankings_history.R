@@ -13,26 +13,14 @@
 #'
 #' @examples
 #'
-#' ## Get the rankings history for the top three women's singles players
+#' ## Get the rankings history for the top two men's singles players
 #' top_two <- get_player_rankings_history(rank = 1:2, category = "mens")
 #'
-#' ggplot(top_two) +
-#'  geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-#'  scale_y_reverse()
 #'
 #' ## Get the rankings history for the top three women's singles players
 #' top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
 #'
-#' ggplot(top_three) +
-#'   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-#'   scale_y_reverse()
 #'
-#' ## Get the top 50 players in both men's and women's singles competitions
-#' best <- get_player_rankings_history(rank = 1, category = "both")
-#'
-#' ggplot(best) +
-#'   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-#'   scale_y_reverse()
 #'
 #' @note This function only returns PSA ranking histories for players currently ranked in PSA Men's and Women's singles competitions.
 #'
@@ -306,6 +294,18 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
+                  mutate(Jan = as.character(Jan),
+                         Feb = as.character(Feb),
+                         Mar = as.character(Mar),
+                         Apr = as.character(Apr),
+                         May = as.character(May),
+                         Jun = as.character(Jun),
+                         Jul = as.character(Jul),
+                         Aug = as.character(Aug),
+                         Sep = as.character(Sep),
+                         Oct = as.character(Oct),
+                         Nov = as.character(Nov),
+                         Dec = as.character(Dec)) %>%
                   pivot_longer(-Year, names_to = "month", values_to = "rank") %>%
                   rename(year = Year) %>%
                   mutate(name = player_name,

@@ -66,7 +66,7 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
 
   }
 
-  if ((length(rank) == 1 & is.null(player)) | (length(player) == 1 & is.null(rank))) {
+  if ((length(rank) != 1 & is.null(player)) | (length(player) != 1 & is.null(rank))) {
 
     stop("A single rank or player's full name is required")
 

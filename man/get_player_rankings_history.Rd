@@ -24,26 +24,14 @@ This function only returns PSA ranking histories for players currently ranked in
 }
 \examples{
 
-## Get the rankings history for the top three women's singles players
+## Get the rankings history for the top two men's singles players
 top_two <- get_player_rankings_history(rank = 1:2, category = "mens")
 
-ggplot(top_two) +
- geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
- scale_y_reverse()
 
 ## Get the rankings history for the top three women's singles players
 top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
 
-ggplot(top_three) +
-  geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-  scale_y_reverse()
 
-## Get the top 50 players in both men's and women's singles competitions
-best <- get_player_rankings_history(rank = 1, category = "both")
-
-ggplot(best) +
-  geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-  scale_y_reverse()
 
 }
 \references{
