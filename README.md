@@ -1,10 +1,13 @@
 # squashinformr
 
 [![Travis build status](https://travis-ci.org/HaydenMacDonald/squashinformr.svg?branch=master)](https://travis-ci.org/github/HaydenMacDonald/squashinformr)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 
 Politely web scrape data from SquashInfo in R
 
 ## Installation
+
+Install `squashinformr` from this GitHub repository with:
 
 ```{r}
 if (!requireNamespace("remotes")) install.packages("remotes")
@@ -14,31 +17,43 @@ remotes::install_github("HaydenMacDonald/hmdrmd")
 
 ## Usage
 
-There are two major families of scraping functions in `squashinformr`:
+There are three major families of scraping functions in `squashinformr`:
 
-1. `get_player_*` for scraping player profile data
-2. `get_tournament_*` for scraping tournament results data
+1. Player functions for scraping player profile data
+2. Tournament functions for scraping tournament results data
+3. Ranking functions for scraping current and historical rankings
 
 ## Examples
 
+### get_player_rankings_history()
+
 ```{r}
+library(squashinformr)
+
 ## Get the rankings history for the top two men's singles players
-   top_two <- get_player_rankings_history(rank = 1:2, category = "mens")
+top_two <- get_player_rankings_history(rank = 1:2, category = "mens")
 
-   ggplot(top_two) +
-    geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-    scale_y_reverse()
+ggplot(top_two) +
+   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
+   scale_y_reverse()
 ```
+<>
 
 
 ```{r}
-## Get the rankings history for the top three women's singles players
-   top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
+library(squashinformr)
 
-   ggplot(top_three) +
-     geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-     scale_y_reverse()
+## Get the rankings history for the top three women's singles players
+top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
+
+ggplot(top_three) +
+   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
+   scale_y_reverse()
 ```
+
+<>
+
+
 ## Help
 
 Submit issues here on GitHub.  
@@ -47,7 +62,7 @@ If you are interested in extending the functionality of this package, fork this 
 
 ## Disclaimer
 
-SquashInfo is a valuable resource for the international squash community. It has never been my intention to compete with SquashInfo. By creating and sharing this package, I do not intend to compete with SquashInfo or any of its stakeholders. The `squashinformr` package has been created to allow individuals to access data from SquashInfo in a efficient and responsible way, using [`polite` principles](https://github.com/dmi3kno/polite). Following `polite` principles incurs mandatory delays on the scraping process set out by SquashInfo. This prevents the use of this package from incurring unnecessary harm to SquashInfo servers through overwhelming requests. Therefore, it is important that users of this package are patient and respectful of SquashInfo and the work they produce.  
+SquashInfo is a valuable resource for the international squash community. By creating and sharing this package, I do not intend to compete with SquashInfo or any of its stakeholders. The `squashinformr` package was created to allow individuals to access data from SquashInfo in an efficient and responsible way, using [`polite` principles](https://github.com/dmi3kno/polite). Following `polite` principles incurs mandatory delays on the scraping process set by SquashInfo. This prevents the use of this package from incurring unnecessary harm to SquashInfo servers via overwhelming requests. Therefore, it is important that users of this package are patient when scraping and respectful of SquashInfo and the work they produce.  
 
 ## Author
 
