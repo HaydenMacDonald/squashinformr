@@ -7,12 +7,12 @@ Politely web scrape data from SquashInfo in R
 
 ## Installation
 
-Install `squashinformr` from this GitHub repository with:
+Install the development version of `squashinformr` from this GitHub repository via:
 
 ```{r}
 if (!requireNamespace("remotes")) install.packages("remotes")
 
-remotes::install_github("HaydenMacDonald/hmdrmd")
+remotes::install_github("HaydenMacDonald/squashinformr")
 ```
 
 ## Usage
