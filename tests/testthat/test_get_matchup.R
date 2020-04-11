@@ -1,0 +1,3 @@
+context("Matchup")
+library(squashinformr)
+

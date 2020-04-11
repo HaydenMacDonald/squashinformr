@@ -1,0 +1,2 @@
+context("Players")
+library(squashinformr)

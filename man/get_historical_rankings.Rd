@@ -27,13 +27,13 @@ This function takes substantial time to scrape the corresponding data because hi
 \examples{
 
 ## Who were the top 20 ranked men's singles players in December 2015?
-\dontrun{top20 <- get_historical_rankings(2015, "Dec", "mens", 20)}
+\donttest{top20 <- get_historical_rankings(2015, "Dec", "mens", 20)}
 
 ## Who were the top 50 ranked women's singles players in January 2018?
-\dontrun{top50 <- get_historical_rankings(2018, "Jan", "womens", 50)}
+\donttest{top50 <- get_historical_rankings(2018, "Jan", "womens", 50)}
 
 ## Who were the top 10 players in both men's and women's singles in January 2019?
-\dontrun{top10 <- get_historical_rankings(2019, "Jan", "both", 10)}
+\donttest{top10 <- get_historical_rankings(2019, "Jan", "both", 10)}
 
 }
 \references{
