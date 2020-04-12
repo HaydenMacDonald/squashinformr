@@ -1,4 +1,4 @@
-# squashinformr <img src="man/figures/sticker.png" align="right" />
+# squashinformr <img src="man/figures/logo.png" align="right" />
 
 [![Travis build status](https://travis-ci.org/HaydenMacDonald/squashinformr.svg?branch=master)](https://travis-ci.org/github/HaydenMacDonald/squashinformr)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
