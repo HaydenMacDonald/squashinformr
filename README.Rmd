@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-**squashinformr** allows users to access data from the Professional Squash Association's World Tour and other squash tournaments via <a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a>. The functions within this package scrape, parse, and clean data associated with players, tournaments, and rankings data.
+**squashinformr** allows users to access data from the Professional Squash Association's World Tour and other squash tournaments via <a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a>. The functions within this package scrape, parse, and clean data associated with players, tournaments, and rankings.
 
 ## Installation
 
@@ -60,7 +60,7 @@ get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")
 
 ### `get_player_rankings_history()`
 
-This function returns player ranking histories, given their full names or current PSA rankings and competition category.  
+This function returns player ranking histories, given their full names or current PSA ranks and competition category.  
 
 ```{r, dpi=300}
 library(squashinformr)
@@ -102,11 +102,11 @@ get_rankings(top = 5, category = "both") %>%
 
 ### `get_matchup()`
 
-This function returns matchup data between two players.
+This function returns recent matchup data between two players.
 
 ```{r}
 ## Get tidy matchup data for Paul Coll vs Diego Elias
-get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = FALSE)
+get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 ```
 
 

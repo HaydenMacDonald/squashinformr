@@ -15,7 +15,7 @@ status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squas
 Squash Association’s World Tour and other squash tournaments via
 <a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a>. The
 functions within this package scrape, parse, and clean data associated
-with players, tournaments, and rankings data.
+with players, tournaments, and rankings.
 
 ## Installation
 
@@ -71,7 +71,7 @@ get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")
 ### `get_player_rankings_history()`
 
 This function returns player ranking histories, given their full names
-or current PSA rankings and competition category.
+or current PSA ranks and competition category.
 
 ``` r
 library(squashinformr)
@@ -152,28 +152,20 @@ get_rankings(top = 5, category = "both") %>%
 
 ### `get_matchup()`
 
-This function returns matchup data between two players.
+This function returns recent matchup data between two players.
 
 ``` r
 ## Get tidy matchup data for Paul Coll vs Diego Elias
-get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = FALSE)
+get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 #> Scraping http://www.squashinfo.com/rankings/men/1
 #> Scraping Paul Coll's profile
 #> Scraping Diego Elias's profile
-#> # A tibble: 23 x 2
-#>    metric               value      
-#>    <chr>                <chr>      
-#>  1 player_1_rank        5          
-#>  2 player_1             Paul Coll  
-#>  3 player_2_rank        6          
-#>  4 player_2             Diego Elias
-#>  5 matches_played       2          
-#>  6 player_1_matches_won 1          
-#>  7 player_2_matches_won 1          
-#>  8 matches_3_2          0          
-#>  9 match_3_1            1          
-#> 10 match_3_0            0          
-#> # ... with 13 more rows
+#> # A tibble: 1 x 23
+#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~ player_2_matche~ matches_3_2 match_3_1 match_3_0 match_0_3 match_1_3 match_2_3 avg_match_time games_played player_1_games_~
+#>           <int> <chr>            <int> <chr>             <int>            <int>            <int>       <int>     <int>     <int>     <int>     <int>     <int>          <dbl>        <int>            <int>
+#> 1             5 Paul Co~             6 Diego E~              2                1                1           0         1         0         0         0         1             98            9                5
+#> # ... with 7 more variables: player_2_games_won <int>, player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>, avg_point_diff <dbl>, player_1_tiebreak_wins <int>, player_2_tiebreak_wins <int>,
+#> #   pct_games_tiebreak <dbl>
 ```
 
 ## Help
