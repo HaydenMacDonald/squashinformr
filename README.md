@@ -3,7 +3,7 @@
 [![Travis build status](https://travis-ci.org/HaydenMacDonald/squashinformr.svg?branch=master)](https://travis-ci.org/github/HaydenMacDonald/squashinformr)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 
-Politely web scrape data from [SquashInfo](http://www.squashinfo.com/) in R
+Politely web scrape data from <a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a> in R
 
 ## Installation
 
@@ -66,11 +66,11 @@ ggplot(top_three) +
 
 Submit issues here on GitHub.  
 
-If you are interested in extending the functionality of this package, fork this repository, make your changes and submit them as a pull request. The `squashinformr` project is released with a [Contributor Code of Conduct](https://github.com/HaydenMacDonald/squashinformr/blob/master/CODE_OF_CONDUCT.md). By contributing to this project, you agree to its terms.  
+If you are interested in extending the functionality of this package, fork this repository, make your changes and submit them as a pull request. The `squashinformr` project is released with a <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/CODE_OF_CONDUCT.md" target="_blank">Contributor Code of Conduct</a>. By contributing to this project, you agree to its terms.  
 
 ## Disclaimer
 
-SquashInfo is a valuable resource for the international squash community. By creating and sharing this package, I do not intend to compete with SquashInfo or any of its stakeholders. The `squashinformr` package was created to allow individuals to access data from SquashInfo in an efficient and responsible way, using [`polite` principles](https://github.com/dmi3kno/polite). Following `polite` principles incurs mandatory delays on the scraping process set by SquashInfo. This prevents the use of this package from incurring unnecessary harm to SquashInfo servers via overwhelming requests. Therefore, it is important that users of this package are patient when scraping and respectful of SquashInfo and the work they produce.  
+SquashInfo is a valuable resource for the international squash community. By creating and sharing this package, I do not intend to compete with SquashInfo or any of its stakeholders. The `squashinformr` package was created to allow individuals to access data from SquashInfo in an efficient and responsible way, using <a href="https://github.com/dmi3kno/polite" target="_blank">`polite` principles</a>. Following `polite` principles incurs mandatory delays on the scraping process set by SquashInfo. This prevents the use of this package from incurring unnecessary harm to SquashInfo servers via overwhelming requests. Therefore, it is important that users of this package are patient when scraping and respectful of SquashInfo and the work they produce.  
 
 ## Author
 
@@ -78,4 +78,4 @@ This package was authored by Hayden MacDonald (hayden.macdonald.8778@gmail.com).
 
 ## License
 
-The `squashinformr` package is licensed under the [MIT LICENSE](https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE).
+The `squashinformr` package is licensed under the <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE" target="_blank">MIT LICENSE</a>.
