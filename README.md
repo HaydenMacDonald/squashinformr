@@ -131,6 +131,14 @@ This function returns data from the most recent PSA rankings tables.
 ``` r
 library(squashinformr)
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 
 ## Get the top 5 players in both men's and women's singles competitions
 get_rankings(top = 5, category = "both") %>%
