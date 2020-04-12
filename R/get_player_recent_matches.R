@@ -514,24 +514,29 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
 
   ## Men's results
 
-  if (length(mens_profile_urls$profile_slugs) > 0) {
+  if (length(mens_profile_urls$profile_slugs) > 0) { ## If there are more than 0 men's profile slugs
 
+      ## Create empty mens_recent_matches dataframe
       mens_recent_matches <- c()
 
-      for (i in 1:length(mens_profile_urls$profile_slugs)) {
+      for (i in 1:length(mens_profile_urls$profile_slugs)) { ## For every men's profile slug
 
+        ## Extract player name
         player_name <- mens_profile_urls$Name[i]
 
+        ## Extract current rank
         Rank <- mens_profile_urls$Rank[i]
 
+        ## Create profile url from slug
         profile_url <- sprintf("http://www.squashinfo.com%s", mens_profile_urls$profile_slugs[i])
 
         ## Verbose
         message("Scraping ", player_name, "'s profile")
 
+        ## Bow and scrape page
         current_page <- suppressMessages(bow(profile_url)) %>%
                                             scrape()
-
+        ## Find html table
         recent_result <- current_page %>%
                               html_nodes("table") %>%
                               .[[4]] %>%
@@ -541,17 +546,19 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
                               clean_names() %>%
                               mutate(player = player_name,
                                      rank = Rank,
-                                     date = ymd(parse_date_time(date, orders = "bY"))) %>%
+                                     date = ymd(parse_date_time(date, orders = "bY"))) %>%  ## convert date to yyyy-mm-dd
                               select(rank, player, everything())
 
+        ## Bind results row-wise
         mens_recent_matches <- rbind(mens_recent_matches, recent_result)
 
       }
 
 
 
-  } else {
+  } else { ## If there are 0 men's profile slugs
 
+    ## Create empty mens_recent_matches dataframe
     mens_recent_matches <- c()
 
   }
@@ -559,24 +566,30 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
 
   ## Women's results
 
-  if (length(womens_profile_urls$profile_slugs) > 0) {
+  if (length(womens_profile_urls$profile_slugs) > 0) { ## If there are more than 0 women's profile slugs
 
+      ## Create empty womens_recent_matches dataframe
       womens_recent_matches <- c()
 
-      for (i in 1:length(womens_profile_urls$profile_slugs)) {
+      for (i in 1:length(womens_profile_urls$profile_slugs)) { ## For every women's profile slug
 
+        ## Extract player name
         player_name <- womens_profile_urls$Name[i]
 
+        ## Extract current rank
         Rank <- womens_profile_urls$Rank[i]
 
+        ## Create profile url from slug
         profile_url <- sprintf("http://www.squashinfo.com%s", womens_profile_urls$profile_slugs[i])
 
         ## Verbose
         message("Scraping ", player_name, "'s profile")
 
+        ## Bow and scrape page
         current_page <- suppressMessages(bow(profile_url)) %>%
                                             scrape()
 
+        ## Find html table
         recent_result <- current_page %>%
                               html_nodes("table") %>%
                               .[[4]] %>%
@@ -589,6 +602,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
                                      date = ymd(parse_date_time(date, orders = "bY"))) %>%
                               select(rank, player, everything())
 
+        ## Bind results row-wise
         womens_recent_matches <- rbind(womens_recent_matches, recent_result)
 
       }
@@ -596,41 +610,49 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
 
 
 
-  } else {
+  } else { ## If there are 0 women's profile slugs
 
+    ## Create empty womens_recent_matches dataframe
     womens_recent_matches <- c()
 
   }
 
+  ## Bind results row-wise
   recent_matches <- bind_rows(mens_recent_matches, womens_recent_matches) %>%
                           rename(round = rnd, country = ctry, result = w_l) %>%
                           mutate(round = toupper(round),
-                                 match_time = if_else(opponent == "bye", NA_character_, str_extract(score, pattern = regex("[:digit:]{2,}m"))),
+                                 match_time = if_else(opponent == "bye", NA_character_, str_extract(score, pattern = regex("[:digit:]{2,}m"))),  ## Extract match time
                                  match_time = as.numeric(str_remove(match_time, pattern = regex("m", ignore_case = TRUE))),
-                                 score = str_replace_all(score, pattern = regex(" \\([:digit:]{2,}m\\)"), replacement = ""),
+                                 score = str_replace_all(score, pattern = regex(" \\([:digit:]{2,}m\\)"), replacement = ""),  ## Extract score
                                  score = str_extract_all(score, pattern = "[0-9]+\\-[0-9]+"),
+                                 ## Create games_won and games_lost variables
                                  games_won = NA_real_,
                                  games_lost = NA_real_)
 
-
+  ## For each match
   for (j in 1:length(recent_matches$score)) {
 
+    ## If there are no games, next row, create match object
     if (length(recent_matches$score[[j]]) == 0) { next } else { match <- recent_matches$score[[j]] }
 
+    ## Start with 0 games won and games lost
     wins <- 0
 
     losses <- 0
 
-
+    ## For each game in each match
     for (i in 1:length(match)) {
 
+      ## If player 1's score is greater than player 2's score
+      if (as.numeric(str_extract(match[i], pattern = "^[0-9]+")) > as.numeric(str_extract(match[i], pattern = "[0-9]+$"))) {
 
-      if (as.numeric(str_extract(match[i], pattern = "^[0-9]+")) >= as.numeric(str_extract(match[i], pattern = "[0-9]+$"))) {
-
+        ## Add one win to player 1's wins
         wins <- wins + 1
 
+        ## If player 1's score is less than player 2's score
       } else {
 
+        ## Add one loss to player 1's losses
         losses <- losses + 1
 
       }
@@ -638,6 +660,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
 
     }
 
+    ## Assign total wins and losses to games_won and games_lost, respectively
     recent_matches$games_won[j] <- wins
 
     recent_matches$games_lost[j] <- losses
@@ -645,6 +668,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
   }
 
 
+  ## Organize results
   recent_matches <- recent_matches %>%
                           select(rank, player, opponent, result, games_won, games_lost, match_time, round, date, event, country, psa)
 

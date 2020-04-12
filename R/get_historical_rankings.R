@@ -329,25 +329,33 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
 
   for (i in 1:length(all_profile_urls$profile_url)) {
 
+    ## Extract player name
     player_name <- all_profile_urls$name[i]
 
+    ## Verbose
     message("Scraping ", player_name, "'s rankings history")
 
+    ## Current rank
     current_rank <- all_profile_urls$rank[i]
 
+    ## Highest rank achieved
     highest_rank <- all_profile_urls$hwr[i]
 
+    ## Ranking table url
     rankings_history_url <- sprintf("http://www.squashinfo.com%s", all_profile_urls$profile_url[i])
 
+    ## Bow and scrape page
     result <- suppressMessages(bow(rankings_history_url) %>%
                                       scrape(verbose = TRUE))
-
+    ## Find html tables
     result <- result %>%
                 html_nodes("table")
 
+    ## Find ranking history table and clean results
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
+                  ## Convert month columns to character
                   mutate(Jan = as.character(Jan),
                          Feb = as.character(Feb),
                          Mar = as.character(Mar),
@@ -360,25 +368,28 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
                          Oct = as.character(Oct),
                          Nov = as.character(Nov),
                          Dec = as.character(Dec)) %>%
-                  pivot_longer(-Year, names_to = "ranking_month", values_to = "rank") %>%
+                  pivot_longer(-Year, names_to = "ranking_month", values_to = "rank") %>%  ## transform data to long format
                   rename(ranking_year = Year) %>%
-                  filter(ranking_year == year, ranking_month == month) %>%
+                  filter(ranking_year == year, ranking_month == month) %>% ## Filter results according to year and month input from user
                   rename(year = ranking_year, month = ranking_month) %>%
+                  ## Added data extracted earlier
                   mutate(name = player_name,
                          current_rank = current_rank,
                          highest_rank = highest_rank,
                          rank = suppressWarnings(as.numeric(rank)),
-                         month = factor(month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")),
+                         month = factor(month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")), ## make month an ordered factor
                          exact_date = paste(month, year),
-                         exact_date = ymd(parse_date_time(exact_date, orders = "bY"))) %>%
-                  filter(rank <= if_else(is.null(top) == TRUE, 500, top)) %>%
+                         exact_date = ymd(parse_date_time(exact_date, orders = "bY"))) %>% ## convert date to yyyy-mm-dd
+                  filter(rank <= if_else(is.null(top) == TRUE, 500, top)) %>%  ## filter out observations with rank >= 500
                   select(year, month, exact_date, rank, name, current_rank) %>%
                   arrange(year, month)
 
+    ## Bind results row-wise
     rankings_history <- rbind(rankings_history, result)
 
   }
 
+  ## Order results by ascending rank
   rankings <- rankings_history %>%
                           arrange(rank)
 

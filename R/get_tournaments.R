@@ -87,6 +87,7 @@ get_tournaments <- function(year = 2020, world_tour = TRUE) {
                   mutate(date = dmy(date)) %>%
                   filter(!str_detect(name, pattern = "Premier League"))
 
+    ## Filter out non-world tour tournaments
     if (world_tour == TRUE) {
 
       results <- results %>%
@@ -94,8 +95,10 @@ get_tournaments <- function(year = 2020, world_tour = TRUE) {
 
     }
 
+    ## Bind results row-wise
     tournaments <- rbind(tournaments, results)
 
+    ## If results begin to include 2018 tournaments, break while loop, otherwise continue to next page
     if (2018 %in% year(tournaments$date)) {
 
       results_limit <- NA_character_
@@ -119,20 +122,22 @@ get_tournaments <- function(year = 2020, world_tour = TRUE) {
   }
 
 
+  ## Clean tournament results
   tournaments <- tournaments %>%
                     as_tibble() %>%
                     select(league, name, location, date) %>%
-                    mutate(league = if_else(league == "", NA_character_, league),
-                           category = if_else(str_detect(name, regex("\\(M\\)")), "Men's", if_else(str_detect(name, regex("\\(W\\)")), "Women's", NA_character_)),
+                    mutate(league = if_else(league == "", NA_character_, league), ## Replace empty strings with NAs
+                           category = if_else(str_detect(name, regex("\\(M\\)")), "Men's", if_else(str_detect(name, regex("\\(W\\)")), "Women's", NA_character_)), ## Derive category from tournament name
                            name = str_replace_all(name, pattern = regex(" \\(M\\)"), ""),
                            name = str_replace_all(name, pattern = regex(" \\(W\\)"), ""),
-                           city = str_extract(location, "(.*)(?=, )"),
+                           city = str_extract(location, "(.*)(?=, )"), ## extract city and country from location
                            country = if_else(str_count(location, ",") == 2, str_trim(str_remove(location, "([^,]+,[^,]+),."), side = "left"), str_trim(str_extract(location, "(?<=, )(.*)"), side = "left"))) %>%
-                    filter(date >= ymd('2019-01-01')) %>%
+                    filter(date >= ymd('2019-01-01')) %>%  ## filter out any tournaments occuring before 2019-01-01 (tournament data before this date is not available to regular members of SquashInfo)
                     arrange(desc(date)) %>%
                     select(league, category, name, date, city, country)
 
 
+  ## Filter final results by year input
   if (year == 2020) {
 
     tournaments <- tournaments %>%

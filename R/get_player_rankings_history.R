@@ -279,23 +279,30 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
   for (i in 1:length(all_profile_urls$profile_slugs)) {
 
+    ## Player's name
     player_name <- all_profile_urls$Name[i]
 
+    ## Verbose
     message("Scraping ", player_name, "'s ranking history")
 
+    ## Player's rank
     current_rank <- all_profile_urls$Rank[i]
 
+    ## Ranking history table url
     rankings_history_url <- sprintf("http://www.squashinfo.com%s", all_profile_urls$profile_slugs[i])
 
+    ## Bow and scrape
     current_page <- suppressMessages(bow(rankings_history_url)) %>%
                                         scrape()
-
+    ## Find html tables
     result <- current_page %>%
                   html_nodes("table")
 
+    ## Extract the rankings history table and clean results
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
                   html_table() %>%
                   as_tibble() %>%
+                  ## Make month columns character
                   mutate(Jan = as.character(Jan),
                          Feb = as.character(Feb),
                          Mar = as.character(Mar),
@@ -312,14 +319,16 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
                   rename(year = Year) %>%
                   mutate(name = player_name,
                          current_rank = current_rank,
-                         rank = if_else(rank == "-", NA_character_, rank),
-                         rank = as.numeric(rank),
-                         month = factor(month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")),
+                         rank = if_else(rank == "-", NA_character_, rank), #replace hypens with NAs
+                         rank = as.numeric(rank), ## make rank numeric
+                         month = factor(month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")), ## make month an ordered factor
+                         ## Create an exact date for each ranking (yyyy-mm-dd)
                          exact_date = paste(month, year),
                          exact_date = ymd(parse_date_time(exact_date, orders = "bY"))) %>%
                   select(year, month, exact_date, rank, name, current_rank) %>%
                   arrange(year, month)
 
+    ## Bind results row-wise
     rankings_history <- bind_rows(rankings_history, result)
 
   }
