@@ -281,6 +281,8 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
     player_name <- all_profile_urls$Name[i]
 
+    message("Scraping ", player_name, "'s ranking history")
+
     current_rank <- all_profile_urls$Rank[i]
 
     rankings_history_url <- sprintf("http://www.squashinfo.com%s", all_profile_urls$profile_slugs[i])

@@ -50,6 +50,8 @@ library(ggplot2)
 
 ## Get the rankings history for the top two men's singles players
 top_two <- get_player_rankings_history(player = c("Mohamed Elshorbagy", "Ali Farag"), category = "mens")
+# Scraping Mohamed Elshorbagy's ranking history
+# Scraping Ali Farag's ranking history
 
 ## Plot
 ggplot(top_two) +
@@ -71,6 +73,9 @@ library(ggplot2)
 
 ## Get the rankings history for the top three women's singles players
 top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
+# Scraping Raneem El Welily's ranking history
+# Scraping Nouran Gohar's ranking history
+# Scraping Nour El Sherbini's ranking history
 
 ggplot(top_three) +
    geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
