@@ -105,8 +105,12 @@ get_rankings(top = 5, category = "both") %>%
 This function returns recent matchup data between two players.
 
 ```{r}
-## Get tidy matchup data for Paul Coll vs Diego Elias
-get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
+library(squashinformr)
+library(dplyr)
+
+## Get tidy matchup stats for Paul Coll vs Diego Elias
+get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE) %>%
+  select(5:7, 14:20, 23)
 ```
 
 
