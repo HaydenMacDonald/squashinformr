@@ -132,7 +132,7 @@ library(dplyr)
 
 ## Get the top 5 players in both men's and women's singles competitions
 get_rankings(top = 5, category = "both") %>%
-    arrange(category)
+    arrange(category, rank)
 #> # A tibble: 10 x 7
 #>     rank previous_rank name               highest_ranking hwr_date   country category
 #>    <int>         <int> <chr>                        <int> <date>     <chr>   <chr>   
