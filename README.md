@@ -9,8 +9,13 @@ status](https://travis-ci.org/HaydenMacDonald/squashinformr.svg?branch=master)](
 status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 <!-- badges: end -->
 
-Politely web scrape data from
-<a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a> in R
+## Overview
+
+**squashinformr** allows users to access data from the Professional
+Squash Association’s World Tour and other squash tournaments via
+<a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a>. The
+functions within this package scrape, parse, and clean data associated
+with players, tournaments, and rankings data.
 
 ## Installation
 
@@ -42,7 +47,6 @@ This function returns a player’s recent matches.
 
 ``` r
 library(squashinformr)
-library(ggplot2)
 
 ## Get Mohamed Elshorbagy's most recent match data
 get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")
@@ -94,7 +98,6 @@ This function returns a tournament’s game results data.
 
 ``` r
 library(squashinformr)
-library(ggplot2)
 
 ## Return game data for 2020's Tournament of Champions.
 get_tournament_games("tournament of champions", year = 2020)
@@ -127,7 +130,6 @@ This function returns data from the most recent PSA rankings tables.
 
 ``` r
 library(squashinformr)
-library(ggplot2)
 library(dplyr)
 
 ## Get the top 5 players in both men's and women's singles competitions
@@ -146,6 +148,32 @@ get_rankings(top = 5, category = "both") %>%
 #>  8     3             4 Nour El Sherbini                 1 2016-05-01 EGY     Women's 
 #>  9     4             3 Camille Serme                    2 2017-02-01 FRA     Women's 
 #> 10     5             5 Nour El Tayeb                    3 2018-02-01 EGY     Women's
+```
+
+### `get_matchup()`
+
+This function returns matchup data between two players.
+
+``` r
+## Get tidy matchup data for Paul Coll vs Diego Elias
+get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = FALSE)
+#> Scraping http://www.squashinfo.com/rankings/men/1
+#> Scraping Paul Coll's profile
+#> Scraping Diego Elias's profile
+#> # A tibble: 23 x 2
+#>    metric               value      
+#>    <chr>                <chr>      
+#>  1 player_1_rank        5          
+#>  2 player_1             Paul Coll  
+#>  3 player_2_rank        6          
+#>  4 player_2             Diego Elias
+#>  5 matches_played       2          
+#>  6 player_1_matches_won 1          
+#>  7 player_2_matches_won 1          
+#>  8 matches_3_2          0          
+#>  9 match_3_1            1          
+#> 10 match_3_0            0          
+#> # ... with 13 more rows
 ```
 
 ## Help
