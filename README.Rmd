@@ -1,6 +1,7 @@
 ---
-title: "Untitled"
-output: github_document
+output: 
+  github_document:
+    html_preview: false
 ---
 
 ```{r setup, include=FALSE}
@@ -27,7 +28,7 @@ Politely web scrape data from <a href="http://www.squashinfo.com/" target="_blan
 
 Install the development version of `squashinformr` from this GitHub repository via:
 
-```{r}
+```{r, eval=FALSE}
 if (!requireNamespace("remotes")) install.packages("remotes")
 
 remotes::install_github("HaydenMacDonald/squashinformr")
@@ -51,7 +52,7 @@ This function returns player ranking histories, given their full names or curren
 
 Let's contrast the ranking histories of the Mohamed Elshorbagy (Men's Rank 1 in April 2020) and Ali Farag (Men's Rank 2 in April 2020)...
 
-```{r}
+```{r, dpi=300}
 library(squashinformr)
 library(ggplot2)
 
@@ -69,7 +70,7 @@ ggplot(top_two) +
 
 Let's contrast the ranking histories of the current top 3 Women's players...
 
-```{r}
+```{r, dpi=300}
 library(squashinformr)
 library(ggplot2)
 

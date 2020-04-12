@@ -1,5 +1,3 @@
-Untitled
-================
 
 # squashinformr <img src="man/figures/logo.png" align="right" />
 
@@ -23,17 +21,6 @@ repository via:
 if (!requireNamespace("remotes")) install.packages("remotes")
 
 remotes::install_github("HaydenMacDonald/squashinformr")
-# Downloading GitHub repo HaydenMacDonald/squashinformr@master
-#          checking for file 'C:\Users\Hayden\AppData\Local\Temp\RtmpemdJbE\remotes25302f744f1f\HaydenMacDonald-squashinformr-6690f7b/DESCRIPTION' ...     checking for file 'C:\Users\Hayden\AppData\Local\Temp\RtmpemdJbE\remotes25302f744f1f\HaydenMacDonald-squashinformr-6690f7b/DESCRIPTION' ...   v  checking for file 'C:\Users\Hayden\AppData\Local\Temp\RtmpemdJbE\remotes25302f744f1f\HaydenMacDonald-squashinformr-6690f7b/DESCRIPTION'
-#       -  preparing 'squashinformr':
-#    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   v  checking DESCRIPTION meta-information
-#       -  checking for LF line-endings in source and make files and shell scripts
-#       -  checking for empty or unneeded directories
-#       -  building 'squashinformr_0.1.0.tar.gz'
-#      
-# 
-# Installing package into 'C:/Users/Hayden/Documents/R/win-library/3.6'
-# (as 'lib' is unspecified)
 ```
 
 ## Usage
