@@ -152,22 +152,29 @@ get_rankings(top = 5, category = "both") %>%
 
 ### `get_matchup()`
 
-This function returns recent matchup stats between two players.
+This function returns recent matchup stats between two players. Stats
+returned include each player’s rank, name, total matches played, number
+of matches won, the match results spread (relative to player 1), the
+average match time, the number of games played, the number of games won,
+average point advantage in a won game, the average point difference in
+final scores, the number of tie-break wins, and the percentage of games
+that go to a tie-breaker.
 
 ``` r
 library(squashinformr)
 library(dplyr)
 
 ## Get tidy matchup stats for Paul Coll vs Diego Elias
-get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE) %>%
-  select(5:7, 14:20, 23) ## shortened output for example
+get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 #> Scraping http://www.squashinfo.com/rankings/men/1
 #> Scraping Paul Coll's profile
 #> Scraping Diego Elias's profile
-#> # A tibble: 1 x 11
-#>   matches_played player_1_matches_won player_2_matches_won avg_match_time games_played player_1_games_won player_2_games_won player_1_avg_advantage player_2_avg_advantage avg_point_diff pct_games_tiebreak
-#>            <int>                <int>                <int>          <dbl>        <int>              <int>              <int>                  <dbl>                  <dbl>          <dbl>              <dbl>
-#> 1              2                    1                    1             98            9                  5                  4                    3.4                    4.5           3.89               11.1
+#> # A tibble: 1 x 23
+#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~ player_2_matche~ matches_3_2 match_3_1 match_3_0 match_0_3 match_1_3 match_2_3 avg_match_time games_played player_1_games_~
+#>           <int> <chr>            <int> <chr>             <int>            <int>            <int>       <int>     <int>     <int>     <int>     <int>     <int>          <dbl>        <int>            <int>
+#> 1             5 Paul Co~             6 Diego E~              2                1                1           0         1         0         0         0         1             98            9                5
+#> # ... with 7 more variables: player_2_games_won <int>, player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>, avg_point_diff <dbl>, player_1_tiebreak_wins <int>, player_2_tiebreak_wins <int>,
+#> #   pct_games_tiebreak <dbl>
 ```
 
 ## Help
