@@ -208,8 +208,8 @@ and subscribing</a> to SquashInfo to support their work.
 
 ## Author
 
-This package was authored by Hayden MacDonald
-(<hayden.macdonald.8778@gmail.com>).
+This package was authored by Hayden MacDonald. Feel free to email me at
+hayden.macdonald.8778 \[at\] gmail.com.
 
 ## License
 
