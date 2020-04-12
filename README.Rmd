@@ -44,31 +44,21 @@ There are three major families of scraping functions in `squashinformr`:
 
 ## Examples
 
+### `get_player_recent_matches()`
 
+This function returns a player's recent matches.
+
+```{r}
+library(squashinformr)
+library(ggplot2)
+
+## Get Mohamed Elshorbagy's most recent match data
+get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")
+```
 
 ### `get_player_rankings_history()`
 
 This function returns player ranking histories, given their full names or current PSA rankings and competition category.  
-
-Let's contrast the ranking histories of the Mohamed Elshorbagy (Men's Rank 1 in April 2020) and Ali Farag (Men's Rank 2 in April 2020)...
-
-```{r, dpi=300}
-library(squashinformr)
-library(ggplot2)
-
-## Get the rankings history for the top two men's singles players
-top_two <- get_player_rankings_history(player = c("Mohamed Elshorbagy", "Ali Farag"), category = "mens")
-
-## Plot
-ggplot(top_two) +
-   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-   scale_y_reverse() +
-   theme_light() +
-   labs(x = "Date", y = "Rank")
-```
-
-
-Let's contrast the ranking histories of the current top 3 Women's players...
 
 ```{r, dpi=300}
 library(squashinformr)
@@ -83,6 +73,33 @@ ggplot(top_three) +
    theme_light() +
    labs(x = "Date", y = "Rank")
 ```
+
+### `get_tournament_games()`
+
+This function returns a tournament's game results data. 
+
+```{r}
+library(squashinformr)
+library(ggplot2)
+
+## Return game data for 2020's Tournament of Champions.
+get_tournament_games("tournament of champions", year = 2020)
+```
+
+### `get_rankings()`
+
+This function returns data from the most recent PSA rankings tables. 
+
+```{r}
+library(squashinformr)
+library(ggplot2)
+library(dplyr)
+
+## Get the top 5 players in both men's and women's singles competitions
+get_rankings(top = 5, category = "both") %>%
+    arrange(category)
+```
+
 
 
 
