@@ -102,7 +102,7 @@ get_rankings(top = 5, category = "both") %>%
 
 ### `get_matchup()`
 
-This function returns recent matchup data between two players.
+This function returns recent matchup stats between two players.
 
 ```{r}
 library(squashinformr)
@@ -110,7 +110,7 @@ library(dplyr)
 
 ## Get tidy matchup stats for Paul Coll vs Diego Elias
 get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE) %>%
-  select(5:7, 14:20, 23)
+  select(5:7, 14:20, 23) ## shortened output for example
 ```
 
 
