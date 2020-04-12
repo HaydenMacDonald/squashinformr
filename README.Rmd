@@ -8,8 +8,9 @@ output:
 library(knitr)
 
 knitr::opts_chunk$set(
+  warning = FALSE,
   collapse = TRUE,
-  comment = "#",
+  comment = "#>",
   fig.path = "man/figures/",
   out.width = "100%"
 )
@@ -99,7 +100,6 @@ library(dplyr)
 get_rankings(top = 5, category = "both") %>%
     arrange(category)
 ```
-
 
 
 
