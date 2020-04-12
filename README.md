@@ -133,19 +133,19 @@ library(dplyr)
 ## Get the top 5 players in both men's and women's singles competitions
 get_rankings(top = 5, category = "both") %>%
     arrange(category)
-#> # A tibble: 10 x 8
-#>     rank previous_rank name               highest_world_ranking hwr_date   country category highest_ranking
-#>    <int>         <int> <chr>                              <int> <date>     <chr>   <chr>              <int>
-#>  1     1             1 Mohamed Elshorbagy                     1 2014-11-01 EGY     Men's                 NA
-#>  2     2             2 Ali Farag                              1 2019-03-01 EGY     Men's                 NA
-#>  3     3             4 Karim Abdel Gawad                      1 2017-05-01 EGY     Men's                 NA
-#>  4     4             3 Tarek Momen                            3 2019-02-01 EGY     Men's                 NA
-#>  5     5             5 Paul Coll                              5 2019-04-01 NZL     Men's                 NA
-#>  6     1             1 Raneem El Welily                      NA 2015-09-01 EGY     Women's                1
-#>  7     2             2 Nouran Gohar                          NA 2017-01-01 EGY     Women's                2
-#>  8     3             4 Nour El Sherbini                      NA 2016-05-01 EGY     Women's                1
-#>  9     4             3 Camille Serme                         NA 2017-02-01 FRA     Women's                2
-#> 10     5             5 Nour El Tayeb                         NA 2018-02-01 EGY     Women's                3
+#> # A tibble: 10 x 7
+#>     rank previous_rank name               highest_ranking hwr_date   country category
+#>    <int>         <int> <chr>                        <int> <date>     <chr>   <chr>   
+#>  1     1             1 Mohamed Elshorbagy               1 2014-11-01 EGY     Men's   
+#>  2     2             2 Ali Farag                        1 2019-03-01 EGY     Men's   
+#>  3     3             4 Karim Abdel Gawad                1 2017-05-01 EGY     Men's   
+#>  4     4             3 Tarek Momen                      3 2019-02-01 EGY     Men's   
+#>  5     5             5 Paul Coll                        5 2019-04-01 NZL     Men's   
+#>  6     1             1 Raneem El Welily                 1 2015-09-01 EGY     Women's 
+#>  7     2             2 Nouran Gohar                     2 2017-01-01 EGY     Women's 
+#>  8     3             4 Nour El Sherbini                 1 2016-05-01 EGY     Women's 
+#>  9     4             3 Camille Serme                    2 2017-02-01 FRA     Women's 
+#> 10     5             5 Nour El Tayeb                    3 2018-02-01 EGY     Women's
 ```
 
 ## Help
@@ -170,9 +170,12 @@ in an efficient and responsible way, using
 principles</a>. Following `polite` principles incurs mandatory delays on
 the scraping process set by SquashInfo. This prevents the use of this
 package from incurring unnecessary harm to SquashInfo servers via
-overwhelming requests. Therefore, it is important that users of this
-package are patient when scraping and respectful of SquashInfo and the
-work they produce.
+overwhelming requests. Therefore, it is important that users are patient
+when using this package. SquashInfo currently offers full access to
+their data and extra features through a premium membership. Please
+consider
+<a href="http://www.squashinfo.com/upgrade" target="_blank">signing up
+and subscribing</a> to SquashInfo to support their work.
 
 ## Author
 

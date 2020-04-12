@@ -178,9 +178,9 @@ get_rankings <- function(top = NULL, category = NULL) {
                         mutate(category = "Men's",
                                date = ymd(parse_date_time(date, orders = "bY"))) %>%
                         rename(previous_rank = prev,
-                               highest_world_ranking = hwr,
+                               highest_ranking = hwr,
                                hwr_date = date) %>%
-                        select(rank, previous_rank, name, highest_world_ranking, hwr_date, country, category) %>%
+                        select(rank, previous_rank, name, highest_ranking, hwr_date, country, category) %>%
                         as_tibble()
 
 
