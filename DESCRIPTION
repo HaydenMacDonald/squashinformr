@@ -16,18 +16,17 @@ Imports: dplyr (>= 0.8.5),
          rvest (>= 0.3.5),
          xml2 (>= 1.3.0),
          httr (>= 1.4.1),
-         purrr (>= 	0.3.3),
+         purrr (>= 0.3.3),
          polite (>= 0.1.1),
          naniar (>= 0.5.0),
          gtools (>= 3.8.2),
          gsubfn (>= 0.7),
          janitor (>= 2.0.1),
-         Rcpp (>= 1.0.3),
          Hmisc (>= 4.4-0),
          rlang (>= 0.4.5)
-Suggests: testthat,
-         knitr,
-         rmarkdown
+Suggests: testthat, 
+          knitr,
+          rmarkdown
 License: MIT License + file LICENSE
 Encoding: UTF-8
 LazyData: true
