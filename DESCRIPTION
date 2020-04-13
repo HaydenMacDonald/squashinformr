@@ -25,10 +25,10 @@ Imports: magrittr,
          janitor,
          Rcpp (>= 1.0.3),
          Hmisc,
-         rlang
-Suggests: testthat,
-          knitr,
-          rmarkdown
+         rlang, 
+         testthat,
+         knitr,
+         rmarkdown
 License: MIT License + file LICENSE
 Encoding: UTF-8
 LazyData: true
