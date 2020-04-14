@@ -1,10 +1,11 @@
 Package: squashinformr
-Type: Package
 Title: Politely Web Scrape Data from SquashInfo in R
 Version: 0.1.0
+Authors@R: c(person("Hayden", "MacDonald", role = c("aut", "cre"),
+                     email = "hayden.macdonald.8778@gmail.com"))
 Author: Hayden MacDonald [aut, cre]
 Maintainer: Hayden MacDonald <hayden.macdonald.8778@gmail.com>
-Description: Access data from the Professional Squash Association's World Tour and other squash tournaments via SquashInfo. The functions within this package
+Description: Access data from the Professional Squash Association's World Tour and other squash events via SquashInfo <http://www.squashinfo.com/>. The functions within this package
     scrape, parse, and clean data associated with players, tournaments, and rankings data.
 Depends: R (>= 3.4.0)
 Imports: dplyr (>= 0.8.5),
