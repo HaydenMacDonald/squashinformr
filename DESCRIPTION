@@ -5,8 +5,7 @@ Authors@R: c(person("Hayden", "MacDonald", role = c("aut", "cre"),
                      email = "hayden.macdonald.8778@gmail.com"))
 Author: Hayden MacDonald [aut, cre]
 Maintainer: Hayden MacDonald <hayden.macdonald.8778@gmail.com>
-Description: Access data from the Professional Squash Association's World Tour and other squash events via SquashInfo <http://www.squashinfo.com/>. The functions within this package
-    scrape, parse, and clean data associated with players, tournaments, and rankings data.
+Description: Scrape SquashInfo <http://www.squashinfo.com/> for data on the Professional Squash Association World Tour and other squash events. 'squashinformr' functions scrape, parse, and clean data associated with players, tournaments, and rankings.
 Depends: R (>= 3.4.0)
 Imports: dplyr (>= 0.8.5),
          plyr (>= 1.8.6),

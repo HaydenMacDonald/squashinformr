@@ -9,11 +9,11 @@ status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/b
 
 ## Overview
 
-**squashinformr** allows users to access data from the Professional
-Squash Association’s World Tour and other squash tournaments via
-<a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a>. The
-functions within this package scrape, parse, and clean data associated
-with players, tournaments, and rankings.
+**squashinformr** allows users to easily scrape
+<a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a> for
+data on the Professional Squash Association World Tour and other squash
+tournaments. The functions within this package scrape, parse, and clean
+data associated with players, tournaments, and rankings.
 
 ## Installation
 
@@ -107,19 +107,19 @@ get_tournament_games("tournament of champions", year = 2020)
 #> Scraping http://www.squashinfo.com/events/8367-mens-tournament-of-champions-2020
 #> Scraping http://www.squashinfo.com/events/8368-womens-tournament-of-champions-2020
 #> # A tibble: 388 x 15
-#>    tournament_name category tournament_date round match  game player_1 player_2 game_winner player_1_score player_2_score player_1_seed player_2_seed
-#>    <chr>           <chr>    <date>          <ord> <int> <int> <chr>    <chr>    <chr>                <dbl>          <dbl>         <dbl>         <dbl>
-#>  1 JP Morgan Tour~ Men's    2020-01-17      F        64     4 Mohamed~ Tarek M~ Mohamed El~             11              5             2             4
-#>  2 JP Morgan Tour~ Men's    2020-01-17      F        64     3 Mohamed~ Tarek M~ Mohamed El~             11              7             2             4
-#>  3 JP Morgan Tour~ Men's    2020-01-17      F        64     2 Mohamed~ Tarek M~ Mohamed El~             11              7             2             4
-#>  4 JP Morgan Tour~ Men's    2020-01-17      F        64     1 Mohamed~ Tarek M~ Tarek Momen              9             11             2             4
-#>  5 JP Morgan Tour~ Women's  2020-01-17      F        62     3 Camille~ Nour El~ Camille Se~             11              7             5             2
-#>  6 JP Morgan Tour~ Women's  2020-01-17      F        62     2 Camille~ Nour El~ Camille Se~             11              6             5             2
-#>  7 JP Morgan Tour~ Women's  2020-01-17      F        62     1 Camille~ Nour El~ Camille Se~             11              8             5             2
-#>  8 JP Morgan Tour~ Men's    2020-01-17      SF       63     5 Tarek M~ Ali Far~ Tarek Momen             11              7             4             1
-#>  9 JP Morgan Tour~ Men's    2020-01-17      SF       63     4 Tarek M~ Ali Far~ Ali Farag                8             11             4             1
-#> 10 JP Morgan Tour~ Men's    2020-01-17      SF       63     3 Tarek M~ Ali Far~ Ali Farag                7             11             4             1
-#> # ... with 378 more rows, and 2 more variables: player_1_nationality <chr>, player_2_nationality <chr>
+#>    tournament_name            category tournament_date round match  game player_1       player_2      game_winner    player_1_score player_2_score player_1_seed player_2_seed player_1_national~ player_2_national~
+#>    <chr>                      <chr>    <date>          <ord> <int> <int> <chr>          <chr>         <chr>                   <dbl>          <dbl>         <dbl>         <dbl> <chr>              <chr>             
+#>  1 JP Morgan Tournament of C~ Men's    2020-01-17      F        64     4 Mohamed Elsho~ Tarek Momen   Mohamed Elsho~             11              5             2             4 EGY                EGY               
+#>  2 JP Morgan Tournament of C~ Men's    2020-01-17      F        64     3 Mohamed Elsho~ Tarek Momen   Mohamed Elsho~             11              7             2             4 EGY                EGY               
+#>  3 JP Morgan Tournament of C~ Men's    2020-01-17      F        64     2 Mohamed Elsho~ Tarek Momen   Mohamed Elsho~             11              7             2             4 EGY                EGY               
+#>  4 JP Morgan Tournament of C~ Men's    2020-01-17      F        64     1 Mohamed Elsho~ Tarek Momen   Tarek Momen                 9             11             2             4 EGY                EGY               
+#>  5 JP Morgan Tournament of C~ Women's  2020-01-17      F        62     3 Camille Serme  Nour El Sher~ Camille Serme              11              7             5             2 FRA                EGY               
+#>  6 JP Morgan Tournament of C~ Women's  2020-01-17      F        62     2 Camille Serme  Nour El Sher~ Camille Serme              11              6             5             2 FRA                EGY               
+#>  7 JP Morgan Tournament of C~ Women's  2020-01-17      F        62     1 Camille Serme  Nour El Sher~ Camille Serme              11              8             5             2 FRA                EGY               
+#>  8 JP Morgan Tournament of C~ Men's    2020-01-17      SF       63     5 Tarek Momen    Ali Farag     Tarek Momen                11              7             4             1 EGY                EGY               
+#>  9 JP Morgan Tournament of C~ Men's    2020-01-17      SF       63     4 Tarek Momen    Ali Farag     Ali Farag                   8             11             4             1 EGY                EGY               
+#> 10 JP Morgan Tournament of C~ Men's    2020-01-17      SF       63     3 Tarek Momen    Ali Farag     Ali Farag                   7             11             4             1 EGY                EGY               
+#> # ... with 378 more rows
 ```
 
 ### `get_rankings()`
@@ -129,6 +129,14 @@ This function returns data from the most recent PSA rankings tables.
 ``` r
 library(squashinformr)
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 
 ## Get the top 5 players in both men's and women's singles competitions
 get_rankings(top = 5, category = "both") %>%
@@ -168,11 +176,10 @@ get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 #> Scraping Paul Coll's profile
 #> Scraping Diego Elias's profile
 #> # A tibble: 1 x 23
-#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~ player_2_matche~ matches_3_2 match_3_1 match_3_0 match_0_3 match_1_3
-#>           <int> <chr>            <int> <chr>             <int>            <int>            <int>       <int>     <int>     <int>     <int>     <int>
-#> 1             5 Paul Co~             6 Diego E~              2                1                1           0         1         0         0         0
-#> # ... with 11 more variables: match_2_3 <int>, avg_match_time <dbl>, games_played <int>, player_1_games_won <int>, player_2_games_won <int>,
-#> #   player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>, avg_point_diff <dbl>, player_1_tiebreak_wins <int>, player_2_tiebreak_wins <int>,
+#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~ player_2_matche~ matches_3_2 match_3_1 match_3_0 match_0_3 match_1_3 match_2_3 avg_match_time games_played player_1_games_~
+#>           <int> <chr>            <int> <chr>             <int>            <int>            <int>       <int>     <int>     <int>     <int>     <int>     <int>          <dbl>        <int>            <int>
+#> 1             5 Paul Co~             6 Diego E~              2                1                1           0         1         0         0         0         1             98            9                5
+#> # ... with 7 more variables: player_2_games_won <int>, player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>, avg_point_diff <dbl>, player_1_tiebreak_wins <int>, player_2_tiebreak_wins <int>,
 #> #   pct_games_tiebreak <dbl>
 ```
 

@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 
 ## Overview
 
-**squashinformr** allows users to access data from the Professional Squash Association's World Tour and other squash tournaments via <a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a>. The functions within this package scrape, parse, and clean data associated with players, tournaments, and rankings.
+**squashinformr** allows users to easily scrape <a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a> for data on the Professional Squash Association World Tour and other squash tournaments. The functions within this package scrape, parse, and clean data associated with players, tournaments, and rankings.
 
 ## Installation
 
