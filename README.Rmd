@@ -30,8 +30,8 @@ knitr::opts_chunk$set(
 
 Install the development version of `squashinformr` from this GitHub repository via:
 
-```{r, eval=FALSE}
-if (!requireNamespace("remotes")) install.packages("remotes")
+```{r, include=FALSE, message=FALSE, warning=FALSE}
+if (!require("remotes")) install.packages("remotes")
 
 remotes::install_github("HaydenMacDonald/squashinformr")
 ```
