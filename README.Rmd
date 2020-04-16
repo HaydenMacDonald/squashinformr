@@ -72,7 +72,7 @@ ggplot(top_three) +
    geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
    scale_y_reverse() +
    theme_light() +
-   labs(x = "Date", y = "Rank")
+   labs(x = "Date", y = "Rank", colour = "Player")
 ```
 
 ### `get_tournament_games()`
