@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![R build status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
+[![test-coverage](https://github.com/HaydenMacDonald/squashinformr/workflows/test-coverage/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
 <!-- badges: end -->
 
 ## Overview
