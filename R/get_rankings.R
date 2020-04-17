@@ -12,14 +12,14 @@
 #'
 #' @examples
 #'
-#' ## Get the top 25 ranked men's singles players
-#' get_rankings(top = 25, category = "mens")
+#' ## Get the top 10 ranked men's singles players
+#' get_rankings(top = 10, category = "mens")
 #'
-#' ## Get the top 100 ranked women's singles players
-#' get_rankings(top = 100, category = "womens")
+#' ## Get the top 10 ranked women's singles players
+#' get_rankings(top = 20, category = "womens")
 #'
-#' ## Get the top 50 players in both men's and women's singles competitions
-#' get_rankings(top = 50, category = "both")
+#' ## Get the top 20 players in both men's and women's singles competitions
+#' get_rankings(top = 20, category = "both")
 #'
 #' @note This function only returns the most recent PSA rankings table for Men's and Women's singles competitions.
 #'

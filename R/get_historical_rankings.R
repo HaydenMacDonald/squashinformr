@@ -14,9 +14,6 @@
 #'
 #' @examples
 #'
-#' ## Who were the top 20 ranked men's singles players in December 2015?
-#' \donttest{top20 <- get_historical_rankings(2015, "Dec", "mens", 20)}
-#'
 #' ## Who were the top 50 ranked women's singles players in January 2018?
 #' \donttest{top50 <- get_historical_rankings(2018, "Jan", "womens", 50)}
 #'

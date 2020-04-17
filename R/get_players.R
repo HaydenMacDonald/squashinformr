@@ -16,7 +16,7 @@
 #' get_players(top = 25, category = "womens")
 #'
 #' ## Return the 5th ranked player from both Men's and Women's PSA rankings
-#' get_players(rank = 5)
+#' get_players(rank = 5, category = "both")
 #'
 #' @note This function only returns players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
 #'
@@ -48,9 +48,9 @@
 #'
 #' @export
 
-get_players <- function(top = NULL, rank = NULL, category = "both") {
+get_players <- function(top = NULL, rank = NULL, category = NULL) {
 
-  stopifnot(is.numeric(top) | is.null(top), is.character(category), is.numeric(rank) | is.null(rank), length(rank) == 1 | is.null(rank))
+  stopifnot(is.numeric(top) | is.null(top), is.character(category) | is.null(category), is.numeric(rank) | is.null(rank), length(rank) == 1 | is.null(rank))
 
   if (sum(is.null(top), is.null(rank)) != 1) {
 

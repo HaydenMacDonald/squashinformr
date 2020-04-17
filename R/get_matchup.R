@@ -23,9 +23,6 @@
 #' ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
 #' get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens")
 #'
-#' ## Get tidy matchup data for Paul Coll vs Diego Elias
-#' get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
-#'
 #'
 #' @note This function only returns data from players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
 #'
