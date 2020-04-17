@@ -15,7 +15,7 @@
 #' get_tournament_matches("tournament of champions", year = 2019)
 #'
 #' ## Return match data for all PSA World Tour tournaments in 2019
-#' get_tournament_matches(year = 2019, world_tour = TRUE)
+#' \donttest{get_tournament_matches(year = 2019, world_tour = TRUE)}
 #'
 #'
 #'

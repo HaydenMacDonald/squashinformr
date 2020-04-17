@@ -27,10 +27,7 @@ This function only returns game data from tournaments in 2019 and 2020, as any o
 get_tournament_games("tournament of champions", year = 2019)
 
 ## Return game data for all PSA World Tour tournaments in 2019
-get_tournament_games(year = 2019)
-
-## Return game data for ALL tournaments in 2020
-get_tournament_games(year = 2020, world_tour = FALSE)
+\donttest{get_tournament_games(year = 2019, world_tour = TRUE)}
 
 
 }

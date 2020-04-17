@@ -27,10 +27,8 @@ This function only returns player registrant data from tournaments in 2019 and 2
 get_tournament_players(tournament = "tournament of champions", year = 2019)
 
 ## Return player registrant data for all PSA World Tour tournaments in 2019
-get_tournament_players(year = 2019)
+\donttest{get_tournament_players(year = 2019, world_tour = TRUE)}
 
-## Return player registrant data for ALL tournaments in 2020
-get_tournament_players(year = 2020, world_tour = FALSE)
 
 
 }

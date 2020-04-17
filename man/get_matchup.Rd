@@ -34,9 +34,6 @@ get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = 
 ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
 get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens")
 
-## Get tidy matchup data for Paul Coll vs Diego Elias
-get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
-
 
 }
 \references{

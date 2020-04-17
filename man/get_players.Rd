@@ -4,7 +4,7 @@
 \alias{get_players}
 \title{Get PSA Squash Player Data from SquashInfo}
 \usage{
-get_players(top = NULL, rank = NULL, category = "both")
+get_players(top = NULL, rank = NULL, category = NULL)
 }
 \arguments{
 \item{top}{integer indicating the number of top PSA players by rank to return.}
@@ -27,7 +27,7 @@ This function only returns players ranked in the most recent PSA rankings table 
 get_players(top = 25, category = "womens")
 
 ## Return the 5th ranked player from both Men's and Women's PSA rankings
-get_players(rank = 5)
+get_players(rank = 5, category = "both")
 
 }
 \references{
