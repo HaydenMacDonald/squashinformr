@@ -31,14 +31,14 @@ test_that("test get_matchup for proper outputs", {
   expect_is(df, "tbl")
   expect_equal(nrow(df), 23)
 
-  df2 <- get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = TRUE)
-  expect_is(df2, "data.frame")
-  expect_is(df2, "tbl")
-  expect_equal(nrow(df2), 1)
+  df <- get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = TRUE)
+  expect_is(df, "data.frame")
+  expect_is(df, "tbl")
+  expect_equal(nrow(df), 1)
 
-  df2 <- get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = FALSE)
-  expect_is(df2, "data.frame")
-  expect_is(df2, "tbl")
-  expect_equal(nrow(df2), 23)
+  df <- get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = FALSE)
+  expect_is(df, "data.frame")
+  expect_is(df, "tbl")
+  expect_equal(nrow(df), 23)
 
 })
