@@ -12,6 +12,8 @@ test_that("test get_tournament_matches for wrong input errors", {
   expect_error(get_tournament_matches("Tournament of Champions", year = 2020, world_tour = "TRUE"))
   expect_error(get_tournament_matches("Premier League", year = 2020, world_tour = TRUE))
   expect_error(get_tournament_matches("Tournament of Champions", year = 2018, world_tour = TRUE))
+  expect_error(get_tournament_matches(year = 20, world_tour = TRUE))
+  expect_error(get_tournament_matches(year = -2020, world_tour = TRUE))
 
 })
 

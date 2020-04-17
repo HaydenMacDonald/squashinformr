@@ -24,9 +24,14 @@ test_that("test get_rankings for proper outputs", {
   expect_is(df, "tbl")
   expect_equal(nrow(df), 5)
 
-  df <- get_rankings(top = 5, category = "mens")
+  df <- get_rankings(top = 5, category = "womens")
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_equal(nrow(df), 5)
+
+  df <- get_rankings(top = 5, category = "both")
+  expect_is(df, "data.frame")
+  expect_is(df, "tbl")
+  expect_equal(nrow(df), 10)
 
 })

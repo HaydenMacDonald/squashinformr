@@ -52,7 +52,7 @@
 
 get_tournaments <- function(year = 2020, world_tour = TRUE) {
 
-  stopifnot(is.numeric(year) | is.null(year), is.logical(world_tour))
+  stopifnot(is.numeric(year) | is.null(year), (nchar(trunc(abs(year))) == 4 & year > 0) | is.null(year), is.logical(world_tour))
 
   # Results page on SquashInfo
   t_url <- "http://www.squashinfo.com/results?start=1"

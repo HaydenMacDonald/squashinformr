@@ -63,7 +63,7 @@ get_tournament_games <- function(tournament = NULL, year = 2020, world_tour = TR
 
   ## Input errors
 
-  stopifnot(is.character(tournament) | is.null(tournament), is.numeric(year) | is.null(year), is.logical(world_tour))
+  stopifnot(is.character(tournament) | is.null(tournament), is.numeric(year) | is.null(year), is.logical(world_tour), (nchar(trunc(abs(year))) == 4 & year > 0) | is.null(year))
 
   if (!is.null(tournament)) {
 
