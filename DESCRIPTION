@@ -23,7 +23,8 @@ Imports: dplyr (>= 0.8.5),
          janitor (>= 2.0.1),
          Hmisc (>= 4.4-0),
          rlang (>= 0.4.5)
-Suggests: testthat, 
+Suggests: testthat,
+          covr,
           knitr,
           rmarkdown
 License: MIT + file LICENSE
