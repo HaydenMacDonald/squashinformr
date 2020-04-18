@@ -9,7 +9,7 @@ get_tournament_matches(tournament = NULL, year = 2020, world_tour = TRUE)
 \arguments{
 \item{tournament}{character string of name of the tournament. Partial tournament names are matched via regular expressions.}
 
-\item{year}{integer indicating year of competition. Must be 2019 or 2020.}
+\item{year}{integer indicating year of competition. Must be 2019, 2020, or NULL if querying results for both years.}
 
 \item{world_tour}{logical indicating whether to only return PSA World Tour tournaments.}
 }

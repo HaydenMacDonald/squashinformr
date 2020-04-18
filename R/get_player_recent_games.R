@@ -5,7 +5,7 @@
 #'
 #' @param player character string of player name.
 #'
-#' @param rank integer indicating the rank of the PSA player to return.
+#' @param rank single integer or vector of integers indicating the rank of the PSA player(s) to return.
 #'
 #' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
 #'
@@ -20,8 +20,8 @@
 #' ## Get Nour El Tayeb's recent game data
 #' get_player_recent_games("El Tayeb", category = "womens")
 #'
-#' ## Get recent game data from the top players in both Men's and Women's competitions
-#' get_player_recent_games(rank = 1, category = "both")
+#' ## Get recent game data from the top two players in both Men's and Women's competitions
+#' get_player_recent_games(rank = 1:2, category = "both")
 #'
 #' @note This function only returns data from players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
 #'
@@ -71,9 +71,28 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
   }
 
-  if ((length(rank) != 1 & is.null(player)) | (length(player) != 1 & is.null(rank))) {
+  if (length(player) != 1 & is.null(rank)) {
 
-    stop("A single rank or player's full name is required")
+    stop("A single player's full name is required")
+
+  }
+
+
+  if (length(rank) != 1 & is.numeric(rank) & is.null(player) == FALSE) {
+
+    stop("Do not provide player names when supplying multiple ranks")
+
+  }
+
+
+  ## If querying both competition categories, only accept ranks
+  if (category == "both") {
+
+    if (is.null(player) == FALSE | is.null(rank) == TRUE) {
+
+      stop("When scraping across competition categories, only provide ranks")
+
+    }
 
   }
 
@@ -139,7 +158,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
     } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
 
-      while(rank %nin% mens_ranking_table$Rank) {
+      while(tail(rank, n = 1) %nin% mens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -246,7 +265,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
     } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
 
-      while(rank %nin% womens_ranking_table$Rank) {
+      while(tail(rank, n = 1) %nin% womens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -310,50 +329,9 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     ## Rankings table url
     rankings_url <- "http://www.squashinfo.com/rankings/men/1"
 
-    if (is.null(player) == FALSE & is.null(rank) == TRUE) {
+    if (is.null(player) == TRUE & is.null(rank) == FALSE) {
 
-      while(TRUE %nin% str_detect(mens_ranking_table$Name, player)) {
-
-        ## Verbose
-        message("Scraping ", rankings_url)
-
-        ## Scrape table for player rank and name
-        current_page <- suppressMessages(bow(rankings_url)) %>%
-                                          scrape()
-
-        results <- current_page %>%
-                      html_nodes("table") %>%
-                      html_table() %>%
-                      as.data.frame() %>%
-                      select(Rank, Name)
-
-        ## Scrape table for player profile hrefs
-        profile_slugs <- current_page %>%
-                            html_nodes(xpath = "//td/a") %>%
-                            html_attr("href")
-
-        ## Combine player rank, name, and profile slug
-        results <- cbind(results, profile_slugs) %>%
-                                          as.data.frame()
-
-        ## Store data in mens_ranking_table
-        mens_ranking_table <- rbind(mens_ranking_table, results)
-
-        # Find url in "Next" button
-        rankings_url <- current_page %>%
-                                html_nodes("a")
-
-        rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                                html_attr("href")
-
-        ## Replace t_url with url in Next page button
-        rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
-
-      }
-
-    } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
-
-      while(rank %nin% mens_ranking_table$Rank) {
+      while(tail(rank, n = 1) %nin% mens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -411,50 +389,9 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     ## Rankings table url
     rankings_url <- "http://www.squashinfo.com/rankings/women/1"
 
-    if (is.null(player) == FALSE & is.null(rank) == TRUE) {
+    if (is.null(player) == TRUE & is.null(rank) == FALSE) {
 
-      while(TRUE %nin% str_detect(womens_ranking_table$Name, player)) {
-
-        ## Verbose
-        message("Scraping ", rankings_url)
-
-        ## Scrape table for player rank and name
-        current_page <- suppressMessages(bow(rankings_url)) %>%
-                                          scrape()
-
-        results <- current_page %>%
-                      html_nodes("table") %>%
-                      html_table() %>%
-                      as.data.frame() %>%
-                      select(Rank, Name)
-
-        ## Scrape table for player profile hrefs
-        profile_slugs <- current_page %>%
-                            html_nodes(xpath = "//td/a") %>%
-                            html_attr("href")
-
-        ## Combine player rank, name, and profile slug
-        results <- cbind(results, profile_slugs) %>%
-                                        as.data.frame()
-
-        ## Store data in mens_ranking_table
-        womens_ranking_table <- rbind(womens_ranking_table, results)
-
-        # Find url in "Next" button
-        rankings_url <- current_page %>%
-                                html_nodes("a")
-
-        rankings_url <- suppressWarnings(rankings_url[str_detect(rankings_url, "Next")]) %>%
-                                html_attr("href")
-
-        ## Replace t_url with url in Next page button
-        rankings_url <- sprintf("http://www.squashinfo.com%s", rankings_url)
-
-      }
-
-    } else if (is.null(player) == TRUE & is.null(rank) == FALSE) {
-
-      while(rank %nin% womens_ranking_table$Rank) {
+      while(tail(rank, n = 1) %nin% womens_ranking_table$Rank) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -603,8 +540,6 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
       womens_recent_matches <- rbind(womens_recent_matches, recent_result)
 
     }
-
-
 
 
   } else { ## If there are 0 women's profile slugs

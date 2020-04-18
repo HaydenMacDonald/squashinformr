@@ -53,7 +53,7 @@
 
 get_player_rankings_history <- function(player = NULL, rank = NULL, category = NULL) {
 
-  stopifnot(is.character(player) | is.null(player), nchar(player) > 0, is.numeric(rank) | is.null(rank), is.character(category))
+  stopifnot(is.character(player) | is.null(player), nchar(player) > 0, is.numeric(rank) | is.null(rank), is.character(category) | is.null(category))
 
   if (is.null(player) == TRUE & is.null(rank) == TRUE) {
 
@@ -171,7 +171,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
 
 
-  } else if (category == "both" | is.null(category) == TRUE) {
+  } else if (category == "both") {
 
     # Men profile slugs
 

@@ -29,4 +29,18 @@ test_that("test get_tournament_matches for proper outputs", {
   expect_is(sample(df$tournament_date, 1), "Date")
   expect_equal(year(sample(df$tournament_date, 1)), 2020)
 
+  df <- get_tournament_matches("Tournament of Champions", year = NULL, world_tour = TRUE)
+  expect_is(df, "data.frame")
+  expect_is(df, "tbl")
+  expect_equal(length(unique(df$category)), 2)
+  expect_is(sample(df$tournament_date, 1), "Date")
+  expect_equal(year(sample(df$tournament_date, 1)), 2020)
+
+  df <- get_tournament_matches(tournament = NULL, year = 2020, world_tour = TRUE)
+  expect_is(df, "data.frame")
+  expect_is(df, "tbl")
+  expect_equal(length(unique(df$category)), 2)
+  expect_is(sample(df$tournament_date, 1), "Date")
+  expect_equal(year(sample(df$tournament_date, 1)), 2020)
+
 })

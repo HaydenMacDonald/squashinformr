@@ -4,7 +4,13 @@
 \alias{get_matchup}
 \title{Get a player matchup data from SquashInfo}
 \usage{
-get_matchup(player_1, player_2, ranks = NULL, category = NULL, tidy = FALSE)
+get_matchup(
+  player_1 = NULL,
+  player_2 = NULL,
+  ranks = NULL,
+  category = NULL,
+  tidy = FALSE
+)
 }
 \arguments{
 \item{player_1}{character string of the first player's name.}
@@ -13,7 +19,7 @@ get_matchup(player_1, player_2, ranks = NULL, category = NULL, tidy = FALSE)
 
 \item{ranks}{integers indicating the rank of the PSA players to return.}
 
-\item{category}{character string indicating the competition category. Must be one of "mens", or "womens".}
+\item{category}{character string indicating the competition category. Must be one of "mens" or "womens".}
 
 \item{tidy}{logical indicating whether to organize results according to tidy principles.}
 }

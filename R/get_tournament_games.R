@@ -4,7 +4,7 @@
 #'
 #' @param tournament character string of name of the tournament. Partial tournament names are matched via regular expressions.
 #'
-#' @param year integer indicating year of competition. Must be 2019 or 2020.
+#' @param year integer indicating year of competition. Must be 2019, 2020, or NULL if querying results for both years.
 #'
 #' @param world_tour logical indicating whether to only return PSA World Tour tournaments.
 #'
@@ -63,8 +63,9 @@ get_tournament_games <- function(tournament = NULL, year = 2020, world_tour = TR
 
   ## Input errors
 
-  stopifnot(is.character(tournament) | is.null(tournament), is.numeric(year) | is.null(year), is.logical(world_tour), (nchar(trunc(abs(year))) == 4 & year > 0) | is.null(year))
+  stopifnot(is.character(tournament) | is.null(tournament), is.numeric(year) | is.null(year), is.logical(world_tour))
 
+  ## Stop if querying "Premier League"
   if (!is.null(tournament)) {
 
     if (str_detect(tournament, pattern = regex("Premier League", ignore_case = TRUE)) == TRUE) {
@@ -75,13 +76,19 @@ get_tournament_games <- function(tournament = NULL, year = 2020, world_tour = TR
 
   }
 
+
+  ## Stop if year does not meet following requirements
   if (is.null(year) == FALSE) {
 
+    ## Stop if year is not 2019 or 2020
     if(year != 2019 & year != 2020) {
 
       stop("Year must be either 2019 or 2020")
 
     }
+
+    ## Test year for length of four digits and non-negativity
+    stopifnot((nchar(trunc(abs(year))) == 4 & year > 0))
 
   }
 
