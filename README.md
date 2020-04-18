@@ -133,6 +133,9 @@ library(squashinformr)
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
+#> The following object is masked from 'package:testthat':
+#> 
+#>     matches
 #> The following objects are masked from 'package:stats':
 #> 
 #>     filter, lag
