@@ -31,7 +31,7 @@ get_player_recent_games(player = "Mohamed Elshorbagy", category = "mens")
 get_player_recent_games("El Tayeb", category = "womens")
 
 ## Get recent game data from the top two players in both Men's and Women's competitions
-get_player_recent_games(rank = 1:2, category = "both")
+\donttest{get_player_recent_games(rank = 1:2, category = "both")}
 
 }
 \references{
