@@ -57,6 +57,7 @@
 #' @importFrom janitor clean_names
 #' @importFrom tibble as_tibble
 #' @importFrom Hmisc %nin%
+#' @importFrom utils tail
 #'
 #' @export
 
