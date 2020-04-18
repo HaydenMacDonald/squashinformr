@@ -98,8 +98,8 @@ get_tournaments <- function(year = 2020, world_tour = TRUE) {
     ## Bind results row-wise
     tournaments <- rbind(tournaments, results)
 
-    ## If results begin to include 2018 tournaments, break while loop, otherwise continue to next page
-    if (2018 %in% year(tournaments$date)) {
+    ## If results begin to include previous year tournaments, break while loop, otherwise continue to next page
+    if ((year - 1) %in% year(tournaments$date)) {
 
       results_limit <- NA_character_
 
