@@ -14,7 +14,7 @@
 #' get_tournaments()
 #'
 #' ## Get data on 2019 non-PSA World Tour tournaments
-#' get_tournaments(2019, world_tour = FALSE)
+#' \donttest{get_tournaments(2019, world_tour = FALSE)}
 #'
 #' @note This function only returns tournaments from 2019 and 2020, as any other data are not available to non-premium members on SquashInfo.
 #'

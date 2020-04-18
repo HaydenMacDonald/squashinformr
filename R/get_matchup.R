@@ -17,11 +17,11 @@
 #'
 #' @examples
 #'
-#' ## Get non-tidy matchup data for Mohamed Elshorbagy vs Ali Farag
-#' get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = "mens")
+#' ## Get tidy matchup data for Mohamed Elshorbagy vs Ali Farag
+#' get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = "mens", tidy = TRUE)
 #'
 #' ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
-#' get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens")
+#' \donttest{get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = FALSE)}
 #'
 #'
 #' @note This function only returns data from players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.

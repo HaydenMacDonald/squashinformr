@@ -11,8 +11,8 @@
 #' @return Tibble containing the tournament name, competition category, tournament date, round, match number, game number, player 1, player 2, the game winner, player 1's score, player 2's score, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return game data for 2019's Tournament of Champions.
-#' get_tournament_games("tournament of champions", year = 2019)
+#' ## Return game data for 2020's Tournament of Champions.
+#' get_tournament_games("tournament of champions", year = 2020)
 #'
 #' ## Return game data for all PSA World Tour tournaments in 2019
 #' \donttest{get_tournament_games(year = 2019, world_tour = TRUE)}

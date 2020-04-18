@@ -17,7 +17,7 @@
 #' top_two <- get_player_rankings_history(rank = 1:2, category = "mens")
 #'
 #' ## Get the rankings history for the top three women's singles players
-#' top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
+#' \donttest{top_three <- get_player_rankings_history(rank = 1:3, category = "womens")}
 #'
 #'
 #'
