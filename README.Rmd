@@ -74,8 +74,7 @@ get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")
 
 This function returns player ranking histories, given their full names or current PSA ranks and competition category.  
 
-```{r, dpi=300}
-library(squashinformr)
+```{r, dpi=300, message=FALSE, warning=FALSE}
 library(ggplot2)
 
 ## Get the rankings history for the top three women's singles players
@@ -93,8 +92,6 @@ ggplot(top_three) +
 This function returns a tournament's game results data. 
 
 ```{r}
-library(squashinformr)
-
 ## Return game data for 2020's Tournament of Champions.
 get_tournament_games("tournament of champions", year = 2020)
 ```
@@ -103,8 +100,7 @@ get_tournament_games("tournament of champions", year = 2020)
 
 This function returns data from the most recent PSA rankings tables. 
 
-```{r}
-library(squashinformr)
+```{r, message=FALSE, warning=FALSE}
 library(dplyr)
 
 ## Get the top 5 players in both men's and women's singles competitions
@@ -117,9 +113,6 @@ get_rankings(top = 5, category = "both") %>%
 This function returns recent head-to-head matchup stats between two players. Stats returned include each player's rank, name, total matches played, number of matches won, the match results spread (relative to player 1), the average match time, the number of games played, the number of games won, average point advantage in a won game, the average point difference in final scores, the number of tie-break wins, and the percentage of games that go to a tie-breaker.
 
 ```{r, message=FALSE, warning=FALSE}
-library(squashinformr)
-library(dplyr)
-
 ## Get tidy matchup stats for Paul Coll vs Diego Elias
 get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 ```
