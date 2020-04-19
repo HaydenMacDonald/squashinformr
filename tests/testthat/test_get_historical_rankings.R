@@ -26,10 +26,10 @@ test_that("test get_historical_rankings for wrong input errors", {
 
 ## Currently commented out because they take forever to run
 
-#test_that("test get_historical_rankings for proper outputs", {
+test_that("test get_historical_rankings for proper outputs", {
 
-  #testthat::skip_if_offline()
-  #testthat::skip_on_cran()
+  testthat::skip_if_offline()
+  testthat::skip_on_cran()
 
   ## category == "mens"
   #df <- get_historical_rankings(year = 2018, month = "Jan", category = "mens", top = 2)
@@ -44,9 +44,9 @@ test_that("test get_historical_rankings for wrong input errors", {
   #expect_equal(nrow(df), 2)
 
   ## category == "both"
-  #df <- get_historical_rankings(year = 2018, month = "Jan", category = "both", top = 2)
-  #expect_is(df, "data.frame")
-  #expect_is(df, "tbl")
-  #expect_equal(nrow(df), 4)
+  df <- get_historical_rankings(year = 2018, month = "Jan", category = "both", top = 2)
+  expect_is(df, "data.frame")
+  expect_is(df, "tbl")
+  expect_equal(nrow(df), 4)
 
-#})
+})
