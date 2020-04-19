@@ -30,6 +30,12 @@ test_that("test get_player_recent_games for wrong input errors", {
   expect_error(get_player_recent_games(player = "", rank = "", category = "mens"))
   expect_error(get_player_recent_games(player = NULL, rank = NULL, category = "mens"))
 
+  ## "Do not provide player names when supplying multiple ranks"
+  expect_error(get_player_recent_games(player = "Mohamed Elshorbagy", rank = 1:2, category = "mens"))
+
+  ## "When scraping across competition categories, only provide ranks"
+  expect_error(get_player_recent_games(player = "Mohamed Elshorbagy", rank = NULL, category = "both"))
+
 })
 
 test_that("test get_player_recent_games for proper outputs", {

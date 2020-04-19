@@ -374,7 +374,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     }
 
     mens_profile_urls <- mens_ranking_table %>%
-                                  filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+                                  filter(Rank %in% rank)
 
     # Women slugs
 
@@ -434,7 +434,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     }
 
     womens_profile_urls <- womens_ranking_table %>%
-                                    filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+                                    filter(Rank %in% rank)
 
   } else {
 

@@ -19,7 +19,10 @@ test_that("test get_player_rankings_history for wrong input errors", {
   expect_error(get_player_rankings_history(rank = "", category = "both"))
 
   ## rank is character, category is not valid
-  expect_error(get_player_rankings_history(rank = "Mohamed Elshorbagy", category = "1"))
+  expect_error(get_player_rankings_history(rank = "Mohamed Elshorbagy", category = "mens"))
+
+  ## category is not valid
+  expect_error(get_player_rankings_history(player = "Mohamed Elshorbagy", category = "1"))
 
   ## player and rank are both provided, but not valid
   expect_error(get_player_rankings_history(player = "", rank = "", category = "mens"))
