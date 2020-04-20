@@ -12,6 +12,8 @@
 #'
 #' @param tidy logical indicating whether to organize results according to tidy principles.
 #'
+#' @param match_spread logical indicating whether to only return match spread statistics.
+#'
 #'
 #' @return Tibble containing each player's rank, name, total matches played, number of matches won, the match results spread (relative to player 1), the average match time, the number of games played, the number of games won, average point advantage in a won game, the average point difference in final scores, the number of tie-break wins, and the percentage of games that go to a tie-breaker.
 #'
@@ -64,7 +66,7 @@
 #'
 #' @export
 
-get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category = NULL, tidy = FALSE) {
+get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category = NULL, tidy = FALSE, match_spread = FALSE) {
 
   ## Input errors
   stopifnot(is.character(player_1) | is.null(player_1), is.character(player_2) | is.null(player_2))
@@ -617,11 +619,11 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
                                   player_1_matches_won = sum(result == "W", na.rm = TRUE), ## Number of matches won
                                   player_2_matches_won = sum(result == "L", na.rm = TRUE),
                                   matches_3_2 = sum(games_won == 3 & games_lost == 2, na.rm = TRUE),
-                                  match_3_1 = sum(games_won == 3 & games_lost == 1, na.rm = TRUE),
-                                  match_3_0 = sum(games_won == 3 & games_lost == 0, na.rm = TRUE),
-                                  match_0_3 = sum(games_won == 0 & games_lost == 3, na.rm = TRUE),  ## Match spread variables relative to player 1
-                                  match_1_3 = sum(games_won == 1 & games_lost == 3, na.rm = TRUE),
-                                  match_2_3 = sum(games_won == 2 & games_lost == 3, na.rm = TRUE),
+                                  matches_3_1 = sum(games_won == 3 & games_lost == 1, na.rm = TRUE),
+                                  matches_3_0 = sum(games_won == 3 & games_lost == 0, na.rm = TRUE),
+                                  matches_0_3 = sum(games_won == 0 & games_lost == 3, na.rm = TRUE),  ## Match spread variables relative to player 1
+                                  matches_1_3 = sum(games_won == 1 & games_lost == 3, na.rm = TRUE),
+                                  matches_2_3 = sum(games_won == 2 & games_lost == 3, na.rm = TRUE),
                                   avg_match_time = mean(match_time, na.rm = TRUE)) ## Average match time
 
 
@@ -641,8 +643,8 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
                                   games_played = n(),  ## Number of games played
                                   player_1_games_won = sum(game_result == "W", na.rm = TRUE),  # Games won
                                   player_2_games_won = sum(game_result == "L", na.rm = TRUE),
-                                  player_1_avg_advantage = mean(player_1_advantage, na.rm = TRUE),  ## Average advantage
-                                  player_2_avg_advantage = mean(player_2_advantage, na.rm = TRUE),
+                                  player_1_avg_advantage = round(mean(player_1_advantage, na.rm = TRUE), 2),  ## Average advantage
+                                  player_2_avg_advantage = round(mean(player_2_advantage, na.rm = TRUE), 2),
                                   avg_point_diff = round(mean(point_diff, na.rm = TRUE), 2),  ## Average point difference in all games
                                   player_1_tiebreak_wins = sum(points_won > 11, na.rm = TRUE), ## Tie-breaker wins
                                   player_2_tiebreak_wins = sum(points_lost > 11, na.rm = TRUE),
@@ -655,6 +657,15 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
                                                  "player_1" = "player_1",
                                                  "player_2_rank" = "player_2_rank",
                                                  "player_2" = "player_2"))
+
+
+  ## If match_spread == TRUE then only return spread statistics
+  if (match_spread == TRUE) {
+
+    matchup <- matchup %>%
+                  select(matches_3_2, matches_3_1, matches_3_0, matches_0_3, matches_1_3, matches_2_3)
+
+  }
 
   ## If tidy == FALSE, then provide matchup stats in long table format
   if (tidy == FALSE) {

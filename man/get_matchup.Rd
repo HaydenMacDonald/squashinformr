@@ -9,7 +9,8 @@ get_matchup(
   player_2 = NULL,
   ranks = NULL,
   category = NULL,
-  tidy = FALSE
+  tidy = FALSE,
+  match_spread = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ get_matchup(
 \item{category}{character string indicating the competition category. Must be one of "mens" or "womens".}
 
 \item{tidy}{logical indicating whether to organize results according to tidy principles.}
+
+\item{match_spread}{logical indicating whether to only return match spread statistics.}
 }
 \value{
 Tibble containing each player's rank, name, total matches played, number of matches won, the match results spread (relative to player 1), the average match time, the number of games played, the number of games won, average point advantage in a won game, the average point difference in final scores, the number of tie-break wins, and the percentage of games that go to a tie-breaker.
