@@ -43,6 +43,9 @@ get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = 
 ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
 \donttest{get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = FALSE)}
 
+## Get tidy match spread data for Paul Coll and Diego Elias
+\donttest{get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE, match_spread = TRUE)}
+
 
 }
 \references{
