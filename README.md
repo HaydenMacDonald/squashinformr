@@ -113,18 +113,18 @@ get_tournament_games("tournament of champions", year = 2020)
 #> Scraping http://www.squashinfo.com/events/8367-mens-tournament-of-champions-2020
 #> Scraping http://www.squashinfo.com/events/8368-womens-tournament-of-champions-2020
 #> # A tibble: 388 x 15
-#>    tournament_name                category tournament_date round match  game player_1         player_2       game_winner      player_1_score player_2_score player_1_seed player_2_seed player_1_nationali~ player_2_nationali~
-#>    <chr>                          <chr>    <date>          <ord> <int> <int> <chr>            <chr>          <chr>                     <dbl>          <dbl>         <dbl>         <dbl> <chr>               <chr>              
-#>  1 JP Morgan Tournament of Champ~ Men's    2020-01-17      F        64     4 Mohamed Elshorb~ Tarek Momen    Mohamed Elshorb~             11              5             2             4 EGY                 EGY                
-#>  2 JP Morgan Tournament of Champ~ Men's    2020-01-17      F        64     3 Mohamed Elshorb~ Tarek Momen    Mohamed Elshorb~             11              7             2             4 EGY                 EGY                
-#>  3 JP Morgan Tournament of Champ~ Men's    2020-01-17      F        64     2 Mohamed Elshorb~ Tarek Momen    Mohamed Elshorb~             11              7             2             4 EGY                 EGY                
-#>  4 JP Morgan Tournament of Champ~ Men's    2020-01-17      F        64     1 Mohamed Elshorb~ Tarek Momen    Tarek Momen                   9             11             2             4 EGY                 EGY                
-#>  5 JP Morgan Tournament of Champ~ Women's  2020-01-17      F        62     3 Camille Serme    Nour El Sherb~ Camille Serme                11              7             5             2 FRA                 EGY                
-#>  6 JP Morgan Tournament of Champ~ Women's  2020-01-17      F        62     2 Camille Serme    Nour El Sherb~ Camille Serme                11              6             5             2 FRA                 EGY                
-#>  7 JP Morgan Tournament of Champ~ Women's  2020-01-17      F        62     1 Camille Serme    Nour El Sherb~ Camille Serme                11              8             5             2 FRA                 EGY                
-#>  8 JP Morgan Tournament of Champ~ Men's    2020-01-17      SF       63     5 Tarek Momen      Ali Farag      Tarek Momen                  11              7             4             1 EGY                 EGY                
-#>  9 JP Morgan Tournament of Champ~ Men's    2020-01-17      SF       63     4 Tarek Momen      Ali Farag      Ali Farag                     8             11             4             1 EGY                 EGY                
-#> 10 JP Morgan Tournament of Champ~ Men's    2020-01-17      SF       63     3 Tarek Momen      Ali Farag      Ali Farag                     7             11             4             1 EGY                 EGY                
+#>    tournament_name   category tournament_date round match  game player_1  player_2 game_winner player_1_score player_2_score player_1_seed player_2_seed player_1_nation~ player_2_nation~
+#>    <chr>             <chr>    <date>          <ord> <int> <int> <chr>     <chr>    <chr>                <dbl>          <dbl>         <dbl>         <dbl> <chr>            <chr>           
+#>  1 JP Morgan Tourna~ Men's    2020-01-17      F        64     4 Mohamed ~ Tarek M~ Mohamed El~             11              5             2             4 EGY              EGY             
+#>  2 JP Morgan Tourna~ Men's    2020-01-17      F        64     3 Mohamed ~ Tarek M~ Mohamed El~             11              7             2             4 EGY              EGY             
+#>  3 JP Morgan Tourna~ Men's    2020-01-17      F        64     2 Mohamed ~ Tarek M~ Mohamed El~             11              7             2             4 EGY              EGY             
+#>  4 JP Morgan Tourna~ Men's    2020-01-17      F        64     1 Mohamed ~ Tarek M~ Tarek Momen              9             11             2             4 EGY              EGY             
+#>  5 JP Morgan Tourna~ Women's  2020-01-17      F        62     3 Camille ~ Nour El~ Camille Se~             11              7             5             2 FRA              EGY             
+#>  6 JP Morgan Tourna~ Women's  2020-01-17      F        62     2 Camille ~ Nour El~ Camille Se~             11              6             5             2 FRA              EGY             
+#>  7 JP Morgan Tourna~ Women's  2020-01-17      F        62     1 Camille ~ Nour El~ Camille Se~             11              8             5             2 FRA              EGY             
+#>  8 JP Morgan Tourna~ Men's    2020-01-17      SF       63     5 Tarek Mo~ Ali Far~ Tarek Momen             11              7             4             1 EGY              EGY             
+#>  9 JP Morgan Tourna~ Men's    2020-01-17      SF       63     4 Tarek Mo~ Ali Far~ Ali Farag                8             11             4             1 EGY              EGY             
+#> 10 JP Morgan Tourna~ Men's    2020-01-17      SF       63     3 Tarek Mo~ Ali Far~ Ali Farag                7             11             4             1 EGY              EGY             
 #> # ... with 378 more rows
 ```
 
@@ -167,10 +167,11 @@ percentage of games that go to a tie-breaker.
 ## Get tidy matchup stats for Paul Coll vs Diego Elias
 get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 #> # A tibble: 1 x 23
-#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~ player_2_matche~ matches_3_2 match_3_1 match_3_0 match_0_3 match_1_3 match_2_3 avg_match_time games_played player_1_games_~ player_2_games_~
-#>           <int> <chr>            <int> <chr>             <int>            <int>            <int>       <int>     <int>     <int>     <int>     <int>     <int>          <dbl>        <int>            <int>            <int>
-#> 1             5 Paul Co~             6 Diego E~              2                1                1           0         1         0         0         0         1             98            9                5                4
-#> # ... with 6 more variables: player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>, avg_point_diff <dbl>, player_1_tiebreak_wins <int>, player_2_tiebreak_wins <int>, pct_games_tiebreak <dbl>
+#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~ player_2_matche~ matches_3_2 matches_3_1 matches_3_0 matches_0_3 matches_1_3 matches_2_3 avg_match_time
+#>           <int> <chr>            <int> <chr>             <int>            <int>            <int>       <int>       <int>       <int>       <int>       <int>       <int>          <dbl>
+#> 1             5 Paul Co~             6 Diego E~              2                1                1           0           1           0           0           0           1             98
+#> # ... with 9 more variables: games_played <int>, player_1_games_won <int>, player_2_games_won <int>, player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>, avg_point_diff <dbl>,
+#> #   player_1_tiebreak_wins <int>, player_2_tiebreak_wins <int>, pct_games_tiebreak <dbl>
 ```
 
 ## Help
@@ -180,7 +181,7 @@ Submit issues here on GitHub.
 If you are interested in extending the functionality of this package,
 fork this repository, make your changes and submit them as a pull
 request. The `squashinformr` project is released with a
-<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/CODE_OF_CONDUCT.md" target="_blank">Contributor
+<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/.github/CODE_OF_CONDUCT.md" target="_blank">Contributor
 Code of Conduct</a>. By contributing to this project, you agree to its
 terms.
 
@@ -209,6 +210,6 @@ hayden.macdonald.8778 \[at\] gmail.com.
 
 ## License
 
-The `squashinformr` package is licensed under the
-<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE" target="_blank">MIT
-LICENSE</a>.
+The `squashinformr` package is released under a
+<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE" target="_blank">GPL-3</a>
+license.

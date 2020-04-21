@@ -123,7 +123,7 @@ get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 
 Submit issues here on GitHub.  
 
-If you are interested in extending the functionality of this package, fork this repository, make your changes and submit them as a pull request. The `squashinformr` project is released with a <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/CODE_OF_CONDUCT.md" target="_blank">Contributor Code of Conduct</a>. By contributing to this project, you agree to its terms.  
+If you are interested in extending the functionality of this package, fork this repository, make your changes and submit them as a pull request. The `squashinformr` project is released with a <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/.github/CODE_OF_CONDUCT.md" target="_blank">Contributor Code of Conduct</a>. By contributing to this project, you agree to its terms.  
 
 ## Disclaimer
 
@@ -135,5 +135,5 @@ This package was authored by Hayden MacDonald. Feel free to email me at hayden.m
 
 ## License
 
-The `squashinformr` package is licensed under the <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE" target="_blank">MIT LICENSE</a>.
+The `squashinformr` package is released under a <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE" target="_blank">GPL-3</a> license.
 
