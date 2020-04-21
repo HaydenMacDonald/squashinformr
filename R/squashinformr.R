@@ -109,4 +109,10 @@ if(getRversion() >= "3.4.0")  utils::globalVariables(c(".",
                                                        "Sep",
                                                        "Oct",
                                                        "Nov",
-                                                       "Dec"))
+                                                       "Dec",
+                                                       "matches_0_3",
+                                                       "matches_1_3",
+                                                       "matches_2_3",
+                                                       "matches_3_0",
+                                                       "matches_3_1",
+                                                       "matches_3_2"))
