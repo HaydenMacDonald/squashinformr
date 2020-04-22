@@ -23,8 +23,8 @@ Given the rank(s) and competition category, \code{get_players()} returns profile
 This function only returns players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
 }
 \examples{
-## Return the top 10 ranked players from PSA Women's PSA rankings
-get_players(top = 10, category = "womens")
+## Return the top 5 ranked players from PSA Women's PSA rankings
+get_players(top = 5, category = "womens")
 
 ## Return the 5th ranked player from both Men's and Women's PSA rankings
 \donttest{get_players(rank = 5, category = "both")}
