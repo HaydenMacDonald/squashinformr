@@ -11,8 +11,8 @@
 #' @return Tibble containing the tournament name, competition category, tournament date, player, seed, nationality, round_reached.
 #'
 #' @examples
-#' ## Who played in the Tournament of Champions in 2019?
-#' get_tournament_players(tournament = "tournament of champions", year = 2019)
+#' ## Who played in the Tournament of Champions in 2020?
+#' get_tournament_players(tournament = "tournament of champions", year = 2020)
 #'
 #' ## Return player registrant data for all PSA World Tour tournaments in 2019
 #' \donttest{get_tournament_players(year = 2019, world_tour = TRUE)}

@@ -12,8 +12,8 @@
 #' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
 #'
 #' @examples
-#' ## Return the top 10 ranked players from PSA Women's PSA rankings
-#' get_players(top = 10, category = "womens")
+#' ## Return the top 5 ranked players from PSA Women's PSA rankings
+#' get_players(top = 5, category = "womens")
 #'
 #' ## Return the 5th ranked player from both Men's and Women's PSA rankings
 #' \donttest{get_players(rank = 5, category = "both")}

@@ -3,3 +3,5 @@
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^\.github$
+^README\.Rmd$
+^LICENSE\.md$

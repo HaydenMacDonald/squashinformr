@@ -23,8 +23,8 @@ Given a tournament name or a year, \code{get_tournament_players()} returns playe
 This function only returns player registrant data from tournaments in 2019 and 2020, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 }
 \examples{
-## Who played in the Tournament of Champions in 2019?
-get_tournament_players(tournament = "tournament of champions", year = 2019)
+## Who played in the Tournament of Champions in 2020?
+get_tournament_players(tournament = "tournament of champions", year = 2020)
 
 ## Return player registrant data for all PSA World Tour tournaments in 2019
 \donttest{get_tournament_players(year = 2019, world_tour = TRUE)}
