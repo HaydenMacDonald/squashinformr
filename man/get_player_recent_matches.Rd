@@ -25,13 +25,13 @@ This function only returns data from players ranked in the most recent PSA ranki
 \examples{
 
 ## Get Mohamed Elshorbagy's most recent match data
-get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")
+\donttest{get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")}
 
 ## Get Nour El Tayeb's recent match data
-get_player_recent_matches("El Tayeb", category = "womens")
+\donttest{get_player_recent_matches("El Tayeb", category = "womens")}
 
 ## Get recent match data from the top two players in both Men's and Women's competitions
-get_player_recent_matches(rank = 1:2, category = "both")
+\donttest{get_player_recent_matches(rank = 1:2, category = "both")}
 
 }
 \references{

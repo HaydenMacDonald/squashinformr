@@ -135,5 +135,5 @@ This package was authored by Hayden MacDonald. Feel free to email me at hayden.m
 
 ## License
 
-The `squashinformr` package is released under a <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE" target="_blank">GPL-3</a> license.
+The `squashinformr` package is released under a <a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE.md" target="_blank">GPL-3</a> license.
 

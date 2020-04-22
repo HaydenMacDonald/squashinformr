@@ -11,7 +11,7 @@
 #' @examples
 #'
 #' ## Get data on 2020 PSA World Tour tournaments
-#' get_tournaments()
+#' \donttest{get_tournaments()}
 #'
 #' ## Get data on 2019 non-PSA World Tour tournaments
 #' \donttest{get_tournaments(2019, world_tour = FALSE)}

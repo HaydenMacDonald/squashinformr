@@ -24,7 +24,7 @@ This function only returns game data from tournaments in 2019 and 2020, as any o
 }
 \examples{
 ## Return game data for 2020's Tournament of Champions.
-get_tournament_games("tournament of champions", year = 2020)
+\donttest{get_tournament_games("tournament of champions", year = 2020)}
 
 ## Return game data for all PSA World Tour tournaments in 2019
 \donttest{get_tournament_games(year = 2019, world_tour = TRUE)}

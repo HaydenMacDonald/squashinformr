@@ -13,7 +13,7 @@
 #'
 #' @examples
 #' ## Return the top 5 ranked players from PSA Women's PSA rankings
-#' get_players(top = 5, category = "womens")
+#' \donttest{get_players(top = 5, category = "womens")}
 #'
 #' ## Return the 5th ranked player from both Men's and Women's PSA rankings
 #' \donttest{get_players(rank = 5, category = "both")}

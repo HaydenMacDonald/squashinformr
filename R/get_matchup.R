@@ -20,7 +20,7 @@
 #' @examples
 #'
 #' ## Get tidy matchup data for Mohamed Elshorbagy vs Ali Farag
-#' get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = "mens", tidy = TRUE)
+#' \donttest{get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = "mens", tidy = TRUE)}
 #'
 #' ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
 #' \donttest{get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = FALSE)}

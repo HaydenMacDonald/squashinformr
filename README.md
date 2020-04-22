@@ -113,18 +113,18 @@ get_tournament_games("tournament of champions", year = 2020)
 #> Scraping http://www.squashinfo.com/events/8367-mens-tournament-of-champions-2020
 #> Scraping http://www.squashinfo.com/events/8368-womens-tournament-of-champions-2020
 #> # A tibble: 388 x 15
-#>    tournament_name   category tournament_date round match  game player_1  player_2 game_winner player_1_score player_2_score player_1_seed player_2_seed player_1_nation~ player_2_nation~
-#>    <chr>             <chr>    <date>          <ord> <int> <int> <chr>     <chr>    <chr>                <dbl>          <dbl>         <dbl>         <dbl> <chr>            <chr>           
-#>  1 JP Morgan Tourna~ Men's    2020-01-17      F        64     4 Mohamed ~ Tarek M~ Mohamed El~             11              5             2             4 EGY              EGY             
-#>  2 JP Morgan Tourna~ Men's    2020-01-17      F        64     3 Mohamed ~ Tarek M~ Mohamed El~             11              7             2             4 EGY              EGY             
-#>  3 JP Morgan Tourna~ Men's    2020-01-17      F        64     2 Mohamed ~ Tarek M~ Mohamed El~             11              7             2             4 EGY              EGY             
-#>  4 JP Morgan Tourna~ Men's    2020-01-17      F        64     1 Mohamed ~ Tarek M~ Tarek Momen              9             11             2             4 EGY              EGY             
-#>  5 JP Morgan Tourna~ Women's  2020-01-17      F        62     3 Camille ~ Nour El~ Camille Se~             11              7             5             2 FRA              EGY             
-#>  6 JP Morgan Tourna~ Women's  2020-01-17      F        62     2 Camille ~ Nour El~ Camille Se~             11              6             5             2 FRA              EGY             
-#>  7 JP Morgan Tourna~ Women's  2020-01-17      F        62     1 Camille ~ Nour El~ Camille Se~             11              8             5             2 FRA              EGY             
-#>  8 JP Morgan Tourna~ Men's    2020-01-17      SF       63     5 Tarek Mo~ Ali Far~ Tarek Momen             11              7             4             1 EGY              EGY             
-#>  9 JP Morgan Tourna~ Men's    2020-01-17      SF       63     4 Tarek Mo~ Ali Far~ Ali Farag                8             11             4             1 EGY              EGY             
-#> 10 JP Morgan Tourna~ Men's    2020-01-17      SF       63     3 Tarek Mo~ Ali Far~ Ali Farag                7             11             4             1 EGY              EGY             
+#>    tournament_name   category tournament_date round match  game player_1  player_2  game_winner player_1_score player_2_score player_1_seed player_2_seed player_1_nation~ player_2_nation~
+#>    <chr>             <chr>    <date>          <ord> <int> <int> <chr>     <chr>     <chr>                <dbl>          <dbl>         <dbl>         <dbl> <chr>            <chr>           
+#>  1 JP Morgan Tourna~ Men's    2020-01-17      F        64     4 Mohamed ~ Tarek Mo~ Mohamed El~             11              5             2             4 EGY              EGY             
+#>  2 JP Morgan Tourna~ Men's    2020-01-17      F        64     3 Mohamed ~ Tarek Mo~ Mohamed El~             11              7             2             4 EGY              EGY             
+#>  3 JP Morgan Tourna~ Men's    2020-01-17      F        64     2 Mohamed ~ Tarek Mo~ Mohamed El~             11              7             2             4 EGY              EGY             
+#>  4 JP Morgan Tourna~ Men's    2020-01-17      F        64     1 Mohamed ~ Tarek Mo~ Tarek Momen              9             11             2             4 EGY              EGY             
+#>  5 JP Morgan Tourna~ Women's  2020-01-17      F        62     3 Camille ~ Nour El ~ Camille Se~             11              7             5             2 FRA              EGY             
+#>  6 JP Morgan Tourna~ Women's  2020-01-17      F        62     2 Camille ~ Nour El ~ Camille Se~             11              6             5             2 FRA              EGY             
+#>  7 JP Morgan Tourna~ Women's  2020-01-17      F        62     1 Camille ~ Nour El ~ Camille Se~             11              8             5             2 FRA              EGY             
+#>  8 JP Morgan Tourna~ Men's    2020-01-17      SF       63     5 Tarek Mo~ Ali Farag Tarek Momen             11              7             4             1 EGY              EGY             
+#>  9 JP Morgan Tourna~ Men's    2020-01-17      SF       63     4 Tarek Mo~ Ali Farag Ali Farag                8             11             4             1 EGY              EGY             
+#> 10 JP Morgan Tourna~ Men's    2020-01-17      SF       63     3 Tarek Mo~ Ali Farag Ali Farag                7             11             4             1 EGY              EGY             
 #> # ... with 378 more rows
 ```
 
@@ -211,5 +211,5 @@ hayden.macdonald.8778 \[at\] gmail.com.
 ## License
 
 The `squashinformr` package is released under a
-<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE" target="_blank">GPL-3</a>
+<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE.md" target="_blank">GPL-3</a>
 license.

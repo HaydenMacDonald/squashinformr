@@ -16,10 +16,10 @@
 #' get_rankings(top = 10, category = "mens")
 #'
 #' ## Get the top 10 ranked women's singles players
-#' get_rankings(top = 20, category = "womens")
+#' \donttest{get_rankings(top = 20, category = "womens")}
 #'
 #' ## Get the top 20 players in both men's and women's singles competitions
-#' get_rankings(top = 20, category = "both")
+#' \donttest{get_rankings(top = 20, category = "both")}
 #'
 #' @note This function only returns the most recent PSA rankings table for Men's and Women's singles competitions.
 #'

@@ -15,13 +15,13 @@
 #' @examples
 #'
 #' ## Get Mohamed Elshorbagy's most recent results data
-#' get_player_recent_results(player = "Mohamed Elshorbagy", category = "mens")
+#' \donttest{get_player_recent_results(player = "Mohamed Elshorbagy", category = "mens")}
 #'
 #' ## Get Nour El Tayeb's recent results data
-#' get_player_recent_results("El Tayeb", category = "womens")
+#' \donttest{get_player_recent_results("El Tayeb", category = "womens")}
 #'
 #' ## Get recent results data from the top two players in both Men's and Women's competitions
-#' get_player_recent_results(rank = 1:2, category = "both")
+#' \donttest{get_player_recent_results(rank = 1:2, category = "both")}
 #'
 #' @note This function only returns results data from players ranked in the most recent PSA rankings table for Men's and Women's singles competitions. Recent results are limited to events that occurred within the current and previous calendar years.
 #'

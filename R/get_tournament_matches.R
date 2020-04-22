@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' ## Return match data for 2020's Tournament of Champions.
-#' get_tournament_matches("tournament of champions", year = 2020)
+#' \donttest{get_tournament_matches("tournament of champions", year = 2020)}
 #'
 #' ## Return match data for all PSA World Tour tournaments in 2019
 #' \donttest{get_tournament_matches(year = 2019, world_tour = TRUE)}
