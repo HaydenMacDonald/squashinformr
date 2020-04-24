@@ -5,6 +5,8 @@
 
 [![R build
 status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 [![Codecov test
 coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/master/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
 <!-- badges: end -->
@@ -167,11 +169,16 @@ percentage of games that go to a tie-breaker.
 ## Get tidy matchup stats for Paul Coll vs Diego Elias
 get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE)
 #> # A tibble: 1 x 23
-#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~ player_2_matche~ matches_3_2 matches_3_1 matches_3_0 matches_0_3 matches_1_3 matches_2_3 avg_match_time
-#>           <int> <chr>            <int> <chr>             <int>            <int>            <int>       <int>       <int>       <int>       <int>       <int>       <int>          <dbl>
-#> 1             5 Paul Co~             6 Diego E~              2                1                1           0           1           0           0           0           1             98
-#> # ... with 9 more variables: games_played <int>, player_1_games_won <int>, player_2_games_won <int>, player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>, avg_point_diff <dbl>,
-#> #   player_1_tiebreak_wins <int>, player_2_tiebreak_wins <int>, pct_games_tiebreak <dbl>
+#>   player_1_rank player_1 player_2_rank player_2 matches_played player_1_matche~
+#>           <int> <chr>            <int> <chr>             <int>            <int>
+#> 1             5 Paul Co~             6 Diego E~              2                1
+#> # ... with 17 more variables: player_2_matches_won <int>, matches_3_2 <int>,
+#> #   matches_3_1 <int>, matches_3_0 <int>, matches_0_3 <int>, matches_1_3 <int>,
+#> #   matches_2_3 <int>, avg_match_time <dbl>, games_played <int>,
+#> #   player_1_games_won <int>, player_2_games_won <int>,
+#> #   player_1_avg_advantage <dbl>, player_2_avg_advantage <dbl>,
+#> #   avg_point_diff <dbl>, player_1_tiebreak_wins <int>,
+#> #   player_2_tiebreak_wins <int>, pct_games_tiebreak <dbl>
 ```
 
 ## Help
