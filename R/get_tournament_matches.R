@@ -245,7 +245,7 @@ get_tournament_matches <- function(tournament = NULL, year = 2020, world_tour = 
     ## Create empty matches dataframe
     matches <- c()
 
-    for (i in 1:length(tournaments$slug)) { ## For each tournament slug
+    for (i in seq_along(tournaments$slug)) { ## For each tournament slug
 
       ## Create tournament url from slug
       t_url <- sprintf("http://www.squashinfo.com%s", tournaments$slug[i])
@@ -298,7 +298,7 @@ get_tournament_matches <- function(tournament = NULL, year = 2020, world_tour = 
       result$round <- NA
 
       ## For each match in result, find the corresponding lagged 'round' row
-      for (i in 1:length(result$X1)) {
+      for (i in seq_along(result$X1)) {
 
         if ("1st round:" %in% lag_df[i,]) {
 
@@ -413,7 +413,7 @@ get_tournament_matches <- function(tournament = NULL, year = 2020, world_tour = 
                          games_lost = NA_real_)
 
     ## For each row in matches
-    for (j in 1:length(matches$games)) {
+    for (j in seq_along(matches$games)) {
 
       ## if there are no games, go to next row, else extract match
       if (length(matches$games[[j]]) == 0) { next } else { match <- matches$games[[j]] }
@@ -424,7 +424,7 @@ get_tournament_matches <- function(tournament = NULL, year = 2020, world_tour = 
       losses <- 0
 
       ## For each game in a match
-      for (i in 1:length(match)) {
+      for (i in seq_along(match)) {
 
         ## If the score of player 1 is greater than player 2
         if (as.numeric(str_extract(match[i], pattern = "^[0-9]+")) > as.numeric(str_extract(match[i], pattern = "[0-9]+$"))) {

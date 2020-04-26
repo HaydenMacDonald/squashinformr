@@ -455,7 +455,7 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
 
     mens_recent_events <- c()
 
-    for (i in 1:length(mens_profile_urls$profile_slugs)) {
+    for (i in seq_along(mens_profile_urls$profile_slugs)) {
 
       player_name <- mens_profile_urls$Name[i]
 
@@ -500,7 +500,7 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
 
     womens_recent_events <- c()
 
-    for (i in 1:length(womens_profile_urls$profile_slugs)) {
+    for (i in seq_along(womens_profile_urls$profile_slugs)) {
 
       player_name <- womens_profile_urls$Name[i]
 

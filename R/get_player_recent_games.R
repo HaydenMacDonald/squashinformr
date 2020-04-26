@@ -459,7 +459,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     mens_recent_matches <- c()
 
     ## For every men's profile slug
-    for (i in 1:length(mens_profile_urls$profile_slugs)) {
+    for (i in seq_along(mens_profile_urls$profile_slugs)) {
 
       ## Extract player name
       player_name <- mens_profile_urls$Name[i]
@@ -509,7 +509,7 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
     ## Create womens_recent_matches dataframe
     womens_recent_matches <- c()
 
-    for (i in 1:length(womens_profile_urls$profile_slugs)) { ## for every women's profile slug
+    for (i in seq_along(womens_profile_urls$profile_slugs)) { ## for every women's profile slug
 
       ## Extract player name
       player_name <- womens_profile_urls$Name[i]

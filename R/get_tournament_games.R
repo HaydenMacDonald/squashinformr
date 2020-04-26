@@ -248,7 +248,7 @@ get_tournament_games <- function(tournament = NULL, year = 2020, world_tour = TR
   ## Create empty games object
   games <- c()
 
-  for (i in 1:length(tournaments$slug)) { ## For every tournament slug
+  for (i in seq_along(tournaments$slug)) { ## For every tournament slug
 
     ## Create tournament slug
     t_url <- sprintf("http://www.squashinfo.com%s", tournaments$slug[i])
@@ -301,7 +301,7 @@ get_tournament_games <- function(tournament = NULL, year = 2020, world_tour = TR
     result$round <- NA
 
     ## For each match in result, find the corresponding lagged 'round' row
-    for (i in 1:length(result$X1)) {
+    for (i in seq_along(result$X1)) {
 
       if ("1st round:" %in% lag_df[i,]) {
 

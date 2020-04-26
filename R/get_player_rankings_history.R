@@ -276,7 +276,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
   rankings_history <- c()
 
-  for (i in 1:length(all_profile_urls$profile_slugs)) {
+  for (i in seq_along(all_profile_urls$profile_slugs)) {
 
     ## Player's name
     player_name <- all_profile_urls$Name[i]

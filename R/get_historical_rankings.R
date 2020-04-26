@@ -321,7 +321,7 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
 
   rankings_history <- c()
 
-  for (i in 1:length(all_profile_urls$profile_url)) {
+  for (i in seq_along(all_profile_urls$profile_url)) {
 
     ## Extract player name
     player_name <- all_profile_urls$name[i]

@@ -460,7 +460,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
       ## Create empty mens_recent_matches dataframe
       mens_recent_matches <- c()
 
-      for (i in 1:length(mens_profile_urls$profile_slugs)) { ## For every men's profile slug
+      for (i in seq_along(mens_profile_urls$profile_slugs)) { ## For every men's profile slug
 
         ## Extract player name
         player_name <- mens_profile_urls$Name[i]
@@ -512,7 +512,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
       ## Create empty womens_recent_matches dataframe
       womens_recent_matches <- c()
 
-      for (i in 1:length(womens_profile_urls$profile_slugs)) { ## For every women's profile slug
+      for (i in seq_along(womens_profile_urls$profile_slugs)) { ## For every women's profile slug
 
         ## Extract player name
         player_name <- womens_profile_urls$Name[i]
@@ -571,7 +571,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
                                  games_lost = NA_real_)
 
   ## For each match
-  for (j in 1:length(recent_matches$score)) {
+  for (j in seq_along(recent_matches$score)) {
 
     ## If there are no games, next row, create match object
     if (length(recent_matches$score[[j]]) == 0) { next } else { match <- recent_matches$score[[j]] }
@@ -582,7 +582,7 @@ get_player_recent_matches <- function(player = NULL, rank = NULL, category = NUL
     losses <- 0
 
     ## For each game in each match
-    for (i in 1:length(match)) {
+    for (i in seq_along(match)) {
 
       ## If player 1's score is greater than player 2's score
       if (as.numeric(str_extract(match[i], pattern = "^[0-9]+")) > as.numeric(str_extract(match[i], pattern = "[0-9]+$"))) {
