@@ -1,6 +1,6 @@
 Package: squashinformr
 Title: Politely Web Scrape Data from SquashInfo
-Version: 0.1.1
+Version: 0.1.2
 Authors@R: c(person("Hayden", "MacDonald", role = c("aut", "cre"),
                      email = "hayden.macdonald.8778@gmail.com"))
 Author: Hayden MacDonald [aut, cre]

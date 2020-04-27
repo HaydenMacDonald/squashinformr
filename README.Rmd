@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# squashinformr <a href="https://needleinthehay.ca/introducing-squashinformr/" target="_blank"><img src="man/figures/logo.png" align="right" /></a>
+# squashinformr <img src="man/figures/logo.png" align="right" />
 
 <!-- badges: start -->
 [![R build status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)

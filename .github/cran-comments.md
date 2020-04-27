@@ -1,5 +1,9 @@
 ## CRAN comments
 
+### 0.1.2 CRAN re-submission
+
+- Removed blog link on README.md  
+
 ### 0.1.1 CRAN re-submission
 
 - Keeping with best practices, all instances of 1:length() within for loops were changed to seq_along() instead
