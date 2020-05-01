@@ -19,6 +19,8 @@ knitr::opts_chunk$set(
 # squashinformr <img src="man/figures/logo.png" align="right" />
 
 <!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![CRAN status](https://www.r-pkg.org/badges/version/squashinformr)](https://CRAN.R-project.org/package=squashinformr)
 [![R build status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 [![Codecov test coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/master/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
@@ -29,6 +31,12 @@ knitr::opts_chunk$set(
 **squashinformr** allows users to easily scrape <a href="http://www.squashinfo.com/" target="_blank">SquashInfo</a> for data on the Professional Squash Association World Tour and other squash tournaments. The functions within this package scrape, parse, and clean data associated with players, tournaments, and rankings.
 
 ## Installation
+
+Install `squashinformr` via CRAN:
+
+```{r, eval=FALSE, message=FALSE, warning=FALSE}
+install.packages("squashinformr")
+```
 
 Install the development version of `squashinformr` from this GitHub repository via:
 
