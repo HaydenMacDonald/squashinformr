@@ -53,7 +53,7 @@ test_that("test get_player_recent_games for proper outputs", {
   expect_is(df, "tbl")
 
   ## category == "womens"
-  df <- get_player_recent_games("Raneem El Welily", category = "womens")
+  df <- get_player_recent_games("Nouran Gohar", category = "womens")
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
 

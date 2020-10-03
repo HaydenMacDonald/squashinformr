@@ -26,8 +26,8 @@ This function takes substantial time to scrape the corresponding data because hi
 }
 \examples{
 
-## Who were the top 10 players in both men's and women's singles in January 2019?
-\donttest{top10 <- get_historical_rankings(2019, "Jan", "both", 10)}
+## Who were the top 5 players in both men's and women's singles in January 2019?
+\donttest{top5 <- get_historical_rankings(2019, "Jan", "both", 5)}
 
 }
 \references{
