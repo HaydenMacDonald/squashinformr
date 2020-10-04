@@ -22,8 +22,8 @@
 #' ## Get tidy matchup data for Mohamed Elshorbagy vs Ali Farag
 #' \donttest{get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Ali Farag", category = "mens", tidy = TRUE)}
 #'
-#' ## Get non-tidy matchup data for Raneem El Welily vs Nouran Gohar
-#' \donttest{get_matchup("Raneem El Welily", "Nouran Gohar", category = "womens", tidy = FALSE)}
+#' ## Get non-tidy matchup data for Nouran Gohar vs Nour El Sherbini
+#' \donttest{get_matchup("Nouran Gohar", "Nour El Sherbini", category = "womens", tidy = FALSE)}
 #'
 #' ## Get tidy match spread data for Paul Coll and Diego Elias
 #' \donttest{get_matchup("Paul Coll", "Diego Elias", category = "mens", tidy = TRUE, match_spread = TRUE)}
@@ -257,7 +257,7 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
         results <- cbind(results, profile_slugs) %>%
                                         as.data.frame()
 
-        ## Store data in mens_ranking_table
+        ## Store data in womens_ranking_table
         womens_ranking_table <- rbind(womens_ranking_table, results)
 
         # Find url in "Next" button

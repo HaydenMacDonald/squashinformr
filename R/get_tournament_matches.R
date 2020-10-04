@@ -335,7 +335,7 @@ get_tournament_matches <- function(tournament = NULL, year = 2020, world_tour = 
       ## Clean results
       result <- result %>%
                   ## Remove 'round' rows
-                  filter(X1 != "Final:", X1 != "Semi-finals:", X1 != "Quarter-finals:", X1 != "3rd round:", X1 != "2nd round:", X1 != "1st round:") %>%
+                  filter(X1 != "Final:", X1 != "Third place play-off:", X1 != "Semi-finals:", X1 != "Quarter-finals:", X1 != "3rd round:", X1 != "2nd round:", X1 != "1st round:") %>%
                   mutate(X1 = str_replace_all(X1, pattern = regex("[:punct:]"), replacement = ""),  ## Remove punctuation from match column
 
                          ## Extract player names from match column
@@ -412,11 +412,15 @@ get_tournament_matches <- function(tournament = NULL, year = 2020, world_tour = 
                          games_won = NA_real_,
                          games_lost = NA_real_)
 
+    ## Filter out extraneous rows with NA in player_1 and player_2
+    matches <- matches %>%
+                  filter(is.na(player_1) == FALSE & is.na(player_2) == FALSE)
+
     ## For each row in matches
     for (j in seq_along(matches$games)) {
 
       ## if there are no games, go to next row, else extract match
-      if (length(matches$games[[j]]) == 0) { next } else { match <- matches$games[[j]] }
+      if (length(matches$games[[j]]) == 0 | matches$match_winner[[j]] == "TBD") { next } else { match <- matches$games[[j]] }
 
       ## start with 0 game wins and game losses
       wins <- 0
