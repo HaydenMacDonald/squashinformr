@@ -7,8 +7,11 @@
 experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/squashinformr)](https://CRAN.R-project.org/package=squashinformr)
-<https://cranlogs.r-pkg.org/badges/squashinformr>
-<https://cranlogs.r-pkg.org/badges/grand-total/squashinformr> [![R build
+[![CRAN 
+Downloads](https://cranlogs.r-pkg.org/badges/squashinformr)](https://cranlogs.r-pkg.org/badges/squashinformr)
+[![CRAN 
+total](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr) 
+[![R build
 status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
