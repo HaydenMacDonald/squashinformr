@@ -476,8 +476,9 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
       ## Find html table
       recent_result <- current_page %>%
-                              html_nodes("table") %>%
-                              .[[4]] %>%
+                              html_nodes("table")
+
+      recent_result <- suppressWarnings(recent_result[str_detect(recent_result, "match_summary_table")][[1]]) %>%
                               html_table() %>%
                               filter(row_number() != n()) %>%
                               as_tibble() %>%
@@ -526,8 +527,9 @@ get_player_recent_games <- function(player = NULL, rank = NULL, category = NULL)
 
       ## Find html table
       recent_result <- current_page %>%
-                          html_nodes("table") %>%
-                          .[[4]] %>%
+                          html_nodes("table")
+
+      recent_result <- suppressWarnings(recent_result[str_detect(recent_result, "match_summary_table")][[1]]) %>%
                           html_table() %>%
                           filter(row_number() != n()) %>%
                           as_tibble() %>%

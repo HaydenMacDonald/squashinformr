@@ -198,8 +198,18 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
 
     }
 
-    mens_profile_urls <- mens_ranking_table %>%
-                                  filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+    ## If rank is null, filter by name
+    if (is.null(rank) == TRUE) {
+
+      mens_profile_urls <- mens_ranking_table %>%
+                              filter(str_detect(Name, player))
+
+    } else if (is.null(player) == TRUE) { ## If player is null, filter by rank
+
+      mens_profile_urls <- mens_ranking_table %>%
+                              filter(Rank %in% rank)
+    }
+
 
     womens_profile_urls <- c()
 
@@ -305,8 +315,19 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
 
     }
 
-    womens_profile_urls <- womens_ranking_table %>%
-                                    filter(if (is.null(rank)) {str_detect(Name, player)} else if (is.null(player)) {Rank %in% rank})
+    ## If rank is null, filter by name
+    if (is.null(rank) == TRUE) {
+
+      womens_profile_urls <- womens_ranking_table %>%
+                                filter(str_detect(Name, player))
+
+    } else if (is.null(player) == TRUE) { ## If player is null, filter by rank
+
+      womens_profile_urls <- womens_ranking_table %>%
+                                filter(Rank %in% rank)
+    }
+
+
 
     mens_profile_urls <- c()
 
@@ -471,7 +492,7 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
       recent_result <- current_page %>%
                           html_nodes("table")
 
-      recent_result <- suppressWarnings(recent_result[str_detect(recent_result, "Seeding")][[1]]) %>%
+      recent_result <- suppressWarnings(recent_result[str_detect(recent_result, "Round Reached")][[1]]) %>%
                             html_table() %>%
                             as_tibble() %>%
                             filter(row_number() != n()) %>%
@@ -516,7 +537,7 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
       recent_result <- current_page %>%
                           html_nodes("table")
 
-      recent_result <- suppressWarnings(recent_result[str_detect(recent_result, "Seeding")][[1]]) %>%
+      recent_result <- suppressWarnings(recent_result[str_detect(recent_result, "Round Reached")][[1]]) %>%
                           html_table() %>%
                           as_tibble() %>%
                           filter(row_number() != n()) %>%
