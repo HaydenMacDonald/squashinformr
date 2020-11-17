@@ -126,7 +126,7 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
 
     if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(sum(str_detect(mens_ranking_table$Name, players), na.rm = TRUE) != 2) {
+      while(sum(player_1 %in% mens_ranking_table$Name, player_2 %in% mens_ranking_table$Name, na.rm = TRUE) < 2) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -209,7 +209,7 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
     }
 
     mens_profile_urls <- mens_ranking_table %>%
-                                filter(if (is.null(ranks)) {str_detect(Name, players)} else if (is.null(players)) {Rank %in% ranks})
+                                filter(if (is.null(ranks)) {str_detect(Name, players[1]) | str_detect(Name, players[2])} else if (is.null(players)) {Rank %in% ranks})
 
     womens_profile_urls <- c()
 
@@ -233,7 +233,7 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
 
     if (is.null(players) == FALSE & is.null(ranks) == TRUE) {
 
-      while(sum(str_detect(womens_ranking_table$Name, players), na.rm = TRUE) != 2) {
+      while(sum(player_1 %in% womens_ranking_table$Name, player_2 %in% womens_ranking_table$Name, na.rm = TRUE) < 2) {
 
         ## Verbose
         message("Scraping ", rankings_url)
@@ -316,7 +316,7 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
     }
 
     womens_profile_urls <- womens_ranking_table %>%
-                                    filter(if (is.null(ranks)) {str_detect(Name, players)} else if (is.null(players)) {Rank %in% ranks})
+                                    filter(if (is.null(ranks)) {str_detect(Name, players[1]) | str_detect(Name, players[2])} else if (is.null(players)) {Rank %in% ranks})
 
     mens_profile_urls <- c()
 
