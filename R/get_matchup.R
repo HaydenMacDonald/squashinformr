@@ -86,7 +86,7 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
 
   stopifnot(is.character(players) | is.null(players), nchar(players) > 0, is.numeric(ranks) | is.null(ranks))
 
-  if (is.null(players) == TRUE & is.null(ranks) == TRUE) {
+  if ((is.null(players) == TRUE & is.null(ranks) == TRUE) | (is.null(players) == FALSE & is.null(ranks) == FALSE)) {
 
     stop("Either the players' full names or ranks are required")
 
