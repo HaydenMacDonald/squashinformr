@@ -2,17 +2,14 @@
 #'
 #' Given the rank(s) and competition category, \code{get_players()} returns profile data of ranked players in PSA World Tour competitions.
 #'
-#'
-#' @param rank integer indicating the rank of the PSA player(s) to return.
-#'
 #' @param top integer indicating the number of top PSA players by rank to return.
-#'
-#' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
+#' @param rank integer indicating the rank of the PSA player(s) to return.
+#' @param category character string indicating the competition category. Must be one of "mens", "womens", or "both".
 #'
 #' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
 #'
 #' @examples
-#' ## Return the top 5 ranked players from PSA Women's PSA rankings
+#' ## Return the top 5 ranked players from the Women's PSA rankings
 #' \donttest{get_players(top = 5, category = "womens")}
 #'
 #' ## Return the 5th ranked player from both Men's and Women's PSA rankings
@@ -25,28 +22,10 @@
 #'     \url{http://www.squashinfo.com/rankings/men} \cr
 #'     \url{http://www.squashinfo.com/rankings/women}
 #'
-#'
-#' @importFrom dplyr %>%
-#' @importFrom dplyr select
-#' @importFrom dplyr mutate
-#' @importFrom dplyr if_else
 #' @importFrom dplyr bind_rows
-#' @importFrom plyr round_any
-#' @importFrom tidyr pivot_wider
-#' @importFrom polite bow
-#' @importFrom polite scrape
-#' @importFrom rvest html_nodes
-#' @importFrom rvest html_attr
-#' @importFrom rvest html_text
-#' @importFrom stringr str_detect
-#' @importFrom stringr str_extract
-#' @importFrom stringr str_replace_all
-#' @importFrom stringr str_trim
-#' @importFrom stringr regex
-#' @importFrom tibble rowid_to_column
-#' @importFrom tibble enframe
 #'
 #' @export
+
 get_players <- function(top = NULL, rank = NULL, category = NULL) {
 
   ## Return error if top is not numeric or NULL, if category is not character or NULL, if rank is not numeric or NULL, or if rank's length is not not 1 or NULL
@@ -74,7 +53,7 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
 
     return(womens_profiles)
 
-  ## Both categories
+  # Both categories
   } else if (category == "both") {
 
     ## Men's and women's profiles
@@ -82,7 +61,6 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
     womens_profiles <- get_player_profiles(category = "womens")
 
     ## Combine women and men profiles
-
     both_profiles <- bind_rows(mens_profiles, womens_profiles)
 
     return(both_profiles)
@@ -90,6 +68,7 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
 
   } else {
 
+    ## Return error when category is not one of "mens", "womens", or "both"
     stop("category must be one of 'both', 'mens', or 'womens'")
 
   }
@@ -97,6 +76,54 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
 }
 
 
+
+
+
+#' Get Player Profiles from SquashInfo
+#'
+#' Given the rank(s) and competition category, \code{get_player_profiles()} returns profile data of ranked players in PSA World Tour competitions.
+#'
+#' @param category character string indicating the competition category. Must be one of "mens" or "womens".
+#' @param top integer indicating the number of top PSA players by rank to return.
+#' @param rank integer indicating the rank of the PSA player(s) to return.
+#'
+#' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
+#'
+#' @examples
+#' ## Return the top 5 ranked players from the Women's PSA rankings
+#' \donttest{get_player_profiles(top = 5, category = "womens")}
+#'
+#' ## Return the 5th ranked player from the Men's PSA rankings
+#' \donttest{get_player_profiles(rank = 5, category = "mens")}
+#'
+#' @noRd
+#'
+#' @note This function only returns players ranked in the most recent PSA rankings table for Men's and Women's singles competitions.
+#'
+#' @references
+#'
+#'     \url{http://www.squashinfo.com/rankings/men} \cr
+#'     \url{http://www.squashinfo.com/rankings/women}
+#'
+#' @importFrom dplyr %>%
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr if_else
+#' @importFrom dplyr bind_rows
+#' @importFrom plyr round_any
+#' @importFrom tidyr pivot_wider
+#' @importFrom polite bow
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_attr
+#' @importFrom rvest html_text
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_replace_all
+#' @importFrom stringr str_trim
+#' @importFrom stringr regex
+#' @importFrom tibble rowid_to_column
+#' @importFrom tibble enframe
 
 get_player_profiles <- function(category = c("mens", "womens"), top = NULL, rank = NULL) {
 
