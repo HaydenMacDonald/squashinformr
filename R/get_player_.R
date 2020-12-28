@@ -42,14 +42,14 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
   # Men's
   if (category == "mens") {
 
-    mens_profiles <- get_player_profiles(category = "mens")
+    mens_profiles <- get_player_profiles(top = top, rank = rank, category = "mens")
 
     return(mens_profiles)
 
   # Women's
   } else if (category == "womens") {
 
-    womens_profiles <- get_player_profiles(category = "womens")
+    womens_profiles <- get_player_profiles(top = top, rank = rank, category = "womens")
 
     return(womens_profiles)
 
@@ -57,8 +57,8 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
   } else if (category == "both") {
 
     ## Men's and women's profiles
-    mens_profiles <- get_player_profiles(category = "mens")
-    womens_profiles <- get_player_profiles(category = "womens")
+    mens_profiles <- get_player_profiles(top = top, rank = rank, category = "mens")
+    womens_profiles <- get_player_profiles(top = top, rank = rank, category = "womens")
 
     ## Combine women and men profiles
     both_profiles <- bind_rows(mens_profiles, womens_profiles)
@@ -83,9 +83,9 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
 #'
 #' Given the rank(s) and competition category, \code{get_player_profiles()} returns profile data of ranked players in PSA World Tour competitions.
 #'
-#' @param category character string indicating the competition category. Must be one of "mens" or "womens".
 #' @param top integer indicating the number of top PSA players by rank to return.
 #' @param rank integer indicating the rank of the PSA player(s) to return.
+#' @param category character string indicating the competition category. Must be one of "mens" or "womens".
 #'
 #' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
 #'
@@ -259,6 +259,7 @@ get_player_profiles <- function(category = c("mens", "womens"), top = NULL, rank
 
   }
 
+  ## Clean profiles data frame
   profiles <- profiles %>%
     select(-coach) %>%
     mutate(plays = if_else(str_detect(plays, regex("right", ignore_case = TRUE)), "R", if_else(str_detect(plays, regex("left", ignore_case = TRUE)), "L", NA_character_)),
