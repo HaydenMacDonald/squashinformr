@@ -95,8 +95,8 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
   }
 
 
+# Men's  
   category <- tolower(category)
-
 
   if (category == "mens") {
 
@@ -213,6 +213,7 @@ get_player_recent_results <- function(player = NULL, rank = NULL, category = NUL
 
     womens_profile_urls <- c()
 
+# Womens	
 
 
   } else if (category == "womens") {

@@ -2,11 +2,8 @@
 #'
 #' Given the rank(s) and competition category, \code{get_players()} returns profile data of ranked players in PSA World Tour competitions.
 #'
-#'
 #' @param rank integer indicating the rank of the PSA player(s) to return.
-#'
 #' @param top integer indicating the number of top PSA players by rank to return.
-#'
 #' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
 #'
 #' @return Tibble containing first name, last name, age, gender, birthplace, nationality, residence, height in cm, weight in kg, plays (handedness), racket brand, year of joining PSA, university, and club.
@@ -24,7 +21,6 @@
 #'
 #'     \url{http://www.squashinfo.com/rankings/men} \cr
 #'     \url{http://www.squashinfo.com/rankings/women}
-#'
 #'
 #' @importFrom dplyr %>%
 #' @importFrom dplyr select
@@ -52,11 +48,8 @@ get_players <- function(top = NULL, rank = NULL, category = NULL) {
   stopifnot(is.numeric(top) | is.null(top), is.character(category) | is.null(category), is.numeric(rank) | is.null(rank), length(rank) == 1 | is.null(rank))
 
   if (sum(is.null(top), is.null(rank)) != 1) {
-
     stop("Please use one of rank or top arguments")
-
   }
-
 
 # Men's
   category <- tolower(category)

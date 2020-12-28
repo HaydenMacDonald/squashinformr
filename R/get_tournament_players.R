@@ -60,361 +60,466 @@
 #'
 #' @export
 
-get_tournament_players <- function(tournament = NULL, year = 2020, world_tour = TRUE) {
+get_tournament_players <-
+  function(tournament = NULL,
+           year = 2020,
+           world_tour = TRUE) {
+   ## Input errors
+   stopifnot(
+      is.character(tournament) |
+        is.null(tournament),
+      is.numeric(year) | is.null(year),
+      is.logical(world_tour)
+    )
 
-  ## Input errors
-  stopifnot(is.character(tournament) | is.null(tournament), is.numeric(year) | is.null(year), is.logical(world_tour))
 
-
-  ## Stop if querying "Premier League"
-  if (!is.null(tournament)) {
-
+    ## Stop if querying "Premier League"
+    if (!is.null(tournament)) {
       if (str_detect(tournament, pattern = regex("Premier League", ignore_case = TRUE)) == TRUE) {
-
         stop("Premier League data are currently not available through squashinformr")
 
       }
 
-  }
+    }
 
-  ## Stop if year does not meet following requirements
-  if (is.null(year) == FALSE) {
+    ## Stop if year does not meet following requirements
+    if (is.null(year) == FALSE) {
+      ## Stop if year is not 2019 or 2020
+      if (year != 2019 & year != 2020) {
+        stop("Year must be either 2019 or 2020")
 
-    ## Stop if year is not 2019 or 2020
-    if(year != 2019 & year != 2020) {
+      }
 
-      stop("Year must be either 2019 or 2020")
+      ## Test year for length of four digits and non-negativity
+      stopifnot((nchar(trunc(abs(
+        year
+      ))) == 4 & year > 0))
 
     }
 
-    ## Test year for length of four digits and non-negativity
-    stopifnot((nchar(trunc(abs(year))) == 4 & year > 0))
 
-  }
+    # Results page on SquashInfo
+    t_url <- "http://www.squashinfo.com/results?start=1"
 
+    # Empty tournaments object
+    tournaments <- c()
 
-  # Results page on SquashInfo
-  t_url <- "http://www.squashinfo.com/results?start=1"
+    # Set arbitrary variable to test for tournament result limit
+    results_limit <- 0
 
-  # Empty tournaments object
-  tournaments <- c()
+    while (!is.na(results_limit)) {
+      ## Verbose
+      message("Scraping ", t_url)
 
-  # Set arbitrary variable to test for tournament result limit
-  results_limit <- 0
+      # Check for Robots.txt
+      session <- suppressMessages(bow(t_url))
 
-  while (!is.na(results_limit)) {
+      # Nod and scrape page politely
+      current_page <- nod(session, t_url) %>%
+        scrape(verbose = FALSE)
 
-    ## Verbose
-    message("Scraping ", t_url)
+      ## Extract tournaments table
+      results <- current_page %>%
+        html_nodes("div.darkborder") %>%
+        html_nodes("table") %>%
+        .[[2]] %>%
+        html_table(header = TRUE) %>%
+        as.data.frame() %>%
+        clean_names() %>%
+        rename(league = x) %>%
+        mutate(date = dmy(date)) %>%
+        filter(!str_detect(name, pattern = "Premier League"))
 
-    # Check for Robots.txt
-    session <- suppressMessages(bow(t_url))
+      ## Extract tournament slugs
+      slug <- current_page %>%
+        html_nodes(xpath = "//td/a") %>%
+        html_attr("href") %>%
+        .[str_detect(., "events")] %>%
+        .[!str_detect(., "premier-league")]
 
-    # Nod and scrape page politely
-    current_page <- nod(session, t_url) %>%
-                      scrape(verbose = FALSE)
+      ## Add slugs to results
+      results <- cbind(results, slug)
 
-    ## Extract tournaments table
-    results <- current_page %>%
-                  html_nodes("div.darkborder") %>%
-                  html_nodes("table") %>%
-                  .[[2]] %>%
-                  html_table(header = TRUE) %>%
-                  as.data.frame() %>%
-                  clean_names() %>%
-                  rename(league = x) %>%
-                  mutate(date = dmy(date)) %>%
-                  filter(!str_detect(name, pattern = "Premier League"))
+      ## Filter out non-world tour tournaments
+      if (world_tour == TRUE) {
+        results <- results %>%
+          filter(str_detect(league, pattern = "World"))
 
-    ## Extract tournament slugs
-    slug <- current_page %>%
-              html_nodes(xpath = "//td/a") %>%
-              html_attr("href") %>%
-              .[str_detect(., "events")] %>%
-              .[!str_detect(., "premier-league")]
+      }
 
-    ## Add slugs to table
-    results <- cbind(results, slug)
+      ## Bind results row-wise
+      tournaments <- rbind(tournaments, results)
 
-    ## Filter out non-world tour tournaments
-    if (world_tour == TRUE) {
-
-      results <- results %>%
-                    filter(str_detect(league, pattern = "World"))
-
-    }
-
-    ## Bind results row-wise
-    tournaments <- rbind(tournaments, results)
-
-
-    ## If tournament name is given and year is not given
-    if (is.null(tournament) == FALSE & is.null(year) == TRUE) {
-
-          ## and tournament name is present within current results
-          if (TRUE %in% str_detect(tournaments$name, regex(tournament, ignore_case = TRUE))) {
-
-            results_limit <- NA_character_ ## end while loop
-
-          } else { ## otherwise continue to next page
-
-            results_limit <- 0
-
-            # Find url in "Next" button
-            t_url <- current_page %>%
-                        html_nodes("a")
-
-            t_url <- suppressWarnings(t_url[str_detect(t_url, "Next")]) %>%
-                        html_attr("href")
-
-            ## Replace t_url with url in Next page button
-            t_url <- sprintf("http://www.squashinfo.com%s", t_url)
-
-          }
-
-    ## If tournament name is not given and year is given
-    } else if (is.null(tournament) == TRUE & is.null(year) == FALSE) {
-
-          ## and the previous year is present within current results
-          if ((year - 1) %in% year(tournaments$date)) {
-
-            results_limit <- NA_character_ ## end while loop
-
-          } else { ## otherwise continue to next page
-
-            results_limit <- 0
-
-            # Find url in "Next" button
-            t_url <- current_page %>%
-                        html_nodes("a")
-
-            t_url <- suppressWarnings(t_url[str_detect(t_url, "Next")]) %>%
-                        html_attr("href")
-
-            ## Replace t_url with url in Next page button
-            t_url <- sprintf("http://www.squashinfo.com%s", t_url)
-
-          }
-
-    ## If tournament AND year are given
-    } else {
-
-        ## AND if tournament name and year given are present in current results
-        if ((year %in% year(tournaments[str_detect(tournaments$name, regex(tournament, ignore_case = TRUE)), ]$date)) & (TRUE %in% str_detect(tournaments$name, regex(tournament, ignore_case = TRUE)))) {
-
+      ## If tournament is given and year is NOT given
+      if (is.null(tournament) == FALSE & is.null(year) == TRUE) {
+        ## and tournament name is present in current results
+        if (TRUE %in% str_detect(tournaments$name, regex(tournament, ignore_case = TRUE))) {
           results_limit <- NA_character_ ## end while loop
 
-        } else { ## otherwise continue to next page
+        } else {
+          ## otherwise continue to next page
 
           results_limit <- 0
 
           # Find url in "Next" button
           t_url <- current_page %>%
-                      html_nodes("a")
+            html_nodes("a")
 
-          t_url <- suppressWarnings(t_url[str_detect(t_url, "Next")]) %>%
-                      html_attr("href")
+          t_url <-
+            suppressWarnings(t_url[str_detect(t_url, "Next")]) %>%
+            html_attr("href")
 
           ## Replace t_url with url in Next page button
           t_url <- sprintf("http://www.squashinfo.com%s", t_url)
 
         }
 
-    }
+        ## If tournament name is not given and year is given
+      } else if (is.null(tournament) == TRUE &
+                 is.null(year) == FALSE) {
+        ## and the previous year is present within current results
+        if ((year - 1) %in% year(tournaments$date)) {
+          results_limit <- NA_character_ ## end while loop
 
-  } # END OF WHILE LOOP
+        } else {
+          ## otherwise continue to next page
 
+          results_limit <- 0
 
-## Filter tournaments according to tournament name and/or year
+          # Find url in "Next" button
+          t_url <- current_page %>%
+            html_nodes("a")
 
-  if (is.null(tournament) == TRUE) {
+          t_url <-
+            suppressWarnings(t_url[str_detect(t_url, "Next")]) %>%
+            html_attr("href")
 
-    tournaments <- tournaments %>%
-                      filter(year(date) >= year)
+          ## Replace t_url with url in Next page button
+          t_url <- sprintf("http://www.squashinfo.com%s", t_url)
 
-  } else if (is.null(year) == TRUE) {
+        }
 
-    tournaments <- tournaments %>%
-                      filter(str_detect(name, regex(tournament, ignore_case = TRUE)))
+        ## If tournament AND year are given
+      } else {
+        ## and year AND tournament name is present in current results
+        if ((year %in% year(tournaments[str_detect(tournaments$name, regex(tournament, ignore_case = TRUE)),]$date)) &
+            (TRUE %in% str_detect(tournaments$name, regex(tournament, ignore_case = TRUE)))) {
+          results_limit <- NA_character_  ## end while loop
 
-  } else if (is.null(tournament) == FALSE & is.null(year) == FALSE) {
+        } else {
+          ## otherwise continue to next page
 
-    tournaments <- tournaments %>%
-                        filter(year(date) == year, str_detect(name, regex(tournament, ignore_case = TRUE)))
+          results_limit <- 0
 
-  }
+          # Find url in "Next" button
+          t_url <- current_page %>%
+            html_nodes("a")
 
-  ## Create empty players dataframe
-  players <- c()
+          t_url <-
+            suppressWarnings(t_url[str_detect(t_url, "Next")]) %>%
+            html_attr("href")
 
-  for (i in seq_along(tournaments$slug)) { ## for each slug in tournaments
+          ## Replace t_url with url in Next page button
+          t_url <- sprintf("http://www.squashinfo.com%s", t_url)
 
-    ## Create url from slug
-    t_url <- sprintf("http://www.squashinfo.com%s", tournaments$slug[i])
-
-    ## Verbose
-    message("Scraping ", t_url)
-
-    ## Extract tournament name
-    t_name <- tournaments$name[i]
-
-    ## Extract tournament category
-    t_category <- if_else(str_detect(t_name, pattern = regex(" \\(M\\)")), "Men's", if_else(str_detect(t_name, pattern = regex(" \\(W\\)")), "Women's", NA_character_))
-
-    ## Clean tournament name
-    t_name <- str_replace_all(t_name, pattern = regex(" \\(M\\)"), "")
-    t_name <- str_replace_all(t_name, pattern = regex(" \\(W\\)"), "")
-
-    ## Extract tournament date
-    t_date <- tournaments$date[i]
-
-    ## Bow and scrape page
-    current_page <- suppressMessages(bow(t_url, verbose = FALSE) %>%
-                                        scrape(verbose = FALSE))
-
-    ## Find html tables
-    result <- current_page %>%
-                html_nodes("table") %>%
-                html_table() %>%
-                as.data.frame()
-
-    ## Replace empty strings with NAs
-    result <- result %>%
-                replace_with_na(replace = list(X1 = "", X2 = ""))
-
-    ## Filter out extraneous rows from table
-    result <- result[rowSums(is.na(result)) != ncol(result),]
-
-
-    ## Create dataframe of lags for each match in order to determine which tournament round the match occurred in
-    lags <- seq(1, dim(result)[1], 1)
-
-    lag_names <- paste("lag", formatC(lags, width = nchar(max(lags)), flag = "0"), sep = "_")
-
-    lag_functions <- setNames(paste("dplyr::lag(., ", lags, ")"), lag_names)
-
-    lag_df <- result %>%
-                mutate_at(vars(X1), suppressWarnings(funs_(lag_functions)))
-
-    ## Create round variable
-    result$round <- NA
-
-    ## For each match in result, find the corresponding lagged 'round' row
-    for (i in seq_along(result$X1)) {
-
-      if ("1st round:" %in% lag_df[i,]) {
-
-        result$round[i] <- 1
-
-      } else if ("2nd round:" %in% lag_df[i,]) {
-
-        result$round[i] <- 2
-
-      } else if ("3rd round:" %in% lag_df[i,]) {
-
-        result$round[i] <- 3
-
-      } else if ("Quarter-finals:" %in% lag_df[i,]) {
-
-        result$round[i] <- 4
-
-      } else if ("Semi-finals:" %in% lag_df[i,]) {
-
-        result$round[i] <- 5
-
-      } else if ("Third place play-off:" %in% lag_df[i,]) {
-
-        result$round[i] <- 6
-
-      } else if ("Final:" %in% lag_df[i,]) {
-
-        result$round[i] <- 7
+        }
 
       }
 
+    } # END OF WHILE LOOP
+
+
+    ## Filter tournaments according to tournament name and/or year
+
+    if (is.null(tournament) == TRUE) {
+      tournaments <- tournaments %>%
+        filter(year(date) >= year)
+
+    } else if (is.null(year) == TRUE) {
+      tournaments <- tournaments %>%
+        filter(str_detect(name, regex(tournament, ignore_case = TRUE)))
+
+    } else if (is.null(tournament) == FALSE &
+               is.null(year) == FALSE) {
+      tournaments <- tournaments %>%
+        filter(year(date) == year, str_detect(name, regex(tournament, ignore_case = TRUE)))
+
     }
 
-    ## Clean results
-    result <- result %>%
-                ## Remove 'round' rows
-                filter(X1 != "Final:", X1 != "Semi-finals:", X1 != "Quarter-finals:", X1 != "3rd round:", X1 != "2nd round:", X1 != "1st round:") %>%
-                mutate(X1 = str_replace_all(X1, pattern = regex("[:punct:]"), replacement = ""), ## Remove punctuation from match column
+    ## Create empty players dataframe
+    players <- c()
 
-                       ## Extract player names
-                       player_2 = str_trim(if_else(X2 == "bye", "bye", if_else(str_detect(X1, " v "), str_extract(X1, pattern = "(?<= v).*"), str_extract(X1, pattern = "(?<= bt).*"))), side = "both"),
-                       player_1 = str_trim(if_else(X2 == "bye", X1, if_else(str_detect(X1, " v "), str_extract(X1, pattern = ".*(?= v)"), str_extract(X1, pattern = ".*(?= bt)"))), side = "both"),
+    for (i in seq_along(tournaments$slug)) {
+      ## For each tournament slug
 
-                       ## Extract player seed
-                       player_1_seed = as.numeric(str_extract(player_1, pattern = regex("^[:digit:]{1,}"))),
-                       player_2_seed = as.numeric(str_extract(player_2, pattern = regex("^[:digit:]{1,}"))),
+      ## Create tournament url from slug
+      t_url <-
+        sprintf("http://www.squashinfo.com%s", tournaments$slug[i])
 
-                       ## Remove seed data from player names
-                       player_1 = str_remove(player_1, pattern = regex("^[:digit:]{1,}")),
-                       player_2 = str_remove(player_2, pattern = regex("^[:digit:]{1,}")),
+      ## Verbose
+      message("Scraping ", t_url)
 
-                       ## Extract player nationalities
-                       player_1_nationality = str_extract(player_1, pattern = regex("[A-Z]{2,}$")),
-                       player_2_nationality = str_extract(player_2, pattern = regex("[A-Z]{2,}$")),
+      ## Extract tournament name
+      t_name <- tournaments$name[i]
 
-                       ## Remove wild card seeding designation from player names
-                       player_1 = str_remove(player_1, pattern = regex("^WC ")),
-                       player_2 = str_remove(player_2, pattern = regex("^WC ")),
+      ## Extract tournament category
+      t_category <-
+        if_else(
+          str_detect(t_name, pattern = regex(" \\(M\\)")),
+          "Men's",
+          if_else(
+            str_detect(t_name, pattern = regex(" \\(W\\)")),
+            "Women's",
+            NA_character_
+          )
+        )
 
-                       ## Remove player nationalities from player names
-                       player_1 = str_trim(str_remove(player_1, pattern = regex("[A-Z]{2,}$")), side = "both"),
-                       player_2 = str_trim(str_remove(player_2, pattern = regex("[A-Z]{2,}$")), side = "both"),
+      ## Clean tournament name
+      t_name <-
+        str_replace_all(t_name, pattern = regex(" \\(M\\)"), "")
+      t_name <-
+        str_replace_all(t_name, pattern = regex(" \\(W\\)"), "")
 
-                       ## Make round an ordered factor based on the number of unique rounds and whether it includes a third place play-off round
-                       round = factor(round,
-                                      labels = if (length(unique(result$round)) == 6) {c("1st", "2nd", "3rd", "QF", "SF", "F")}
-                                      else if (6 %in% result$round & length(unique(result$round)) == 8) {c("1st", "2nd", "3rd", "4th", "QF", "SF", "3rd place match", "F")}
-                                      else if (6 %in% result$round & length(unique(result$round)) == 7) {c("1st", "2nd", "3rd", "QF", "SF", "3rd place match", "F")}
-                                      else if (6 %in% result$round & length(unique(result$round)) == 6) {c("1st", "2nd", "QF", "SF", "3rd place match", "F")}
-                                      else if (6 %in% result$round & length(unique(result$round)) == 5) {c("2nd", "QF", "SF", "3rd place match", "F")}
-                                      else if (length(unique(result$round)) == 5) {c("1st", "2nd", "QF", "SF", "F")}
-                                      else if (6 %in% result$round & length(unique(result$round)) == 4) {c("QF", "SF", "3rd place match", "F")}
-                                      else if (length(unique(result$round)) == 4) {c("1st", "QF", "SF", "F")}
-                                      else if (length(unique(result$round)) == 3) {c("QF", "SF", "F")}
-                                      else if (length(unique(result$round)) == 2) {c("SF", "F")}
-                                      else if (length(unique(result$round)) == 1) {c("F")},
-                                      ordered = TRUE)) %>%
-                select(player_1, player_2, player_1_seed, player_2_seed, player_1_nationality, player_2_nationality, round)
+      ## Extract tournament date
+      t_date <- tournaments$date[i]
 
-    ## Extract player_1 data in each match
-    player_1 <- result %>%
-                    select(player = player_1, player_seed = player_1_seed, player_nationality = player_1_nationality, round)
+      ## Bow and scrape page
+      current_page <- suppressMessages(bow(t_url, verbose = FALSE) %>%
+						scrape(verbose = FALSE))
 
-    ## Extract player_2 data in each match
-    player_2 <- result %>%
-                    select(player = player_2, player_seed = player_2_seed, player_nationality = player_2_nationality, round)
+      ## Find html tables
+      result <- current_page %>%
+        html_nodes("table") %>%
+        html_table() %>%
+        as.data.frame()
 
-    ## Bind results row-wise and find unique players in tournament
-    result <- bind_rows(player_1, player_2) %>%
-                    group_by(player) %>%
-                    summarize(seed = suppressWarnings(max(player_seed, na.rm = TRUE)),
-                              nationality = suppressWarnings(max(player_nationality, na.rm = TRUE)),
-                              round_reached = suppressWarnings(max(round, na.rm = TRUE))) %>%  ## find highest round reached by player in that tournament
-                    filter(player != "bye") %>%
-                    ungroup() %>%
-                    mutate(seed = if_else(is.infinite(seed), NA_real_, if_else(seed == 916, 16, seed))) %>% ## Give seed 16 to player's given seed '9-16'
-                    arrange(seed)
+      ## Replace empty strings with NAs
+      result <- result %>%
+        replace_with_na(replace = list(X1 = "", X2 = ""))
 
-    ## Add tournament name, category, date
-    result <- result %>%
-                mutate(tournament = t_name,
-                       category = t_category,
-                       tournament_date = t_date) %>%
-                select(tournament, category, tournament_date, player, seed, nationality, round_reached)
+      ## Remove extraneous rows
+      result <- result[rowSums(is.na(result)) != ncol(result), ]
 
-    ## Bind results row-wise
-    players <- rbind(players, result)
+
+      ## Create dataframe of lags for each match in order to determine which tournament round the match occurred in
+      lags <- seq(1, dim(result)[1], 1)
+
+      lag_names <-
+        paste("lag", formatC(lags, width = nchar(max(lags)), flag = "0"), sep = "_")
+
+      lag_functions <-
+        setNames(paste("dplyr::lag(., ", lags, ")"), lag_names)
+
+      lag_df <- result %>%
+        mutate_at(vars(X1), suppressWarnings(funs_(lag_functions)))
+
+      ## Create round variable
+      result$round <- NA
+
+      ## For each match in result, find the corresponding lagged 'round' row
+      for (i in seq_along(result$X1)) {
+        if ("1st round:" %in% lag_df[i, ]) {
+          result$round[i] <- 1
+
+        } else if ("2nd round:" %in% lag_df[i, ]) {
+          result$round[i] <- 2
+
+        } else if ("3rd round:" %in% lag_df[i, ]) {
+          result$round[i] <- 3
+
+        } else if ("Quarter-finals:" %in% lag_df[i, ]) {
+          result$round[i] <- 4
+
+        } else if ("Semi-finals:" %in% lag_df[i, ]) {
+          result$round[i] <- 5
+
+        } else if ("Third place play-off:" %in% lag_df[i, ]) {
+          result$round[i] <- 6
+
+        } else if ("Final:" %in% lag_df[i, ]) {
+          result$round[i] <- 7
+
+        }
+
+      }
+
+      ## Clean results
+      result <- result %>%
+        ## Remove 'round' rows
+        filter(
+          X1 != "Final:",
+          X1 != "Semi-finals:",
+          X1 != "Quarter-finals:",
+          X1 != "3rd round:",
+          X1 != "2nd round:",
+          X1 != "1st round:"
+        ) %>%
+        mutate(
+          X1 = str_replace_all(
+            X1,
+            pattern = regex("[:punct:]"),
+            replacement = ""
+          ),
+          ## Remove punctuation from match column
+
+          ## Extract player names
+          player_2 = str_trim(if_else(
+            X2 == "bye",
+            "bye",
+            if_else(
+              str_detect(X1, " v "),
+              str_extract(X1, pattern = "(?<= v).*"),
+              str_extract(X1, pattern = "(?<= bt).*")
+            )
+          ), side = "both"),
+          player_1 = str_trim(if_else(
+            X2 == "bye",
+            X1,
+            if_else(
+              str_detect(X1, " v "),
+              str_extract(X1, pattern = ".*(?= v)"),
+              str_extract(X1, pattern = ".*(?= bt)")
+            )
+          ), side = "both"),
+
+          ## Extract player seed
+          player_1_seed = as.numeric(str_extract(
+            player_1, pattern = regex("^[:digit:]{1,}")
+          )),
+          player_2_seed = as.numeric(str_extract(
+            player_2, pattern = regex("^[:digit:]{1,}")
+          )),
+
+          ## Remove seed data from player names
+          player_1 = str_remove(player_1, pattern = regex("^[:digit:]{1,}")),
+          player_2 = str_remove(player_2, pattern = regex("^[:digit:]{1,}")),
+
+          ## Extract player nationalities
+          player_1_nationality = str_extract(player_1, pattern = regex("[A-Z]{2,}$")),
+          player_2_nationality = str_extract(player_2, pattern = regex("[A-Z]{2,}$")),
+
+          ## Remove wild card seeding designation from player names
+          player_1 = str_remove(player_1, pattern = regex("^WC ")),
+          player_2 = str_remove(player_2, pattern = regex("^WC ")),
+
+          ## Remove player nationalities from player names
+          player_1 = str_trim(str_remove(player_1, pattern = regex("[A-Z]{2,}$")), side = "both"),
+          player_2 = str_trim(str_remove(player_2, pattern = regex("[A-Z]{2,}$")), side = "both"),
+
+          ## Make round an ordered factor based on the number of unique rounds and whether it includes a third place play-off round
+          round = factor(
+            round,
+            labels = if (length(unique(result$round)) == 6) {
+              c("1st", "2nd", "3rd", "QF", "SF", "F")
+            }
+            else if (6 %in% result$round &
+                     length(unique(result$round)) == 8) {
+              c("1st",
+                "2nd",
+                "3rd",
+                "4th",
+                "QF",
+                "SF",
+                "3rd place match",
+                "F")
+            }
+            else if (6 %in% result$round &
+                     length(unique(result$round)) == 7) {
+              c("1st", "2nd", "3rd", "QF", "SF", "3rd place match", "F")
+            }
+            else if (6 %in% result$round &
+                     length(unique(result$round)) == 6) {
+              c("1st", "2nd", "QF", "SF", "3rd place match", "F")
+            }
+            else if (6 %in% result$round &
+                     length(unique(result$round)) == 5) {
+              c("2nd", "QF", "SF", "3rd place match", "F")
+            }
+            else if (length(unique(result$round)) == 5) {
+              c("1st", "2nd", "QF", "SF", "F")
+            }
+            else if (6 %in% result$round &
+                     length(unique(result$round)) == 4) {
+              c("QF", "SF", "3rd place match", "F")
+            }
+            else if (length(unique(result$round)) == 4) {
+              c("1st", "QF", "SF", "F")
+            }
+            else if (length(unique(result$round)) == 3) {
+              c("QF", "SF", "F")
+            }
+            else if (length(unique(result$round)) == 2) {
+              c("SF", "F")
+            }
+            else if (length(unique(result$round)) == 1) {
+              c("F")
+            },
+            ordered = TRUE
+          )
+        ) %>%
+        select(
+          player_1,
+          player_2,
+          player_1_seed,
+          player_2_seed,
+          player_1_nationality,
+          player_2_nationality,
+          round
+        )
+
+      ## Extract player_1 data in each match
+      player_1 <- result %>%
+        select(
+          player = player_1,
+          player_seed = player_1_seed,
+          player_nationality = player_1_nationality,
+          round
+        )
+
+      ## Extract player_2 data in each match
+      player_2 <- result %>%
+        select(
+          player = player_2,
+          player_seed = player_2_seed,
+          player_nationality = player_2_nationality,
+          round
+        )
+
+      ## Bind results row-wise and find unique players in tournament
+      result <- bind_rows(player_1, player_2) %>%
+        group_by(player) %>%
+        summarize(
+          seed = suppressWarnings(max(player_seed, na.rm = TRUE)),
+          nationality = suppressWarnings(max(player_nationality, na.rm = TRUE)),
+          round_reached = suppressWarnings(max(round, na.rm = TRUE))
+        ) %>%  ## find highest round reached by player in that tournament
+        filter(player != "bye") %>%
+        ungroup() %>%
+        mutate(seed = if_else(is.infinite(seed), NA_real_, if_else(seed == 916, 16, seed))) %>% ## Give seed 16 to player's given seed '9-16'
+        arrange(seed)
+
+      ## Add tournament name, category, date
+      result <- result %>%
+        mutate(
+          tournament = t_name,
+          category = t_category,
+          tournament_date = t_date
+        ) %>%
+        select(tournament,
+               category,
+               tournament_date,
+               player,
+               seed,
+               nationality,
+               round_reached)
+
+      ## Bind results row-wise
+      players <- rbind(players, result)
+
+
+    }
+
+    return(players)
 
 
   }
-
-
-  return(players)
-
-
-}
-
