@@ -4,12 +4,12 @@
 \alias{get_tournament_players}
 \title{Get a tournament's players from SquashInfo}
 \usage{
-get_tournament_players(tournament = NULL, year = 2020, world_tour = TRUE)
+get_tournament_players(tournament = NULL, year = 2021, world_tour = TRUE)
 }
 \arguments{
 \item{tournament}{character string of name of the tournament. Partial tournament names are matched via regular expressions.}
 
-\item{year}{integer indicating year of competition. Must be 2019, 2020, or NULL if querying results for both years.}
+\item{year}{integer indicating year of competition. Must be 2020, 2021, or NULL if querying results for both years.}
 
 \item{world_tour}{logical indicating whether to only return PSA World Tour tournaments.}
 }
@@ -20,14 +20,14 @@ Tibble containing the tournament name, competition category, tournament date, pl
 Given a tournament name or a year, \code{get_tournament_players()} returns player registrants for PSA World Tour tournaments and other events.
 }
 \note{
-This function only returns player registrant data from tournaments in 2019 and 2020, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
+This function only returns player registrant data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 }
 \examples{
 ## Who played in the Tournament of Champions in 2020?
 \donttest{get_tournament_players(tournament = "tournament of champions", year = 2020)}
 
-## Return player registrant data for all PSA World Tour tournaments in 2019
-\donttest{get_tournament_players(year = 2019, world_tour = TRUE)}
+## Return player registrant data for all PSA World Tour tournaments in 2020
+\donttest{get_tournament_players(year = 2020, world_tour = TRUE)}
 
 
 

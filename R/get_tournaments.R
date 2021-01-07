@@ -2,7 +2,7 @@
 #'
 #' Given a year, \code{get_tournaments()} returns data for PSA World Tour tournaments and other events.
 #'
-#' @param year integer indicating the tournament year. Must be one of 2019 or 2020.
+#' @param year integer indicating the tournament year. Must be one of 2020 or 2021.
 #'
 #' @param world_tour logical indicating whether to only return PSA World Tour tournaments.
 #'
@@ -10,13 +10,13 @@
 #'
 #' @examples
 #'
-#' ## Get data on 2020 PSA World Tour tournaments
+#' ## Get data on 2021 PSA World Tour tournaments
 #' \donttest{get_tournaments()}
 #'
-#' ## Get data on 2019 non-PSA World Tour tournaments
-#' \donttest{get_tournaments(2019, world_tour = FALSE)}
+#' ## Get data on 2020 non-PSA World Tour tournaments
+#' \donttest{get_tournaments(2020, world_tour = FALSE)}
 #'
-#' @note This function only returns tournaments from 2019 and 2020, as any other data are not available to non-premium members on SquashInfo.
+#' @note This function only returns tournaments from 2020 and 2021, as any other data are not available to non-premium members on SquashInfo.
 #'
 #' @references
 #'
@@ -50,18 +50,10 @@
 #'
 #' @export
 
-get_tournaments <-
-  function(year = 2020,
-           world_tour = TRUE) {
+get_tournaments <- function(year = 2021, world_tour = TRUE) {
+
     ## Input errors
-    stopifnot(
-      is.numeric(year) |
-        is.null(year),
-      (nchar(trunc(abs(
-        year
-      ))) == 4 & year > 0) | is.null(year),
-      is.logical(world_tour)
-    )
+    stopifnot(is.numeric(year) | is.null(year), (nchar(trunc(abs(year))) == 4 & year > 0) | is.null(year), is.logical(world_tour))
 
     # Results page on SquashInfo
     t_url <- "http://www.squashinfo.com/results?start=1"
@@ -151,20 +143,20 @@ get_tournaments <-
           str_trim(str_extract(location, "(?<=, )(.*)"), side = "left")
         )
       ) %>%
-      filter(date >= ymd('2019-01-01')) %>%  ## filter out any tournaments occuring before 2019-01-01 (tournament data before this date is not available to regular members of SquashInfo)
+      filter(date >= ymd('2020-01-01')) %>%  ## filter out any tournaments occuring before 2020-01-01 (tournament data before this date is not available to regular members of SquashInfo)
       arrange(desc(date)) %>%
       select(league, category, name, date, city, country)
 
 
     ## Filter final results by year input
-    if (year == 2020) {
+    if (year == 2021) {
+      tournaments <- tournaments %>%
+        filter(year(date) == 2021)
+
+
+    } else if (year == 2020) {
       tournaments <- tournaments %>%
         filter(year(date) == 2020)
-
-
-    } else if (year == 2019) {
-      tournaments <- tournaments %>%
-        filter(year(date) == 2019)
 
     }
 

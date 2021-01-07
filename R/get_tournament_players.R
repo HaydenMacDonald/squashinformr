@@ -4,7 +4,7 @@
 #'
 #' @param tournament character string of name of the tournament. Partial tournament names are matched via regular expressions.
 #'
-#' @param year integer indicating year of competition. Must be 2019, 2020, or NULL if querying results for both years.
+#' @param year integer indicating year of competition. Must be 2020, 2021, or NULL if querying results for both years.
 #'
 #' @param world_tour logical indicating whether to only return PSA World Tour tournaments.
 #'
@@ -14,12 +14,12 @@
 #' ## Who played in the Tournament of Champions in 2020?
 #' \donttest{get_tournament_players(tournament = "tournament of champions", year = 2020)}
 #'
-#' ## Return player registrant data for all PSA World Tour tournaments in 2019
-#' \donttest{get_tournament_players(year = 2019, world_tour = TRUE)}
+#' ## Return player registrant data for all PSA World Tour tournaments in 2020
+#' \donttest{get_tournament_players(year = 2020, world_tour = TRUE)}
 #'
 #'
 #'
-#' @note This function only returns player registrant data from tournaments in 2019 and 2020, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
+#' @note This function only returns player registrant data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 #'
 #' @references
 #'
@@ -62,7 +62,7 @@
 
 get_tournament_players <-
   function(tournament = NULL,
-           year = 2020,
+           year = 2021,
            world_tour = TRUE) {
    ## Input errors
    stopifnot(
@@ -84,9 +84,9 @@ get_tournament_players <-
 
     ## Stop if year does not meet following requirements
     if (is.null(year) == FALSE) {
-      ## Stop if year is not 2019 or 2020
-      if (year != 2019 & year != 2020) {
-        stop("Year must be either 2019 or 2020")
+      ## Stop if year is not 2020 or 2021
+      if (year != 2020 & year != 2021) {
+        stop("Year must be either 2020 or 2021")
 
       }
 

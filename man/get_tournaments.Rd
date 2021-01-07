@@ -4,10 +4,10 @@
 \alias{get_tournaments}
 \title{Get tournaments from SquashInfo}
 \usage{
-get_tournaments(year = 2020, world_tour = TRUE)
+get_tournaments(year = 2021, world_tour = TRUE)
 }
 \arguments{
-\item{year}{integer indicating the tournament year. Must be one of 2019 or 2020.}
+\item{year}{integer indicating the tournament year. Must be one of 2020 or 2021.}
 
 \item{world_tour}{logical indicating whether to only return PSA World Tour tournaments.}
 }
@@ -18,15 +18,15 @@ Tibble containing the league, competition category, name, date, city, and countr
 Given a year, \code{get_tournaments()} returns data for PSA World Tour tournaments and other events.
 }
 \note{
-This function only returns tournaments from 2019 and 2020, as any other data are not available to non-premium members on SquashInfo.
+This function only returns tournaments from 2020 and 2021, as any other data are not available to non-premium members on SquashInfo.
 }
 \examples{
 
-## Get data on 2020 PSA World Tour tournaments
+## Get data on 2021 PSA World Tour tournaments
 \donttest{get_tournaments()}
 
-## Get data on 2019 non-PSA World Tour tournaments
-\donttest{get_tournaments(2019, world_tour = FALSE)}
+## Get data on 2020 non-PSA World Tour tournaments
+\donttest{get_tournaments(2020, world_tour = FALSE)}
 
 }
 \references{
