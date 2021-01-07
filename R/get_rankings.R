@@ -28,6 +28,57 @@
 #'     \url{http://www.squashinfo.com/rankings/men} \cr
 #'     \url{http://www.squashinfo.com/rankings/women}
 #'
+#' @export
+
+get_rankings <- function(top = NULL, category = NULL) {
+
+  ## Stop if top is not numeric or NULL, or if category is not character
+  stopifnot(is.numeric(top) | is.null(top), is.character(category))
+
+  ## Make category input lowercase
+  category <- tolower(category)
+
+  # Men's
+  if (category == "mens") {
+
+    mens_rankings <- get_rankings_table(top = top, category = category)
+
+  } else if (category == "womens") {
+
+    womens_rankings <- get_rankings_table(top = top, category = category)
+
+  } else if (category == "both") {
+
+    mens_rankings <- get_rankings_table(top = top, category = "mens")
+
+    womens_rankings <- get_rankings_table(top = top, category = "womens")
+
+    ## Combine rankings tables
+    all_rankings <- bind_rows(mens_rankings, womens_rankings)
+
+    return(all_rankings)
+
+  } else {
+
+    stop("category must be one of 'both', 'mens', or 'womens'")
+
+  }
+
+
+}
+
+
+#' Get the PSA rankings tables from SquashInfo
+#'
+#' Given a competition category, \code{get_rankings_table()} returns the most recent PSA rankings table.
+#'
+#' @param top integer indicating the number of top PSA players by rank to return.
+#'
+#' @param category character string indicating the competition category. Must be one of "mens", or "womens".
+#'
+#' @return Tibble containing the player rank, previous month's rank, name, highest ranking achieved, date of highest ranking, nationality, and competition category.
+#'
+#'
 #' @importFrom dplyr %>%
 #' @importFrom dplyr rename
 #' @importFrom dplyr select
@@ -43,199 +94,53 @@
 #' @importFrom janitor clean_names
 #' @importFrom lubridate ymd
 #' @importFrom lubridate parse_date_time
-#'
-#' @export
 
-get_rankings <- function(top = NULL, category = NULL) {
+get_rankings_table <- function(top = NULL, category = NULL) {
 
-  stopifnot(is.numeric(top) | is.null(top), is.character(category))
-
-  category <- tolower(category)
-
+  ## Get profile URLs for top n players
   if (category == "mens") {
-
-    ## Ranking url
     rankings_url <- "http://www.squashinfo.com/rankings/men"
-
-    ## Check URL for Robots.txt
-    suppressMessages(session <- bow(rankings_url))
-
-    ## Create mens_rankings
-    mens_rankings <- c()
-
-    for (i in 1:(round_any(top, 50, ceiling)/50)) {
-
-      ## Next tab in rankings table
-      rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
-
-      ## Scrape rankings table
-      current_page <- suppressMessages(bow(rankings_url)) %>%
-                                          scrape()
-
-      results <- current_page %>%
-                    html_nodes("table") %>%
-                    html_table()
-
-      ## Store results in mens_rankings
-      mens_rankings <- bind_rows(mens_rankings, results)
-
-    }
-
-    ## Clean mens_rankings
-    mens_rankings <- mens_rankings %>%
-                        clean_names() %>%
-                        filter(rank <= top) %>%
-                        mutate(category = "Men's",
-                               date = ymd(parse_date_time(date, orders = "bY"))) %>%
-                        rename(previous_rank = prev,
-                               highest_world_ranking = hwr,
-                               hwr_date = date) %>%
-                        select(rank, previous_rank, name, highest_world_ranking, hwr_date, country, category) %>%
-                        as_tibble()
-
-    return(mens_rankings)
-
-
   } else if (category == "womens") {
-
-    ## Ranking url
     rankings_url <- "http://www.squashinfo.com/rankings/women"
+  }
 
-    ## Check URL for Robots.txt
-    suppressMessages(session <- bow(rankings_url))
+  ## Check URL for Robots.txt
+  suppressMessages(session <- bow(rankings_url))
 
-    ## Create womens_rankings
-    womens_rankings <- c()
+  ## Create rankings
+  rankings <- c()
 
-    for (i in 1:(round_any(top, 50, ceiling)/50)) {
+  for (i in 1:(round_any(top, 50, ceiling)/50)) {
 
-      ## Next tab in rankings table
-      rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
+    ## Next tab in rankings table
+    rankings_url <- sprintf(paste0(rankings_url, "/%s"), i)
 
-      ## Scrape rankings table
-      current_page <- suppressMessages(bow(rankings_url)) %>%
-                                        scrape()
+    ## Scrape rankings page
+    current_page <- suppressMessages(bow(rankings_url)) %>%
+      scrape()
 
-      results <- current_page %>%
-                    html_nodes("table") %>%
-                    html_table()
+    ## Extract rankings table
+    results <- current_page %>%
+      html_nodes("table") %>%
+      html_table()
 
-      ## Store results in mens_rankings
-      womens_rankings <- bind_rows(womens_rankings, results)
-
-    }
-
-    ## Clean mens_rankings
-    womens_rankings <- womens_rankings %>%
-                          clean_names() %>%
-                          filter(rank <= top) %>%
-                          mutate(category = "Women's",
-                                 date = ymd(parse_date_time(date, orders = "bY"))) %>%
-                          rename(previous_rank = prev,
-                                 highest_world_ranking = hwr,
-                                 hwr_date = date) %>%
-                          select(rank, previous_rank, name, highest_world_ranking, hwr_date, country, category) %>%
-                          as_tibble()
-
-    return(womens_rankings)
-
-
-  } else if (category == "both") {
-
-  ## Men's rankings
-
-    ## Ranking url
-    rankings_url <- "http://www.squashinfo.com/rankings/men"
-
-    ## Check URL for Robots.txt
-    suppressMessages(session <- bow(rankings_url))
-
-    ## Create mens_rankings
-    mens_rankings <- c()
-
-    for (i in 1:(round_any(top, 50, ceiling)/50)) {
-
-      ## Next tab in rankings table
-      rankings_url <- sprintf("http://www.squashinfo.com/rankings/men/%s", i)
-
-      ## Scrape rankings table
-      current_page <- suppressMessages(bow(rankings_url)) %>%
-                                          scrape()
-
-      results <- current_page %>%
-                    html_nodes("table") %>%
-                    html_table()
-
-      ## Store results in mens_rankings
-      mens_rankings <- bind_rows(mens_rankings, results)
-
-    }
-
-    ## Clean mens_rankings
-    mens_rankings <- mens_rankings %>%
-                        clean_names() %>%
-                        filter(rank <= top) %>%
-                        mutate(category = "Men's",
-                               date = ymd(parse_date_time(date, orders = "bY"))) %>%
-                        rename(previous_rank = prev,
-                               highest_ranking = hwr,
-                               hwr_date = date) %>%
-                        select(rank, previous_rank, name, highest_ranking, hwr_date, country, category) %>%
-                        as_tibble()
-
-
-  ## Women's rankings
-
-    ## Ranking url
-    rankings_url <- "http://www.squashinfo.com/rankings/women"
-
-    ## Check URL for Robots.txt
-    suppressMessages(session <- bow(rankings_url))
-
-    ## Create womens_rankings
-    womens_rankings <- c()
-
-    for (i in 1:(round_any(top, 50, ceiling)/50)) {
-
-      ## Next tab in rankings table
-      rankings_url <- sprintf("http://www.squashinfo.com/rankings/women/%s", i)
-
-      ## Scrape rankings table
-      current_page <- suppressMessages(bow(rankings_url)) %>%
-                                          scrape()
-
-      results <- current_page %>%
-                    html_nodes("table") %>%
-                    html_table()
-
-      ## Store results in mens_rankings
-      womens_rankings <- bind_rows(womens_rankings, results)
-
-    }
-
-    ## Clean mens_rankings
-    womens_rankings <- womens_rankings %>%
-                          clean_names() %>%
-                          filter(rank <= top) %>%
-                          mutate(category = "Women's",
-                                 date = ymd(parse_date_time(date, orders = "bY"))) %>%
-                          rename(previous_rank = prev,
-                                 highest_ranking = hwr,
-                                 hwr_date = date) %>%
-                          select(rank, previous_rank, name, highest_ranking, hwr_date, country, category) %>%
-                          as_tibble()
-
-
-    ## All rankings
-    all_rankings <- bind_rows(mens_rankings, womens_rankings)
-
-    return(all_rankings)
-
-  } else {
-
-    stop("category must be one of 'both', 'mens', or 'womens'")
+    ## Store results in rankings
+    rankings <- bind_rows(rankings, results)
 
   }
 
+  ## Clean rankings
+  rankings <- rankings %>%
+    clean_names() %>%
+    filter(rank <= top) %>% ## Filter out extraneous players
+    mutate(category = category, ## Add category column
+           date = ymd(parse_date_time(date, orders = "bY"))) %>% ## Clean date
+    rename(previous_rank = prev,
+           highest_world_ranking = hwr,
+           hwr_date = date) %>%
+    select(rank, previous_rank, name, highest_world_ranking, hwr_date, country, category) %>%
+    as_tibble()
+
+  return(rankings)
 
 }
