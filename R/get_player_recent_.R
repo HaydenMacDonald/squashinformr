@@ -208,14 +208,14 @@ get_player_recent_ <- function(level = c("results", "matches", "games"), player 
 
     womens_profile_urls <- c()
 
-    # Women's
+  # Women's
   } else if (category == "womens") {
 
     womens_profile_urls <- get_player_profile_urls(player = player, rank = rank, category = category)
 
     mens_profile_urls <- c()
 
-    # Both categories
+  # Both categories
   } else if (category == "both" | is.null(category) == TRUE) {
 
     mens_profile_urls <- get_player_profile_urls(player = player, rank = rank, category = "mens")

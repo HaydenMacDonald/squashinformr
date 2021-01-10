@@ -30,8 +30,6 @@ This function only returns PSA ranking histories for players currently ranked in
 ## Get the rankings history for the top three women's singles players
 \donttest{top_three <- get_player_rankings_history(rank = 1:3, category = "womens")}
 
-
-
 }
 \references{
 \url{http://www.squashinfo.com/rankings/men} \cr
