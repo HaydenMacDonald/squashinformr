@@ -39,6 +39,8 @@
 #' @importFrom stringr str_detect
 #' @importFrom lubridate ymd
 #' @importFrom lubridate parse_date_time
+#' @importFrom janitor clean_names
+#' @importFrom rlang .data
 #' @importFrom tibble as_tibble
 #'
 #' @export
@@ -91,57 +93,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
   }
 
-
-  ## Rankings History
-
-  rankings_history <- c()
-
-  for (i in seq_along(all_profile_urls$profile_slugs)) {
-
-    ## Player's name
-    player_name <- all_profile_urls$Name[i]
-
-    ## Verbose
-    message("Scraping ", player_name, "'s ranking history")
-
-    ## Player's rank
-    current_rank <- all_profile_urls$Rank[i]
-
-    ## Ranking history table url
-    rankings_history_url <- sprintf("http://www.squashinfo.com%s", all_profile_urls$profile_slugs[i])
-
-    ## Bow and scrape
-    current_page <- suppressMessages(bow(rankings_history_url)) %>%
-                                        scrape()
-    ## Find html tables
-    result <- current_page %>%
-                  html_nodes("table")
-
-    ## Extract the rankings history table
-    result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
-                  html_table() %>%
-                  as_tibble()
-
-    result <- result %>%
-                  ## Make month columns character
-                  mutate(across(!Year, as.character)) %>%
-                  pivot_longer(-Year, names_to = "month", values_to = "rank") %>%
-                  rename(year = Year) %>%
-                  mutate(name = player_name,
-                         current_rank = current_rank,
-                         rank = if_else(rank == "-", NA_character_, rank), #replace hypens with NAs
-                         rank = as.numeric(rank), ## make rank numeric
-                         month = factor(month, levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")), ## make month an ordered factor
-                         ## Create an exact date for each ranking (yyyy-mm-dd)
-                         exact_date = paste(month, year),
-                         exact_date = ymd(parse_date_time(exact_date, orders = "bY"))) %>%
-                  select(year, month, exact_date, rank, name, current_rank) %>%
-                  arrange(year, month)
-
-    ## Bind results row-wise
-    rankings_history <- bind_rows(rankings_history, result)
-
-  }
+  rankings_history <- aggregate_rankings_histories(x = all_profile_urls)
 
   return(rankings_history)
 
@@ -227,4 +179,89 @@ get_player_profile_urls <- function(player = NULL, rank = NULL, category = NULL)
 
 }
 
+
+
+
+#' Scrape and aggregate player rankings histories
+#'
+#' @param x a player data frame containing player name, player rank, and profile slug.
+#'
+#' @return A tibble containing the historical rankings of players provided.
+#'
+#' @importFrom polite bow
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_table
+#' @importFrom janitor clean_names
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr mutate
+#' @importFrom dplyr across
+#' @importFrom dplyr select
+#' @importFrom dplyr arrange
+#' @importFrom dplyr bind_rows
+#' @importFrom tidyr pivot_longer
+#' @importFrom dplyr if_else
+#' @importFrom lubridate ymd
+#' @importFrom lubridate parse_date_time
+
+aggregate_rankings_histories <- function(x) {
+
+  ## Rankings History
+
+  rankings_history <- c()
+
+  for (i in seq_along(x$profile_slugs)) {
+
+    ## Player's name
+    player_name <- x$Name[i]
+
+    ## Verbose
+    message("Scraping ", player_name, "'s ranking history")
+
+    ## Player's rank
+    current_rank <- x$Rank[i]
+
+    ## Ranking history table url
+    rankings_history_url <- sprintf("http://www.squashinfo.com%s", x$profile_slugs[i])
+
+    ## Bow and scrape
+    current_page <- suppressMessages(bow(rankings_history_url)) %>%
+      scrape()
+
+    ## Find html tables
+    result <- current_page %>%
+      html_nodes("table")
+
+    ## Extract the rankings history table
+    result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
+      html_table() %>%
+      clean_names() %>%
+      as_tibble()
+
+    ## vars <- c("year", "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
+
+    result_df <- result %>%
+      mutate(across(2:length(.), as.character)) %>%
+      pivot_longer(cols = !1, names_to = "month", values_to = "rank") %>%
+      mutate(name = player_name,
+             current_rank = current_rank,
+             rank = if_else(rank == "-", NA_character_, rank), #replace hypens with NAs
+             rank = as.numeric(rank), ## make rank numeric
+             month = factor(month,
+                            levels = c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"),
+                            labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")), ## make month an ordered factor
+             ## Create an exact date for each ranking (yyyy-mm-dd)
+             exact_date = paste(month, year),
+             exact_date = ymd(parse_date_time(exact_date, orders = "bY"))) %>%
+      select(year, month, exact_date, rank, name, current_rank) %>%
+      arrange(year, month)
+
+    ## Bind results row-wise
+    rankings_history <- bind_rows(rankings_history, result_df)
+
+  }
+
+  return(rankings_history)
+
+}
 
