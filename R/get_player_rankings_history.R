@@ -28,7 +28,6 @@
 #' @importFrom dplyr rename
 #' @importFrom dplyr select
 #' @importFrom dplyr mutate
-#' @importFrom dplyr mutate_at
 #' @importFrom dplyr arrange
 #' @importFrom dplyr if_else
 #' @importFrom dplyr bind_rows
@@ -123,10 +122,9 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
                   html_table() %>%
                   as_tibble()
 
-    ## Clean table results
     result <- result %>%
                   ## Make month columns character
-                  mutate(across(2:13, .fns = as.character)) %>%
+                  mutate(across(!Year, as.character)) %>%
                   pivot_longer(-Year, names_to = "month", values_to = "rank") %>%
                   rename(year = Year) %>%
                   mutate(name = player_name,
