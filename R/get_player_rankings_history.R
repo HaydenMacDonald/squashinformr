@@ -194,6 +194,7 @@ get_player_profile_urls <- function(player = NULL, rank = NULL, category = NULL)
 #' @importFrom rvest html_table
 #' @importFrom janitor clean_names
 #' @importFrom tibble as_tibble
+#' @importFrom tibble tibble
 #' @importFrom dplyr mutate
 #' @importFrom dplyr across
 #' @importFrom dplyr select
@@ -207,7 +208,6 @@ get_player_profile_urls <- function(player = NULL, rank = NULL, category = NULL)
 aggregate_rankings_histories <- function(x) {
 
   ## Rankings History
-
   rankings_history <- c()
 
   for (i in seq_along(x$profile_slugs)) {
@@ -223,6 +223,7 @@ aggregate_rankings_histories <- function(x) {
 
     ## Ranking history table url
     rankings_history_url <- sprintf("http://www.squashinfo.com%s", x$profile_slugs[i])
+    rankings_history_url <- str_replace(rankings_history_url, "players", "rankings")
 
     ## Bow and scrape
     current_page <- suppressMessages(bow(rankings_history_url)) %>%
@@ -235,12 +236,10 @@ aggregate_rankings_histories <- function(x) {
     ## Extract the rankings history table
     result <- suppressWarnings(result[str_detect(result, "Year")][[1]]) %>%
       html_table() %>%
-      clean_names() %>%
       as_tibble()
 
-    ## vars <- c("year", "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec")
-
     result_df <- result %>%
+      rename(year = Year) %>%
       mutate(across(2:length(.), as.character)) %>%
       pivot_longer(cols = !1, names_to = "month", values_to = "rank") %>%
       mutate(name = player_name,
@@ -248,7 +247,7 @@ aggregate_rankings_histories <- function(x) {
              rank = if_else(rank == "-", NA_character_, rank), #replace hypens with NAs
              rank = as.numeric(rank), ## make rank numeric
              month = factor(month,
-                            levels = c("jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"),
+                            levels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"),
                             labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")), ## make month an ordered factor
              ## Create an exact date for each ranking (yyyy-mm-dd)
              exact_date = paste(month, year),
