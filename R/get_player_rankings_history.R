@@ -47,17 +47,22 @@
 
 get_player_rankings_history <- function(player = NULL, rank = NULL, category = NULL) {
 
+  ## Input errors
   stopifnot(is.character(player) | is.null(player), nchar(player) > 0, is.numeric(rank) | is.null(rank), is.character(category) | is.null(category))
 
+  ## Error if player is NULL and rank is NULL
   if (is.null(player) == TRUE & is.null(rank) == TRUE) {
-
     stop("Either a player's full name or rank is required")
+  }
 
+  ## Error if player is provided, rank is not provided, and category is set to "both"
+  if (is.null(player) == FALSE & is.null(rank) == TRUE & category == "both") {
+    stop("category == 'both' can only be used with rank argument")
   }
 
   category <- tolower(category)
 
-
+  # Men's
   if (category == "mens") {
 
     mens_profile_urls <- get_player_profile_urls(player = player, rank = rank, category = category)
@@ -67,7 +72,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     ## Combine men's and women's profile urls
     all_profile_urls <- bind_rows(mens_profile_urls, womens_profile_urls)
 
-
+  # Women's
   } else if (category == "womens") {
 
     womens_profile_urls <- get_player_profile_urls(player = player, rank = rank, category = category)
@@ -77,7 +82,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
     ## Combine men's and women's profile urls
     all_profile_urls <- bind_rows(mens_profile_urls, womens_profile_urls)
 
-
+  # Both
   } else if (category == "both") {
 
     mens_profile_urls <- get_player_profile_urls(player = player, rank = rank, category = "mens")
@@ -93,6 +98,7 @@ get_player_rankings_history <- function(player = NULL, rank = NULL, category = N
 
   }
 
+  ## Aggregate ranking histories
   rankings_history <- aggregate_rankings_histories(x = all_profile_urls)
 
   return(rankings_history)
@@ -141,7 +147,7 @@ get_player_profile_urls <- function(player = NULL, rank = NULL, category = NULL)
   ## Create ranking_table
   ranking_table <- c()
 
-  for (i in if (is.null(rank) == TRUE) {1:10} else {1:(round_any(max(rank), 50, ceiling)/50)}) {
+  for (i in if (is.null(rank) == TRUE) {1:9} else {1:(round_any(max(rank), 50, ceiling)/50)}) {
 
     ## Next tab in rankings table
     rankings_url <- sprintf(paste0(rankings_url, "/%s"), i)
