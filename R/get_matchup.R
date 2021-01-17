@@ -189,6 +189,8 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
 #'
 #' @param player_2 character string of the second player's name.
 #'
+#' @param players character string vector of player names.
+#'
 #' @param ranks integers indicating the rank of the PSA players to return.
 #'
 #' @param category character string indicating the competition category. Must be one of "mens" or "womens".
@@ -205,7 +207,6 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
 #' @importFrom rvest html_table
 #' @importFrom stringr str_detect
 #' @importFrom Hmisc %nin%
-#'
 
 get_matchup_profiles <- function(player_1 = NULL, player_2 = NULL, players = NULL, ranks = NULL, category = NULL) {
 

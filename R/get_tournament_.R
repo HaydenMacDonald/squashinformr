@@ -223,7 +223,7 @@ get_tournament_players <- function(tournament = NULL, year = 2021, world_tour = 
 #'
 #' @examples
 #' ## Return match data for 2020's Tournament of Champions.
-#' \donttest{get_tournament_matches("tournament of champions", year = 2020)}
+#' \donttest{get_tournament_matches("tournament of champions", year = 2020, world_tour = TRUE)}
 #'
 #' ## Return match data for all PSA World Tour tournaments in 2020
 #' \donttest{get_tournament_matches(year = 2020, world_tour = TRUE)}
@@ -362,7 +362,7 @@ get_tournament_matches <- function(tournament = NULL, year = NULL, world_tour = 
 #'
 #' @examples
 #' ## Return game data for 2020's Tournament of Champions.
-#' \donttest{get_tournament_games("tournament of champions", year = 2020)}
+#' \donttest{get_tournament_games("tournament of champions", year = 2020, world_tour = TRUE)}
 #'
 #' ## Return game data for all PSA World Tour tournaments in 2020
 #' \donttest{get_tournament_games(year = 2020, world_tour = TRUE)}
@@ -421,9 +421,8 @@ get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
   stopifnot(
     is.character(tournament) | is.null(tournament),
     is.numeric(year) | is.null(year),
-    is.logical(world_tour)
+    is.logical(world_tour) & (is.null(world_tour) == FALSE)
   )
-
 
   ## Stop if querying "Premier League"
   if (!is.null(tournament)) {

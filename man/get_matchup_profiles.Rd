@@ -17,6 +17,8 @@ get_matchup_profiles(
 
 \item{player_2}{character string of the second player's name.}
 
+\item{players}{character string vector of player names.}
+
 \item{ranks}{integers indicating the rank of the PSA players to return.}
 
 \item{category}{character string indicating the competition category. Must be one of "mens" or "womens".}

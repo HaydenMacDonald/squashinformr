@@ -187,6 +187,7 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
 #' @importFrom janitor clean_names
 #' @importFrom tibble as_tibble
 #' @importFrom rlang is_empty
+#' @importFrom rlang is_null
 
 get_big_player_table <- function(top = NULL, category = NULL) {
 
