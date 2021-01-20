@@ -44,7 +44,7 @@ test_that("test get_player_recent_results for proper outputs", {
   testthat::skip_on_cran()
 
   ## category == "mens"
-  df <- get_player_recent_results("Mohamed Elshorbagy", category = "mens")
+  df <- get_player_recent_results(player = "Mohamed Elshorbagy", category = "mens")
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
 
@@ -53,7 +53,7 @@ test_that("test get_player_recent_results for proper outputs", {
   expect_is(df, "tbl")
 
   ## category == "womens"
-  df <- get_player_recent_results("Nouran Gohar", category = "womens")
+  df <- get_player_recent_results(player = "Nouran Gohar", category = "womens")
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
 

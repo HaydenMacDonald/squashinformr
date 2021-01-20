@@ -28,6 +28,9 @@ test_that("test get_player_rankings_history for wrong input errors", {
   expect_error(get_player_rankings_history(player = "", rank = "", category = "mens"))
   expect_error(get_player_rankings_history(player = NULL, rank = NULL, category = "mens"))
 
+  ## category == "both" when no rank provided
+  expect_error(get_player_rankings_history(player = "Mohamed Elshorbagy", rank = NULL, category = "both"))
+
 })
 
 test_that("test get_player_rankings_history for proper outputs", {
@@ -36,7 +39,7 @@ test_that("test get_player_rankings_history for proper outputs", {
   testthat::skip_on_cran()
 
   ## category == "mens"
-  df <- get_player_rankings_history("Mohamed Elshorbagy", category = "mens")
+  df <- get_player_rankings_history(player = "Mohamed Elshorbagy", category = "mens")
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
 
@@ -45,7 +48,7 @@ test_that("test get_player_rankings_history for proper outputs", {
   expect_is(df, "tbl")
 
   ## category == "womens"
-  df <- get_player_rankings_history("Nouran Gohar", category = "womens")
+  df <- get_player_rankings_history(player = "Nouran Gohar", category = "womens")
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
 
@@ -53,8 +56,7 @@ test_that("test get_player_rankings_history for proper outputs", {
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
 
-  ## category == NULL or "both"
-  df <- get_player_rankings_history(player = "Mohamed Elshorbagy", rank = NULL, category = "both")
+
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
 

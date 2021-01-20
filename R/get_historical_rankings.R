@@ -33,18 +33,13 @@
 #' @importFrom dplyr bind_rows
 #' @importFrom tidyr pivot_longer
 #' @importFrom polite bow
-#' @importFrom polite nod
 #' @importFrom polite scrape
 #' @importFrom rvest html_nodes
-#' @importFrom rvest html_attr
 #' @importFrom rvest html_table
 #' @importFrom stringr str_detect
-#' @importFrom stringr str_replace
 #' @importFrom lubridate ymd
 #' @importFrom lubridate parse_date_time
-#' @importFrom janitor clean_names
 #' @importFrom tibble as_tibble
-#' @importFrom rlang is_empty
 #'
 #' @export
 
@@ -58,257 +53,28 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
 
   if (category == "mens") {
 
-  # Men profile slugs
-
-    ## Get player profile URLs for men
-    players_url <- "http://www.squashinfo.com/players?start=1"
-
-    ## Create mens_profile_urls
-    mens_player_table <- c()
-
-    while(!is.na(players_url)){
-
-      # Verbose
-      message("Scraping ", players_url)
-
-      # Check players_url for Robots.txt
-      suppressMessages(session <- bow(players_url))
-
-      # Nod and scrape politely
-      current_page <- nod(session, players_url) %>%
-                                       scrape(verbose = TRUE)
-
-      # Extract player profile urls
-      profile_url <- current_page %>%
-                        html_nodes("table")
-
-      # Clean player profile urls
-      profile_url <- suppressWarnings(profile_url[str_detect(profile_url, "Rank")][[1]]) %>%
-                        html_nodes("a") %>%
-                        html_nodes(xpath = "//*[@class='event_player']") %>%
-                        html_attr("href")
-
-      # Extract player table
-      result <- current_page %>%
-                    html_nodes("table")
-
-      # Clean player table
-      result <- suppressWarnings(result[str_detect(result, "Rank")][[1]]) %>%
-                    html_table() %>%
-                    clean_names() %>%
-                    as_tibble() %>%
-                    rename(gender = g) %>%
-                    select(rank, hwr, name, gender) %>%
-                    mutate(rank = if_else(rank == "-", NA_character_, rank),
-                           rank = as.numeric(rank),
-                           hwr = if_else(hwr == "-", NA_character_, hwr),
-                           hwr = as.numeric(hwr),
-                           profile_url = profile_url) %>%
-                    filter(gender == "M", hwr <= if_else(is.null(top) == TRUE, 500, top))
-
-      # Add to results to mens_player_table
-      mens_player_table <- rbind(mens_player_table, result)
-
-      # Check if there's a "Next" button
-      players_url <- current_page %>%
-                          html_nodes("a")
-
-      players_url <- suppressWarnings(players_url[str_detect(players_url, "Next")])
-
-      if (is_empty(players_url) == TRUE) {
-
-        players_url <- NA_character_
-
-      } else {
-
-        ## When there is a "Next" button, replace players_url with new Next page url
-        players_url <- players_url[[1]] %>%
-                              html_attr("href")
-
-        players_url <- sprintf("http://www.squashinfo.com%s", players_url)
-
-      }
-
-
-    } # end while loop
-
     ## Men's profile urls
-    mens_profile_urls <- mens_player_table %>%
-                              mutate(profile_url = str_replace(profile_url, pattern = "players", replacement = "rankings"))
+    mens_profile_urls <- get_big_player_table(top = top, category = category)
 
     womens_profile_urls <- c()
 
     ## Combine men and women's profile urls
     all_profile_urls <- bind_rows(mens_profile_urls, womens_profile_urls)
 
-
   } else if (category == "womens") {
 
-  # Women profile slugs
-
-    ## Get player profile URLs for men
-    players_url <- "http://www.squashinfo.com/players?start=1"
-
-    ## Create mens_profile_urls
-    womens_player_table <- c()
-
-    while(!is.na(players_url)){
-
-      # Verbose
-      message("Scraping ", players_url)
-
-      # Check players_url for Robots.txt
-      suppressMessages(session <- bow(players_url))
-
-      # Nod and scrape politely
-      current_page <- nod(session, players_url) %>%
-                                      scrape(verbose = TRUE)
-
-      # Extract player profile urls
-      profile_url <- current_page %>%
-                          html_nodes("table")
-
-      # Clean player profile urls
-      profile_url <- suppressWarnings(profile_url[str_detect(profile_url, "Rank")][[1]]) %>%
-                        html_nodes("a") %>%
-                        html_nodes(xpath = "//*[@class='event_player']") %>%
-                        html_attr("href")
-
-      # Extract player table
-      result <- current_page %>%
-                    html_nodes("table")
-
-      # Clean player table
-      result <- suppressWarnings(result[str_detect(result, "Rank")][[1]]) %>%
-                    html_table() %>%
-                    clean_names() %>%
-                    as_tibble() %>%
-                    rename(gender = g) %>%
-                    select(rank, hwr, name, gender) %>%
-                    mutate(rank = if_else(rank == "-", NA_character_, rank),
-                           rank = as.numeric(rank),
-                           hwr = if_else(hwr == "-", NA_character_, hwr),
-                           hwr = as.numeric(hwr),
-                           profile_url = profile_url) %>%
-                    filter(gender == "F", hwr <= if_else(is.null(top) == TRUE, 500, top))
-
-      # Add to results to mens_player_table
-      womens_player_table <- rbind(womens_player_table, result)
-
-      # Check if there's a "Next" button
-      players_url <- current_page %>%
-                        html_nodes("a")
-
-      players_url <- suppressWarnings(players_url[str_detect(players_url, "Next")])
-
-      if (is_empty(players_url) == TRUE) {
-
-        players_url <- NA_character_
-
-      } else {
-
-        ## When there is a "Next" button, replace players_url with new Next page url
-        players_url <- players_url[[1]] %>%
-                                html_attr("href")
-
-        players_url <- sprintf("http://www.squashinfo.com%s", players_url)
-
-      }
-
-
-    } # end while loop
-
     ## Women's profile urls
-    womens_profile_urls <- womens_player_table %>%
-                                mutate(profile_url = str_replace(profile_url, pattern = "players", replacement = "rankings"))
+    womens_profile_urls <- get_big_player_table(top = top, category = category)
 
     mens_profile_urls <- c()
 
     ## Combine men and women's profile urls
     all_profile_urls <- bind_rows(mens_profile_urls, womens_profile_urls)
 
-
-
   } else if (category == "both" | is.null(category) == TRUE) {
 
-  ## All profile slugs
-
-    ## Get player profile URLs for both men and women
-    players_url <- "http://www.squashinfo.com/players?start=1"
-
-    ## Create mens_profile_urls
-    full_player_table <- c()
-
-    while(!is.na(players_url)){
-
-      # Verbose
-      message("Scraping ", players_url)
-
-      # Check players_url for Robots.txt
-      suppressMessages(session <- bow(players_url))
-
-      # Nod and scrape politely
-      current_page <- nod(session, players_url) %>%
-                                        scrape(verbose = TRUE)
-
-      # Extract player profile urls
-      profile_url <- current_page %>%
-                        html_nodes("table")
-
-      # Clean player profile urls
-      profile_url <- suppressWarnings(profile_url[str_detect(profile_url, "Rank")][[1]]) %>%
-                        html_nodes("a") %>%
-                        html_nodes(xpath = "//*[@class='event_player']") %>%
-                        html_attr("href")
-
-      # Extract player table
-      result <- current_page %>%
-                    html_nodes("table")
-
-      # Clean player table
-      result <- suppressWarnings(result[str_detect(result, "Rank")][[1]]) %>%
-                    html_table() %>%
-                    clean_names() %>%
-                    as_tibble() %>%
-                    rename(gender = g) %>%
-                    select(rank, hwr, name, gender) %>%
-                    mutate(rank = if_else(rank == "-", NA_character_, rank),
-                           rank = as.numeric(rank),
-                           hwr = if_else(hwr == "-", NA_character_, hwr),
-                           hwr = as.numeric(hwr),
-                           profile_url = profile_url) %>%
-                    filter(hwr <= if_else(is.null(top) == TRUE, 500, top))
-
-      # Add to results to mens_player_table
-      full_player_table <- rbind(full_player_table, result)
-
-      # Check if there's a "Next" button
-      players_url <- current_page %>%
-                          html_nodes("a")
-
-      players_url <- suppressWarnings(players_url[str_detect(players_url, "Next")])
-
-      if (is_empty(players_url) == TRUE) {
-
-        players_url <- NA_character_
-
-      } else {
-
-        ## When there is a "Next" button, replace players_url with new Next page url
-        players_url <- players_url[[1]] %>%
-                                html_attr("href")
-
-        players_url <- sprintf("http://www.squashinfo.com%s", players_url)
-
-      }
-
-
-    } # end while loop
-
-    ## Men's profile urls
-    all_profile_urls <- full_player_table %>%
-                                mutate(profile_url = str_replace(profile_url, pattern = "players", replacement = "rankings"))
-
+    ## All profile urls
+    all_profile_urls <- get_big_player_table(top = top, category = category)
 
   } else {
 
@@ -317,8 +83,7 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
   }
 
 
-## Rankings History
-
+  ## Rankings History
   rankings_history <- c()
 
   for (i in seq_along(all_profile_urls$profile_url)) {
@@ -389,5 +154,135 @@ get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, 
 
   return(rankings)
 
+
+}
+
+
+
+
+#' Get the big player table
+#'
+#' @param top integer indicating the number of top PSA players by rank to return.
+#'
+#' @param category character string indicating the competition category. Must be one of "both", "mens", or "womens".
+#'
+#' @return Tibble of players from 'http://www.squashinfo.com/players', filtered by rank and category.
+#'
+#'
+#' @importFrom dplyr %>%
+#' @importFrom dplyr rename
+#' @importFrom dplyr select
+#' @importFrom dplyr mutate
+#' @importFrom dplyr filter
+#' @importFrom dplyr if_else
+#' @importFrom tidyr pivot_longer
+#' @importFrom polite bow
+#' @importFrom polite nod
+#' @importFrom polite scrape
+#' @importFrom rvest html_nodes
+#' @importFrom rvest html_attr
+#' @importFrom rvest html_table
+#' @importFrom stringr str_detect
+#' @importFrom stringr str_replace
+#' @importFrom janitor clean_names
+#' @importFrom tibble as_tibble
+#' @importFrom rlang is_empty
+#' @importFrom rlang is_null
+
+get_big_player_table <- function(top = NULL, category = NULL) {
+
+  # Profile slugs
+
+  ## Starting URL
+  players_url <- "http://www.squashinfo.com/players?start=1"
+
+  ## Create player_table
+  player_table <- c()
+
+  ## While players_url is not NA...
+  while(!is.na(players_url)){
+
+    ## Scrape (verbose)
+    message("Scraping ", players_url)
+
+    ## Check players_url for Robots.txt
+    suppressMessages(session <- bow(players_url))
+
+    ## Nod and scrape politely
+    current_page <- nod(session, players_url) %>%
+      scrape(verbose = TRUE)
+
+    ## Extract player profile URLs
+    profile_url <- current_page %>%
+      html_nodes("table")
+
+    ## Clean player profile URLs
+    profile_url <- suppressWarnings(profile_url[str_detect(profile_url, "Rank")][[1]]) %>%
+      html_nodes("a") %>%
+      html_nodes(xpath = "//*[@class='event_player']") %>%
+      html_attr("href")
+
+    ## Extract player table
+    result <- current_page %>%
+      html_nodes("table")
+
+    ## Clean player table
+    result <- suppressWarnings(result[str_detect(result, "Rank")][[1]]) %>%
+      html_table() %>%
+      clean_names() %>%
+      as_tibble() %>%
+      rename(gender = g) %>%
+      select(rank, hwr, name, gender) %>%
+      mutate(rank = if_else(rank == "-", NA_character_, rank),
+             rank = as.numeric(rank),
+             hwr = if_else(hwr == "-", NA_character_, hwr),
+             hwr = as.numeric(hwr),
+             profile_url = profile_url) %>%
+      filter(hwr <= if_else(is.null(top) == TRUE, 500, top))
+
+    ## Filter result based on desired category
+    if (category == "mens") {
+      result <- result %>%
+        filter(gender == "M")
+    }
+    else if (category == "womens") {
+      result <- result %>%
+        filter(gender == "F")
+    }
+    else if (category == "both" | is_null(category) == TRUE) {
+      break
+    }
+
+    ## Add to results to player_table
+    player_table <- rbind(player_table, result)
+
+    # Check if there's a "Next" button
+    players_url <- current_page %>%
+      html_nodes("a")
+
+    players_url <- suppressWarnings(players_url[str_detect(players_url, "Next")])
+
+    if (is_empty(players_url) == TRUE) {
+
+      players_url <- NA_character_
+
+    } else {
+
+      ## When there is a "Next" button, replace players_url with new Next page url
+      players_url <- players_url[[1]] %>%
+        html_attr("href")
+
+      players_url <- sprintf("http://www.squashinfo.com%s", players_url)
+
+    }
+
+
+  } # end while loop
+
+  ## Profile urls
+  profile_urls <- player_table %>%
+    mutate(profile_url = str_replace(profile_url, pattern = "players", replacement = "rankings"))
+
+  return(profile_urls)
 
 }
