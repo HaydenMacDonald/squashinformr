@@ -1,3 +1,21 @@
+# squashinformr 0.2.0
+
+## Package Refactor
+
+- Reduce susceptibility to bugs
+- Increase package maintainability
+- Increase code readability
+- Make the package easier to contribute to
+
+## Major changes
+
+- Refactored R functions to reduce the amount of repeated code via helper functions.
+- Reorganized functions into files by family where applicable.
+- Updated R version and package dependency versions.
+- Updated tests and documentation according to refactored code.
+
+
+
 # squashinformr 0.1.0
 
 ## Major Changes
