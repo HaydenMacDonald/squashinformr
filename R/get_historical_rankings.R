@@ -15,7 +15,7 @@
 #' @examples
 #'
 #' ## Who were the top 5 players in both men's and women's singles in January 2019?
-#' \donttest{\dontrun{top5 <- get_historical_rankings(2019, "Jan", "both", 5)}}
+#' \donttest{\dontrun{top5 <- get_historical_rankings(2020, "Jan", "both", 5)}}
 #'
 #' @note This function takes substantial time to scrape the corresponding data because historical ranking tables are not available to non-premium members on SquashInfo. The historical rankings returned by this function are reverse-engineered from individual player ranking histories.
 #'
