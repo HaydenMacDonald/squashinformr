@@ -1,3 +1,11 @@
+# squashinformr 0.2.1
+
+## Major Changes
+
+- Addressed bug in get_tournament_() that caused incorrect filtering of tournament data.
+- Changed GitHub Action schedule to be every 24 hours at 12:00 GMT.
+
+
 # squashinformr 0.2.0
 
 ## Package Refactor
