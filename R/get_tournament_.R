@@ -580,7 +580,7 @@ get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
   if (is.null(tournament) == TRUE) {
 
     tournaments <- tournaments %>%
-      filter(year(date) >= year)
+      filter(year(date) == year)
 
   } else if (is.null(year) == TRUE) {
 
