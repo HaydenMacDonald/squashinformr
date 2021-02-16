@@ -14,9 +14,9 @@ total](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)](https://cra
 [![R build
 status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
 [![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=master&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
+status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=main&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 [![Codecov test
-coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/master/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
+coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/main/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
 <!-- badges: end -->
 
 ## Overview
@@ -206,7 +206,7 @@ Submit issues here on GitHub.
 If you are interested in extending the functionality of this package,
 fork this repository, make your changes and submit them as a pull
 request. The `squashinformr` project is released with a
-<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/.github/CODE_OF_CONDUCT.md" target="_blank">Contributor
+<a href="https://github.com/HaydenMacDonald/squashinformr/blob/main/.github/CODE_OF_CONDUCT.md" target="_blank">Contributor
 Code of Conduct</a>. By contributing to this project, you agree to its
 terms.
 
@@ -236,5 +236,5 @@ hayden.macdonald.8778 \[at\] gmail.com.
 ## License
 
 The `squashinformr` package is released under a
-<a href="https://github.com/HaydenMacDonald/squashinformr/blob/master/LICENSE.md" target="_blank">GPL-3</a>
+<a href="https://github.com/HaydenMacDonald/squashinformr/blob/main/LICENSE.md" target="_blank">GPL-3</a>
 license.
