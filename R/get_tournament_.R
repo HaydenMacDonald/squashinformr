@@ -79,7 +79,7 @@ get_tournaments <- function(year = 2021, world_tour = TRUE) {
     results <- current_page %>%
       html_nodes("div.darkborder") %>%
       html_nodes("table") %>%
-      .[[2]] %>%
+      .[[1]] %>%
       html_table(header = TRUE) %>%
       as.data.frame() %>%
       clean_names() %>%

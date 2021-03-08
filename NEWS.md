@@ -3,7 +3,8 @@
 ## Major Changes
 
 - Squash Info has made player historical rankings a subscriber feature, thereby deprecating `get_player_rankings_history()`. The function has been removed from `squashinformr`'s NAMESPACE.
-- Squash Info has restricted the window of free data from 1 year to 6 months. Filters have been added to tournament functions to prevent errors.
+- Squash Info has restricted the window of free data from 1 year to 6 months. Date filters have been added to tournament functions to prevent errors.
+- Changed `get_matchup()` examples to match real data available in 6 month window.
 
 
 # squashinformr 0.2.1
