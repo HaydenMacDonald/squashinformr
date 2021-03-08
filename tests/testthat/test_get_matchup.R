@@ -24,12 +24,12 @@ test_that("test get_matchup for proper outputs", {
   testthat::skip_on_cran()
 
   ## category == "mens"
-  df <- get_matchup("Mohamed Elshorbagy", "Ali Farag", category = "mens", tidy = TRUE)
+  df <- get_matchup("Mohamed Elshorbagy", "Karim Abdel Gawad", category = "mens", tidy = TRUE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_equal(nrow(df), 1)
 
-  df <- get_matchup(ranks = 1:2, category = "mens", tidy = FALSE)
+  df <- get_matchup(ranks = c(1,4), category = "mens", tidy = FALSE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_equal(nrow(df), 23)
@@ -40,7 +40,7 @@ test_that("test get_matchup for proper outputs", {
   expect_is(df, "tbl")
   expect_equal(nrow(df), 1)
 
-  df <- get_matchup(ranks = 1:2, category = "womens", tidy = FALSE)
+  df <- get_matchup(ranks = c(1,7), category = "womens", tidy = FALSE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_equal(nrow(df), 23)

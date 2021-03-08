@@ -413,6 +413,8 @@ get_tournament_games <- function(tournament = NULL, year = NULL, world_tour = NU
 #' @importFrom stringr regex
 #' @importFrom lubridate year
 #' @importFrom lubridate dmy
+#' @importFrom lubridate today
+#' @importFrom lubridate %m-%
 #' @importFrom janitor clean_names
 
 get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
@@ -469,7 +471,7 @@ get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
     results <- current_page %>%
       html_nodes("div.darkborder") %>%
       html_nodes("table") %>%
-      .[[2]] %>%
+      .[[1]] %>%
       html_table(header = TRUE) %>%
       as.data.frame() %>%
       clean_names() %>%
@@ -580,7 +582,8 @@ get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
   if (is.null(tournament) == TRUE) {
 
     tournaments <- tournaments %>%
-      filter(year(date) == year)
+      filter(year(date) == year,
+             date >= lubridate::today() %m-% months(6))
 
   } else if (is.null(year) == TRUE) {
 

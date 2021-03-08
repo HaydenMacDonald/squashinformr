@@ -42,8 +42,6 @@
 #' @importFrom janitor clean_names
 #' @importFrom rlang .data
 #' @importFrom tibble as_tibble
-#'
-#' @export
 
 get_player_rankings_history <- function(player = NULL, rank = NULL, category = NULL) {
 
