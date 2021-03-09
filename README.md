@@ -3,13 +3,17 @@
 
 <!-- badges: start -->
 
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN status](https://www.r-pkg.org/badges/version/squashinformr)](https://CRAN.R-project.org/package=squashinformr)
-[![CRAN Downloads](https://cranlogs.r-pkg.org/badges/squashinformr)](https://cranlogs.r-pkg.org/badges/squashinformr)
-[![CRAN total](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)
-[![R build status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=main&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
-[![Codecov test coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/main/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/squashinformr)](https://CRAN.R-project.org/package=squashinformr)
+<https://cranlogs.r-pkg.org/badges/squashinformr>
+<https://cranlogs.r-pkg.org/badges/grand-total/squashinformr> [![R build
+status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
+[![AppVeyor build
+status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=main&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
+[![Codecov test
+coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/main/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
 <!-- badges: end -->
 
 ## Overview
@@ -143,12 +147,12 @@ get_rankings(top = 5, category = "both") %>%
 ### `get_matchup()`
 
 This function returns recent head-to-head matchup stats between two
-players. Stats returned include each player’s rank, name, total matches
-played, number of matches won, the match results spread (relative to
-player 1), the average match time, the number of games played, the
-number of games won, average point advantage in a won game, the average
-point difference in final scores, the number of tie-break wins, and the
-percentage of games that go to a tie-breaker.
+players. Stats returned include: - each player’s rank and name - total
+matches played - the number of matches won - the match results spread
+(relative to player 1) - the average match time - the number of games
+played - the number of games won - average point advantage in a won game
+- the average point difference in final scores - the number of tie-break
+wins - and the percentage of games that go to a tie-breaker.
 
 ``` r
 ## Get tidy matchup stats for Paul Coll vs Fares Dessouky
