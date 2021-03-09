@@ -59,7 +59,7 @@ There are three major families of scraping functions in `squashinformr`:
       - `get_tournament_players()`
       - `get_tournament_matches()`
       - `get_tournament_games()`
-  - Ranking functions for scraping current rankings tables
+  - Ranking function for scraping current rankings tables
       - `get_rankings()`
 
 ## Examples
