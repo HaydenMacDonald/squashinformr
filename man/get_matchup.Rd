@@ -38,7 +38,10 @@ This function only returns data from players ranked in the most recent PSA ranki
 \examples{
 
 ## Get tidy matchup data for Mohamed Elshorbagy vs Karim Abdel Gawad
-\donttest{get_matchup(player_1 = "Mohamed Elshorbagy", player_2 = "Karim Abdel Gawad", category = "mens", tidy = TRUE)}
+\donttest{get_matchup(player_1 = "Mohamed Elshorbagy",
+                      player_2 = "Karim Abdel Gawad",
+                      category = "mens",
+                      tidy = TRUE)}
 
 ## Get non-tidy matchup data for Nouran Gohar vs Nour El Sherbini
 \donttest{get_matchup("Nouran Gohar", "Nour El Sherbini", category = "womens", tidy = FALSE)}

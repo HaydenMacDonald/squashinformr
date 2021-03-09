@@ -23,8 +23,8 @@ Given a tournament name or a year, \code{get_tournament_matches()} returns match
 This function only returns match data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 }
 \examples{
-## Return match data for 2020's Tournament of Champions.
-\donttest{get_tournament_matches("tournament of champions", year = 2020, world_tour = TRUE)}
+## Return match data for 2020's Black Ball Open.
+\donttest{get_tournament_matches("Black Ball Open", year = 2020, world_tour = TRUE)}
 
 ## Return match data for all PSA World Tour tournaments in 2020
 \donttest{get_tournament_matches(year = 2020, world_tour = TRUE)}
