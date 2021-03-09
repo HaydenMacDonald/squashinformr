@@ -40,8 +40,6 @@
 #' @importFrom lubridate ymd
 #' @importFrom lubridate parse_date_time
 #' @importFrom tibble as_tibble
-#'
-#' @export
 
 get_historical_rankings <- function(year = NULL, month = NULL, category = NULL, top = NULL) {
 

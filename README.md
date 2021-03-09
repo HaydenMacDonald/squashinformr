@@ -53,17 +53,14 @@ There are three major families of scraping functions in `squashinformr`:
       - `get_player_recent_results()`
       - `get_player_recent_matches()`
       - `get_player_recent_games()`
-      - `get_player_rankings_history()`
       - `get_matchup()`
   - Tournament functions for scraping tournament results data
       - `get_tournaments()`
       - `get_tournament_players()`
       - `get_tournament_matches()`
       - `get_tournament_games()`
-  - Ranking functions for scraping current and historical rankings
-    tables
+  - Ranking functions for scraping current rankings tables
       - `get_rankings()`
-      - `get_historical_rankings()`
 
 ## Examples
 
@@ -94,26 +91,6 @@ get_player_recent_matches(player = "Mohamed Elshorbagy", category = "mens")
 #> # ... with 70 more rows, and 3 more variables: event <chr>, country <chr>,
 #> #   psa <chr>
 ```
-
-### `get_player_rankings_history()`
-
-This function returns player ranking histories, given their full names
-or current PSA ranks and competition category.
-
-``` r
-library(ggplot2)
-
-## Get the rankings history for the top three women's singles players
-top_three <- get_player_rankings_history(rank = 1:3, category = "womens")
-
-ggplot(top_three) +
-   geom_line(aes(x = exact_date, y = rank, group = name, colour = name)) +
-   scale_y_reverse() +
-   theme_light() +
-   labs(x = "Date", y = "Rank", colour = "Player")
-```
-
-<img src="man/figures/unnamed-chunk-4-1.png" width="100%" />
 
 ### `get_tournament_games()`
 
