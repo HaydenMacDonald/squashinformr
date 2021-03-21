@@ -103,7 +103,8 @@ get_rankings(top = 5, category = "both") %>%
 
 ### `get_matchup()`
 
-This function returns recent head-to-head matchup stats between two players. Stats returned include: 
+This function returns recent head-to-head matchup stats between two players. Stats returned include:  
+
 - each player's rank and name 
 - total matches played
 - the number of matches won

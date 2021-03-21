@@ -23,12 +23,12 @@ test_that("test get_tournament_matches for proper outputs", {
   testthat::skip_on_cran()
 
   ## Black Ball Open, with year
-  df <- get_tournament_matches("Black Ball Open", year = 2020, world_tour = TRUE)
+  df <- get_tournament_matches("Black Ball Open", year = 2021, world_tour = TRUE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_equal(length(unique(df$category)), 2)
   expect_is(sample(df$tournament_date, 1), "Date")
-  expect_equal(year(sample(df$tournament_date, 1)), 2020)
+  expect_equal(year(sample(df$tournament_date, 1)), 2021)
 
   ## Black Ball Open, without year
   df <- get_tournament_matches("Black Ball Open", year = NULL, world_tour = TRUE)
@@ -36,14 +36,14 @@ test_that("test get_tournament_matches for proper outputs", {
   expect_is(df, "tbl")
   expect_equal(length(unique(df$category)), 2)
   expect_is(sample(df$tournament_date, 1), "Date")
-  expect_equal(year(sample(df$tournament_date, 1)), 2020)
+  expect_equal(year(sample(df$tournament_date, 1)), 2021)
 
   ## All 2020 tournaments
-  df <- get_tournament_matches(tournament = NULL, year = 2020, world_tour = FALSE)
+  df <- get_tournament_matches(tournament = NULL, year = 2021, world_tour = FALSE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
-  expect_equal(length(unique(df$category)), 2)
+  expect_equal(length(unique(df$category)), 3)
   expect_is(sample(df$tournament_date, 1), "Date")
-  expect_equal(year(sample(df$tournament_date, 1)), 2020)
+  expect_equal(year(sample(df$tournament_date, 1)), 2021)
 
 })

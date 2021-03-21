@@ -6,7 +6,7 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN status](https://www.r-pkg.org/badges/version/squashinformr)](https://CRAN.R-project.org/package=squashinformr)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/squashinformr)](https://cranlogs.r-pkg.org/badges/squashinformr)
-[![CRAN total](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)
+[![CRAN total](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr) 
 [![R build status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=main&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 [![Codecov test coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/main/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
@@ -95,8 +95,7 @@ get_tournament_games("Black Ball Open", year = 2020, world_tour = TRUE)
 #> Scraping http://www.squashinfo.com/results?start=2
 #> Scraping http://www.squashinfo.com/results?start=3
 #> Scraping http://www.squashinfo.com/events/8425-mens-black-ball-open-2020
-#> Scraping http://www.squashinfo.com/events/8588-womens-black-ball-open-2020
-#> # A tibble: 238 x 15
+#> # A tibble: 119 x 15
 #>    tournament_name category tournament_date player_1 player_2 player_1_seed
 #>    <chr>           <chr>    <date>          <chr>    <chr>            <dbl>
 #>  1 CIB Black Ball~ Men's    2020-12-18      Fares D~ Ali Far~             9
@@ -109,7 +108,7 @@ get_tournament_games("Black Ball Open", year = 2020, world_tour = TRUE)
 #>  8 CIB Black Ball~ Men's    2020-12-18      Ali Far~ Mostafa~             1
 #>  9 CIB Black Ball~ Men's    2020-12-18      Fares D~ Tarek M~             9
 #> 10 CIB Black Ball~ Men's    2020-12-18      Fares D~ Tarek M~             9
-#> # ... with 228 more rows, and 9 more variables: player_2_seed <dbl>,
+#> # ... with 109 more rows, and 9 more variables: player_2_seed <dbl>,
 #> #   player_1_nationality <chr>, player_2_nationality <chr>, round <ord>,
 #> #   match <int>, game <int>, player_1_score <dbl>, player_2_score <dbl>,
 #> #   game_winner <chr>
@@ -143,12 +142,21 @@ get_rankings(top = 5, category = "both") %>%
 ### `get_matchup()`
 
 This function returns recent head-to-head matchup stats between two
-players. Stats returned include: - each player’s rank and name - total
-matches played - the number of matches won - the match results spread
-(relative to player 1) - the average match time - the number of games
-played - the number of games won - average point advantage in a won game
-- the average point difference in final scores - the number of tie-break
-wins - and the percentage of games that go to a tie-breaker.
+players. Stats returned include:
+
+  - each player’s rank and name
+  - total matches played
+  - the number of matches won
+  - the match results spread (relative to player 1)
+  - the average match time
+  - the number of games played
+  - the number of games won
+  - average point advantage in a won game
+  - the average point difference in final scores
+  - the number of tie-break wins
+  - and the percentage of games that go to a tie-breaker.
+
+<!-- end list -->
 
 ``` r
 ## Get tidy matchup stats for Paul Coll vs Fares Dessouky
