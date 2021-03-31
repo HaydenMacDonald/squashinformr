@@ -26,7 +26,7 @@ test_that("test get_tournament_matches for proper outputs", {
   df <- get_tournament_matches("Black Ball Open", year = 2021, world_tour = TRUE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
-  expect_equal(length(unique(df$category)), 2)
+  expect_equal(length(unique(df$category)), 1)
   expect_is(sample(df$tournament_date, 1), "Date")
   expect_equal(year(sample(df$tournament_date, 1)), 2021)
 
@@ -34,7 +34,7 @@ test_that("test get_tournament_matches for proper outputs", {
   df <- get_tournament_matches("Black Ball Open", year = NULL, world_tour = TRUE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
-  expect_equal(length(unique(df$category)), 2)
+  expect_equal(length(unique(df$category)), 1)
   expect_is(sample(df$tournament_date, 1), "Date")
   expect_equal(year(sample(df$tournament_date, 1)), 2021)
 
