@@ -206,14 +206,14 @@ get_player_recent_ <- function(level = c("results", "matches", "games"), player 
 
     mens_profile_urls <- get_player_profile_urls(player = player, rank = rank, category = category)
 
-    womens_profile_urls <- c()
+    womens_profile_urls <- NULL
 
   # Women's
   } else if (category == "womens") {
 
     womens_profile_urls <- get_player_profile_urls(player = player, rank = rank, category = category)
 
-    mens_profile_urls <- c()
+    mens_profile_urls <- NULL
 
   # Both categories
   } else if (category == "both" | is.null(category) == TRUE) {
@@ -380,7 +380,7 @@ get_player_profile_urls <- function(player = NULL, rank = NULL, category = c("me
   suppressMessages(session <- bow(rankings_url))
 
   ## Create ranking_table
-  ranking_table <- c()
+  ranking_table <- NULL
 
   ## Rankings table url
   rankings_url <- paste0(rankings_url, "/1")
@@ -522,7 +522,7 @@ get_player_profile_table <- function(data = NULL, identifier = NULL) {
   stopifnot(is.null(data) == FALSE | is.data.frame(data) == TRUE, is.null(identifier) == FALSE | identifier %in% c("Round Reached", "match_summary_table"))
 
   ## Create recent_events
-  recent_events <- c()
+  recent_events <- NULL
 
   ## For each profile url...
   for (i in seq_along(data$profile_slugs)) {
@@ -606,7 +606,7 @@ aggregate_profile_tables <- function(x = NULL, y = NULL, identifier = NULL) {
   } else {
 
     ## Else define x_recent_events as an empty vector
-    x_recent_events <- c()
+    x_recent_events <- NULL
 
   }
 
@@ -621,7 +621,7 @@ aggregate_profile_tables <- function(x = NULL, y = NULL, identifier = NULL) {
   } else {
 
     ## Else define y_recent_events as an empty vector
-    y_recent_events <- c()
+    y_recent_events <- NULL
 
   }
 

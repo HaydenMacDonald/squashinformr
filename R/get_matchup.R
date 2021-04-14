@@ -227,7 +227,7 @@ get_matchup_profiles <- function(player_1 = NULL, player_2 = NULL, players = NUL
   suppressMessages(session <- bow(rankings_url))
 
   ## Create ranking_table
-  ranking_table <- c()
+  ranking_table <- NULL
 
   ## Rankings table url
   rankings_url <- paste0(rankings_url, "/1")
@@ -356,7 +356,7 @@ get_recent_matches <- function(profile_urls) {
   if (length(profile_urls$profile_slugs) > 0) { ## If we have more than 0 profile slugs
 
     ## Create recent_matches dataframe
-    recent_matches <- c()
+    recent_matches <- NULL
 
     for (i in seq_along(profile_urls$profile_slugs)) { ## For every profile slug
 
@@ -402,7 +402,7 @@ get_recent_matches <- function(profile_urls) {
 
   } else { ## If we have 0 profile slugs
 
-    recent_matches <- c() ## Create empty recent_matches data frame
+    recent_matches <- NULL ## Create empty recent_matches data frame
 
   }
 

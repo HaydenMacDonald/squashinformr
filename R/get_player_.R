@@ -138,7 +138,7 @@ get_player_profiles <- function(category = c("mens", "womens"), top = NULL, rank
   suppressMessages(session <- bow(rankings_url))
 
   ## Create profile_urls
-  profile_urls <- c()
+  profile_urls <- NULL
 
   for (i in if (is.null(top) == TRUE) {1:(round_any(rank, 50, ceiling)/50)} else {1:(round_any(top, 50, ceiling)/50)}) {
 
@@ -161,7 +161,7 @@ get_player_profiles <- function(category = c("mens", "womens"), top = NULL, rank
   ## Scrape profile info for top n players
 
   ## Create profiles
-  profiles <- c()
+  profiles <- NULL
 
   for (i in if (is.null(top) == TRUE) {rank:rank} else {1:top}) {
 
