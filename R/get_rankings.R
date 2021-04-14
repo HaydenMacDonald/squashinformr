@@ -108,7 +108,7 @@ get_rankings_table <- function(top = NULL, category = NULL) {
   suppressMessages(session <- bow(rankings_url))
 
   ## Create rankings
-  rankings <- c()
+  rankings <- NULL
 
   for (i in 1:(round_any(top, 50, ceiling)/50)) {
 

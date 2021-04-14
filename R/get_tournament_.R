@@ -59,7 +59,7 @@ get_tournaments <- function(year = 2021, world_tour = TRUE) {
   t_url <- "http://www.squashinfo.com/results?start=1"
 
   # Empty tournaments object
-  tournaments <- c()
+  tournaments <- NULL
 
   # Set arbitrary variable to test for tournament result limit
   results_limit <- 0
@@ -451,7 +451,7 @@ get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
   t_url <- "http://www.squashinfo.com/results?start=1"
 
   # Empty tournaments object
-  tournaments <- c()
+  tournaments <- NULL
 
   # Set arbitrary variable to test for tournament result limit
   results_limit <- 0
@@ -648,7 +648,7 @@ get_tournament_objects <- function(tournaments = NULL, level = NULL) {
   }
 
   ## Create empty data frame
-  data <- c()
+  data <- NULL
 
   for (i in seq_along(tournaments$slug)) {
 
