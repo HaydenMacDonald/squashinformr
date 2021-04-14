@@ -805,7 +805,7 @@ get_tournament_objects <- function(tournaments = NULL, level = NULL) {
                               } else if (length(unique(result$round)) == 2) {
                                c("SF", "F")
                               } else if (length(unique(result$round)) == 1) {
-                               c("F")
+                               "F"
                               }, ordered = TRUE),
                             ## Add tournament name, category, date
                             tournament_name = t_name,
