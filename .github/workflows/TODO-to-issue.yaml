@@ -1,0 +1,17 @@
+name: TODO-to-issue
+on:
+  push
+
+jobs:
+  multigitminder:
+    runs-on: ubuntu-latest
+    name: TODO-to-issue
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: "TODO to Issue"
+        uses: "alstr/todo-to-issue-action@v2.4.1"
+        id: "todo"
+        with:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLOSE_ISSUES: false
