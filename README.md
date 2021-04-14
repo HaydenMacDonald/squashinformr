@@ -11,7 +11,7 @@
 [![R build status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
 [![Codecov test coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/main/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
 [![CodeFactor](https://www.codefactor.io/repository/github/haydenmacdonald/squashinformr/badge)](https://www.codefactor.io/repository/github/haydenmacdonald/squashinformr)
-[![Tutorial](https://img.shields.io/badge/-Tutorial%20Blog%20Post-gray?style=flat&logo=RSS&logoColor=white)](https://needleinthehay.ca/post/introducing-squashinformr/)
+[![Tutorial](https://img.shields.io/badge/-Tutorial%20Blog%20Post-blue?style=flat&logo=RSS&logoColor=white)](https://needleinthehay.ca/post/introducing-squashinformr/)
 <!-- badges: end -->
 
 ## Overview
