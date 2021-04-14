@@ -6,10 +6,12 @@
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![CRAN status](https://www.r-pkg.org/badges/version/squashinformr)](https://CRAN.R-project.org/package=squashinformr)
 [![CRAN Downloads](https://cranlogs.r-pkg.org/badges/squashinformr)](https://cranlogs.r-pkg.org/badges/squashinformr)
-[![CRAN total](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr) 
+[![CRAN total](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)](https://cranlogs.r-pkg.org/badges/grand-total/squashinformr)  
+
 [![R build status](https://github.com/HaydenMacDonald/squashinformr/workflows/R-CMD-check/badge.svg)](https://github.com/HaydenMacDonald/squashinformr/actions)
-[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/HaydenMacDonald/squashinformr?branch=main&svg=true)](https://ci.appveyor.com/project/HaydenMacDonald/squashinformr)
 [![Codecov test coverage](https://codecov.io/gh/HaydenMacDonald/squashinformr/branch/main/graph/badge.svg)](https://codecov.io/gh/HaydenMacDonald/squashinformr)
+[![CodeFactor](https://www.codefactor.io/repository/github/haydenmacdonald/squashinformr/badge)](https://www.codefactor.io/repository/github/haydenmacdonald/squashinformr)
+[![Tutorial](https://img.shields.io/badge/-Tutorial%20Blog%20Post-blue?style=flat&logo=RSS&logoColor=white)](https://needleinthehay.ca/post/introducing-squashinformr/)
 <!-- badges: end -->
 
 ## Overview
