@@ -679,6 +679,7 @@ get_tournament_objects <- function(tournaments = NULL, level = NULL) {
 
     ## Find html tables
     result <- current_page %>%
+      html_nodes(xpath = '//*[@id="results"]') %>%
       html_nodes("table") %>%
       html_table() %>%
       as.data.frame()
