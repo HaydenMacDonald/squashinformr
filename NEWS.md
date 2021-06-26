@@ -1,3 +1,10 @@
+# squashinformr 0.2.3
+
+## Minor patch
+
+- Fixed bug related to parsing of tournament data in get_tournament_ family of functions.
+
+
 # squashinformr 0.2.2
 
 ## Major Changes
