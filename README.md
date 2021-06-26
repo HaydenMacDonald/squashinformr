@@ -205,7 +205,7 @@ overwhelming requests. Therefore, it is important that users are patient
 when using this package. SquashInfo currently offers full access to
 their data and extra features through a premium membership. Please
 consider
-<a href="http://www.squashinfo.com/upgrade" target="_blank">signing up
+<a href="http://www.squashinfo.com/subscriptions" target="_blank">signing up
 and subscribing</a> to SquashInfo to support their work.
 
 ## Author
