@@ -14,7 +14,7 @@
 #' \donttest{get_tournaments()}
 #'
 #' ## Get data on 2020 non-PSA World Tour tournaments
-#' \donttest{get_tournaments(2020, world_tour = FALSE)}
+#' \donttest{get_tournaments(2021, world_tour = FALSE)}
 #'
 #' @note This function only returns tournaments from 2020 and 2021, as any other data are not available to non-premium members on SquashInfo.
 #'
@@ -179,11 +179,11 @@ get_tournaments <- function(year = 2021, world_tour = TRUE) {
 #' @return Tibble containing the tournament name, competition category, tournament date, player, seed, nationality, round_reached.
 #'
 #' @examples
-#' ## Who played in the Black Ball Open in 2020?
-#' \donttest{get_tournament_players(tournament = "Black Ball Open", year = 2020)}
+#' ## Who played in the Black Ball Open in 2021?
+#' \donttest{get_tournament_players(tournament = "Black Ball Open", year = 2021)}
 #'
-#' ## Return player registrant data for all PSA World Tour tournaments in 2020
-#' \donttest{get_tournament_players(year = 2020, world_tour = TRUE)}
+#' ## Return player registrant data for all PSA World Tour tournaments in 2021
+#' \donttest{get_tournament_players(year = 2021, world_tour = TRUE)}
 #'
 #' @note This function only returns player registrant data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 #'
@@ -222,11 +222,11 @@ get_tournament_players <- function(tournament = NULL, year = 2021, world_tour = 
 #' @return Tibble containing the tournament name, competition category, tournament date, round, player 1, player 2, the match winner, games won (by player 1), games lost (by player 1), the match time, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return match data for 2020's Black Ball Open.
-#' \donttest{get_tournament_matches("Black Ball Open", year = 2020, world_tour = TRUE)}
+#' ## Return match data for 2021's Black Ball Open.
+#' \donttest{get_tournament_matches("Black Ball Open", year = 2021, world_tour = TRUE)}
 #'
-#' ## Return match data for all PSA World Tour tournaments in 2020
-#' \donttest{get_tournament_matches(year = 2020, world_tour = TRUE)}
+#' ## Return match data for all PSA World Tour tournaments in 2021
+#' \donttest{get_tournament_matches(year = 2021, world_tour = TRUE)}
 #'
 #'
 #'
@@ -361,11 +361,11 @@ get_tournament_matches <- function(tournament = NULL, year = NULL, world_tour = 
 #' @return Tibble containing the tournament name, competition category, tournament date, round, match number, game number, player 1, player 2, the game winner, player 1's score, player 2's score, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return game data for 2020's Black Ball Open.
-#' \donttest{get_tournament_games("Black Ball Open", year = 2020, world_tour = TRUE)}
+#' ## Return game data for 2021's Black Ball Open.
+#' \donttest{get_tournament_games("Black Ball Open", year = 2021, world_tour = TRUE)}
 #'
-#' ## Return game data for all PSA World Tour tournaments in 2020
-#' \donttest{get_tournament_games(year = 2020, world_tour = TRUE)}
+#' ## Return game data for all PSA World Tour tournaments in 2021
+#' \donttest{get_tournament_games(year = 2021, world_tour = TRUE)}
 #'
 #'
 #' @note This function only returns game data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).

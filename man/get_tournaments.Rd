@@ -26,7 +26,7 @@ This function only returns tournaments from 2020 and 2021, as any other data are
 \donttest{get_tournaments()}
 
 ## Get data on 2020 non-PSA World Tour tournaments
-\donttest{get_tournaments(2020, world_tour = FALSE)}
+\donttest{get_tournaments(2021, world_tour = FALSE)}
 
 }
 \references{
