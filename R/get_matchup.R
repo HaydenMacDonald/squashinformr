@@ -19,9 +19,9 @@
 #'
 #' @examples
 #'
-#' ## Get tidy matchup data for Mohamed Elshorbagy vs Karim Abdel Gawad
+#' ## Get tidy matchup data for Mohamed Elshorbagy vs Ali Farag
 #' \donttest{get_matchup(player_1 = "Mohamed Elshorbagy",
-#'                       player_2 = "Karim Abdel Gawad",
+#'                       player_2 = "Ali Farag",
 #'                       category = "mens",
 #'                       tidy = TRUE)}
 #'
@@ -105,6 +105,13 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
 
   ## Clean recent match data and get recent game data
   recent_data <- get_match_game_data(recent_matches, players = players, ranks = ranks)
+
+  #TODO pls fix this error check
+  if (!is.null(recent_data[["recent_matches"]])$) {
+    if (dim(recent_data[["recent_matches"]]) == 0) {
+      stop("No matches found between given players")
+    }
+  }
 
 
   ## Summarize Match Data
@@ -440,17 +447,17 @@ get_recent_matches <- function(profile_urls) {
 
 get_match_game_data <- function(data = NULL, players = NULL, ranks = NULL) {
 
-  if (is.null(ranks)) {
+  if (is.null(ranks) & !is.null(players)) {
 
     ## Filter recent_matches by player names
     recent_matches <- data %>%
-      filter(str_detect(.data$player, players[1]) & str_detect(.data$opponent, players[2])) ## Find players in results
+      dplyr::filter(str_detect(.data$player, players[1]) & str_detect(.data$opponent, players[2])) ## Find players in results
 
-  } else if (is.null(players)) {
+  } else if (is.null(players) & !is.null(ranks)) {
 
     ## Filter recent_matches by player ranks
     recent_matches <- data %>%
-      filter(rank %in% ranks[1] & opponent_rank %in% ranks[2])
+      dplyr::filter(rank %in% ranks[1] & opponent_rank %in% ranks[2])
 
   }
 

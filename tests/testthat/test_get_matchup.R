@@ -24,7 +24,7 @@ test_that("test get_matchup for proper outputs", {
   testthat::skip_on_cran()
 
   ## category == "mens"
-  df <- squashinformr::get_matchup("Mohamed Elshorbagy", "Karim Abdel Gawad", category = "mens", tidy = TRUE)
+  df <- squashinformr::get_matchup("Mohamed Elshorbagy", "Ali Farag", category = "mens", tidy = TRUE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_equal(nrow(df), 1)
