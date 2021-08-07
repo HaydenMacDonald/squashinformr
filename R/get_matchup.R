@@ -106,14 +106,6 @@ get_matchup <- function(player_1 = NULL, player_2 = NULL, ranks = NULL, category
   ## Clean recent match data and get recent game data
   recent_data <- get_match_game_data(recent_matches, players = players, ranks = ranks)
 
-  #TODO pls fix this error check
-  if (!is.null(recent_data[["recent_matches"]])$) {
-    if (dim(recent_data[["recent_matches"]]) == 0) {
-      stop("No matches found between given players")
-    }
-  }
-
-
   ## Summarize Match Data
   recent_matches <- recent_data$recent_matches %>%
                         rename(player_1_rank = rank,
