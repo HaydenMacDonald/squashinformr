@@ -433,6 +433,11 @@ get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
     }
   }
 
+  ## Stop if tournament is NULL and world_tour is FALSE, since 6 month limit
+  if (is.null(tournament) & world_tour == FALSE & !is.null(year)) {
+    stop("Live data is limited to 6 months, cannot query for full year of data")
+  }
+
   ## Stop if year does not meet following requirements
   if (is.null(year) == FALSE) {
     ## Stop if year is not 2020 or 2021
