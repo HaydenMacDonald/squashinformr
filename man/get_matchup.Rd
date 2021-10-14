@@ -37,9 +37,9 @@ This function only returns data from players ranked in the most recent PSA ranki
 }
 \examples{
 
-## Get tidy matchup data for Mohamed Elshorbagy vs Paul Coll
+## Get tidy matchup data for Mohamed Elshorbagy vs Ali Farag
 \donttest{get_matchup(player_1 = "Mohamed Elshorbagy",
-                      player_2 = "Paul Coll",
+                      player_2 = "Ali Farag",
                       category = "mens",
                       tidy = TRUE)}
 
