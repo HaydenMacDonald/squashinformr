@@ -179,8 +179,8 @@ get_tournaments <- function(year = 2021, world_tour = TRUE) {
 #' @return Tibble containing the tournament name, competition category, tournament date, player, seed, nationality, round_reached.
 #'
 #' @examples
-#' ## Who played in the Black Ball Open in 2021?
-#' \donttest{get_tournament_players(tournament = "Black Ball Open", year = 2021)}
+#' ## Who played in the CIB Egyptian Open in 2021?
+#' \donttest{get_tournament_players(tournament = "CIB Egyptian Open", year = 2021)}
 #'
 #' ## Return player registrant data for all PSA World Tour tournaments in 2021
 #' \donttest{get_tournament_players(year = 2021, world_tour = TRUE)}
@@ -222,8 +222,8 @@ get_tournament_players <- function(tournament = NULL, year = 2021, world_tour = 
 #' @return Tibble containing the tournament name, competition category, tournament date, round, player 1, player 2, the match winner, games won (by player 1), games lost (by player 1), the match time, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return match data for 2021's Black Ball Open.
-#' \donttest{get_tournament_matches("Black Ball Open", year = 2021, world_tour = TRUE)}
+#' ## Return match data for 2021's CIB Egyptian Open.
+#' \donttest{get_tournament_matches("CIB Egyptian Open", year = 2021, world_tour = TRUE)}
 #'
 #' ## Return match data for all PSA World Tour tournaments in 2021
 #' \donttest{get_tournament_matches(year = 2021, world_tour = TRUE)}

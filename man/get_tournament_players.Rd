@@ -23,8 +23,8 @@ Given a tournament name or a year, \code{get_tournament_players()} returns playe
 This function only returns player registrant data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 }
 \examples{
-## Who played in the Black Ball Open in 2021?
-\donttest{get_tournament_players(tournament = "Black Ball Open", year = 2021)}
+## Who played in the CIB Egyptian Open in 2021?
+\donttest{get_tournament_players(tournament = "CIB Egyptian Open", year = 2021)}
 
 ## Return player registrant data for all PSA World Tour tournaments in 2021
 \donttest{get_tournament_players(year = 2021, world_tour = TRUE)}
