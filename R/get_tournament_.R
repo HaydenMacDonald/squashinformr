@@ -2,7 +2,7 @@
 #'
 #' Given a year, \code{get_tournaments()} returns data for PSA World Tour tournaments and other events.
 #'
-#' @param year integer indicating the tournament year. Must be one of 2020 or 2021.
+#' @param year integer indicating the tournament year. Must be one of 2021 or 2022.
 #'
 #' @param world_tour logical indicating whether to only return PSA World Tour tournaments.
 #'
@@ -10,13 +10,13 @@
 #'
 #' @examples
 #'
-#' ## Get data on 2021 PSA World Tour tournaments
+#' ## Get data on 2022 PSA World Tour tournaments
 #' \donttest{get_tournaments()}
 #'
-#' ## Get data on 2020 non-PSA World Tour tournaments
-#' \donttest{get_tournaments(2021, world_tour = FALSE)}
+#' ## Get data on 2021 non-PSA World Tour tournaments
+#' \donttest{get_tournaments(2022, world_tour = FALSE)}
 #'
-#' @note This function only returns tournaments from 2020 and 2021, as any other data are not available to non-premium members on SquashInfo.
+#' @note This function only returns tournaments from 2021 and 2022, as any other data are not available to non-premium members on SquashInfo.
 #'
 #' @references
 #'
@@ -50,7 +50,7 @@
 #'
 #' @export
 
-get_tournaments <- function(year = 2021, world_tour = TRUE) {
+get_tournaments <- function(year = 2022, world_tour = TRUE) {
 
   ## Input errors
   stopifnot(is.numeric(year) | is.null(year), (nchar(trunc(abs(year))) == 4 & year > 0) | is.null(year), is.logical(world_tour))
@@ -143,20 +143,20 @@ get_tournaments <- function(year = 2021, world_tour = TRUE) {
         str_trim(str_extract(location, "(?<=, )(.*)"), side = "left")
       )
     ) %>%
-    filter(date >= ymd('2020-01-01')) %>%  ## filter out any tournaments occuring before 2020-01-01 (tournament data before this date is not available to regular members of SquashInfo)
+    filter(date >= ymd('2021-01-01')) %>%  ## filter out any tournaments occuring before 2021-01-01 (tournament data before this date is not available to regular members of SquashInfo)
     arrange(desc(date)) %>%
     select(league, category, name, date, city, country)
 
 
   ## Filter final results by year input
-  if (year == 2021) {
+  if (year == 2022) {
+    tournaments <- tournaments %>%
+      filter(year(date) == 2022)
+
+
+  } else if (year == 2021) {
     tournaments <- tournaments %>%
       filter(year(date) == 2021)
-
-
-  } else if (year == 2020) {
-    tournaments <- tournaments %>%
-      filter(year(date) == 2020)
 
   }
 
@@ -173,19 +173,19 @@ get_tournaments <- function(year = 2021, world_tour = TRUE) {
 #' Given a tournament name or a year, \code{get_tournament_players()} returns player registrants for PSA World Tour tournaments and other events.
 #'
 #' @param tournament character string of name of the tournament. Partial tournament names are matched via regular expressions.
-#' @param year integer indicating year of competition. Must be 2020, 2021, or NULL if querying results for both years.
+#' @param year integer indicating year of competition. Must be 2021, 2022, or NULL if querying results for both years.
 #' @param world_tour logical indicating whether to only return PSA World Tour tournaments.
 #'
 #' @return Tibble containing the tournament name, competition category, tournament date, player, seed, nationality, round_reached.
 #'
 #' @examples
-#' ## Who played in the CIB Egyptian Open in 2021?
-#' \donttest{get_tournament_players(tournament = "CIB Egyptian Open", year = 2021)}
+#' ## Who played in the CIB Egyptian Open in 2022?
+#' \donttest{get_tournament_players(tournament = "CIB Egyptian Open", year = 2022)}
 #'
-#' ## Return player registrant data for all PSA World Tour tournaments in 2021
-#' \donttest{get_tournament_players(year = 2021, world_tour = TRUE)}
+#' ## Return player registrant data for all PSA World Tour tournaments in 2022
+#' \donttest{get_tournament_players(year = 2022, world_tour = TRUE)}
 #'
-#' @note This function only returns player registrant data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
+#' @note This function only returns player registrant data from tournaments in 2021 and 2022, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 #'
 #' @references
 #'
@@ -193,7 +193,7 @@ get_tournaments <- function(year = 2021, world_tour = TRUE) {
 #'
 #' @export
 
-get_tournament_players <- function(tournament = NULL, year = 2021, world_tour = TRUE) {
+get_tournament_players <- function(tournament = NULL, year = 2022, world_tour = TRUE) {
 
   ## Get tournament
   tournaments <- get_tournament_(tournament = tournament, year = year, world_tour = world_tour)
@@ -215,22 +215,22 @@ get_tournament_players <- function(tournament = NULL, year = 2021, world_tour = 
 #'
 #' @param tournament character string of name of the tournament. Partial tournament names are matched via regular expressions.
 #'
-#' @param year integer indicating year of competition. Must be 2020, 2021, or NULL if querying results for both years.
+#' @param year integer indicating year of competition. Must be 2021, 2022, or NULL if querying results for both years.
 #'
 #' @param world_tour logical indicating whether to only return PSA World Tour tournaments.
 #'
 #' @return Tibble containing the tournament name, competition category, tournament date, round, player 1, player 2, the match winner, games won (by player 1), games lost (by player 1), the match time, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return match data for 2021's CIB Egyptian Open.
-#' \donttest{get_tournament_matches("CIB Egyptian Open", year = 2021, world_tour = TRUE)}
+#' ## Return match data for 2022's CIB Egyptian Open.
+#' \donttest{get_tournament_matches("CIB Egyptian Open", year = 2022, world_tour = TRUE)}
 #'
-#' ## Return match data for all PSA World Tour tournaments in 2021
-#' \donttest{get_tournament_matches(year = 2021, world_tour = TRUE)}
+#' ## Return match data for all PSA World Tour tournaments in 2022
+#' \donttest{get_tournament_matches(year = 2022, world_tour = TRUE)}
 #'
 #'
 #'
-#' @note This function only returns match data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
+#' @note This function only returns match data from tournaments in 2021 and 2022, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 #'
 #' @references
 #'
@@ -354,21 +354,21 @@ get_tournament_matches <- function(tournament = NULL, year = NULL, world_tour = 
 #'
 #' @param tournament character string of name of the tournament. Partial tournament names are matched via regular expressions.
 #'
-#' @param year integer indicating year of competition. Must be 2020, 2021, or NULL if querying results for both years.
+#' @param year integer indicating year of competition. Must be 2022, 2022, or NULL if querying results for both years.
 #'
 #' @param world_tour logical indicating whether to only return PSA World Tour tournaments.
 #'
 #' @return Tibble containing the tournament name, competition category, tournament date, round, match number, game number, player 1, player 2, the game winner, player 1's score, player 2's score, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return game data for 2021's CIB Egyptian Open.
-#' \donttest{get_tournament_games("CIB Egyptian Open", year = 2021, world_tour = TRUE)}
+#' ## Return game data for 2022's CIB Egyptian Open.
+#' \donttest{get_tournament_games("CIB Egyptian Open", year = 2022, world_tour = TRUE)}
 #'
-#' ## Return game data for all PSA World Tour tournaments in 2021
-#' \donttest{get_tournament_games(year = 2021, world_tour = TRUE)}
+#' ## Return game data for all PSA World Tour tournaments in 2022
+#' \donttest{get_tournament_games(year = 2022, world_tour = TRUE)}
 #'
 #'
-#' @note This function only returns game data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
+#' @note This function only returns game data from tournaments in 2021 and 2022, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 #'
 #' @references
 #'
@@ -440,9 +440,9 @@ get_tournament_ <- function(tournament = NULL, year = NULL, world_tour = NULL) {
 
   ## Stop if year does not meet following requirements
   if (is.null(year) == FALSE) {
-    ## Stop if year is not 2020 or 2021
-    if (year != 2020 & year != 2021) {
-      stop("Year must be either 2020 or 2021")
+    ## Stop if year is not 2021 or 2022
+    if (year != 2021 & year != 2022) {
+      stop("Year must be either 2021 or 2022")
     }
 
     ## Test year for length of four digits and non-negativity

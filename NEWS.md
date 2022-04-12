@@ -5,6 +5,13 @@
 - Fixed bug related to tests and documentation in get_tournament_ family of functions.
 
 
+# squashinformr 0.2.5
+
+## Minor patch
+
+- Fixed bug related to tests and documentation in get_tournament_ family of functions.
+
+
 # squashinformr 0.2.3
 
 ## Minor patch
