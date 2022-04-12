@@ -9,7 +9,7 @@ get_tournament_matches(tournament = NULL, year = NULL, world_tour = NULL)
 \arguments{
 \item{tournament}{character string of name of the tournament. Partial tournament names are matched via regular expressions.}
 
-\item{year}{integer indicating year of competition. Must be 2020, 2021, or NULL if querying results for both years.}
+\item{year}{integer indicating year of competition. Must be 2021, 2022, or NULL if querying results for both years.}
 
 \item{world_tour}{logical indicating whether to only return PSA World Tour tournaments.}
 }
@@ -20,14 +20,14 @@ Tibble containing the tournament name, competition category, tournament date, ro
 Given a tournament name or a year, \code{get_tournament_matches()} returns match data for PSA World Tour tournaments and other events.
 }
 \note{
-This function only returns match data from tournaments in 2020 and 2021, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
+This function only returns match data from tournaments in 2021 and 2022, as any other data are not available to non-premium members on SquashInfo. Additionally, events that do not use a single elimination format are not included in the results (e.g. Karakal Premier League).
 }
 \examples{
-## Return match data for 2021's CIB Egyptian Open.
-\donttest{get_tournament_matches("CIB Egyptian Open", year = 2021, world_tour = TRUE)}
+## Return match data for 2022's Allam British Open.
+\donttest{get_tournament_matches("Allam British Open", year = 2022, world_tour = TRUE)}
 
-## Return match data for all PSA World Tour tournaments in 2021
-\donttest{get_tournament_matches(year = 2021, world_tour = TRUE)}
+## Return match data for all PSA World Tour tournaments in 2022
+\donttest{get_tournament_matches(year = 2022, world_tour = TRUE)}
 
 
 

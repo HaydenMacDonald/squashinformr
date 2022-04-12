@@ -179,8 +179,8 @@ get_tournaments <- function(year = 2022, world_tour = TRUE) {
 #' @return Tibble containing the tournament name, competition category, tournament date, player, seed, nationality, round_reached.
 #'
 #' @examples
-#' ## Who played in the CIB Egyptian Open in 2022?
-#' \donttest{get_tournament_players(tournament = "CIB Egyptian Open", year = 2022)}
+#' ## Who played in the Allam British Open in 2022?
+#' \donttest{get_tournament_players(tournament = "Allam British Open", year = 2022)}
 #'
 #' ## Return player registrant data for all PSA World Tour tournaments in 2022
 #' \donttest{get_tournament_players(year = 2022, world_tour = TRUE)}
@@ -222,8 +222,8 @@ get_tournament_players <- function(tournament = NULL, year = 2022, world_tour = 
 #' @return Tibble containing the tournament name, competition category, tournament date, round, player 1, player 2, the match winner, games won (by player 1), games lost (by player 1), the match time, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return match data for 2022's CIB Egyptian Open.
-#' \donttest{get_tournament_matches("CIB Egyptian Open", year = 2022, world_tour = TRUE)}
+#' ## Return match data for 2022's Allam British Open.
+#' \donttest{get_tournament_matches("Allam British Open", year = 2022, world_tour = TRUE)}
 #'
 #' ## Return match data for all PSA World Tour tournaments in 2022
 #' \donttest{get_tournament_matches(year = 2022, world_tour = TRUE)}
@@ -361,8 +361,8 @@ get_tournament_matches <- function(tournament = NULL, year = NULL, world_tour = 
 #' @return Tibble containing the tournament name, competition category, tournament date, round, match number, game number, player 1, player 2, the game winner, player 1's score, player 2's score, player 1's seed, player 2's seed, player 1's nationality, player 2's nationality.
 #'
 #' @examples
-#' ## Return game data for 2022's CIB Egyptian Open.
-#' \donttest{get_tournament_games("CIB Egyptian Open", year = 2022, world_tour = TRUE)}
+#' ## Return game data for 2022's Allam British Open.
+#' \donttest{get_tournament_games("Allam British Open", year = 2022, world_tour = TRUE)}
 #'
 #' ## Return game data for all PSA World Tour tournaments in 2022
 #' \donttest{get_tournament_games(year = 2022, world_tour = TRUE)}
