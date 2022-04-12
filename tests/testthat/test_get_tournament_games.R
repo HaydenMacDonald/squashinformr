@@ -30,17 +30,17 @@ test_that("test get_tournament_games for proper outputs", {
   testthat::skip_on_cran()
 
   ## Black Ball Open, with year
-  df <- squashinformr::get_tournament_games("CIB Egyptian Open", year = 2021, world_tour = TRUE)
+  df <- squashinformr::get_tournament_games("Allam British Open", year = 2022, world_tour = TRUE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_is(sample(df$tournament_date, 1), "Date")
-  expect_equal(year(sample(df$tournament_date, 1)), 2021)
+  expect_equal(year(sample(df$tournament_date, 1)), 2022)
 
   ## Black Ball Open, without year
-  df <- squashinformr::get_tournament_games("CIB Egyptian Open", year = NULL, world_tour = TRUE)
+  df <- squashinformr::get_tournament_games("Allam British Open", year = NULL, world_tour = TRUE)
   expect_is(df, "data.frame")
   expect_is(df, "tbl")
   expect_is(sample(df$tournament_date, 1), "Date")
-  expect_equal(year(sample(df$tournament_date, 1)), 2021)
+  expect_equal(year(sample(df$tournament_date, 1)), 2022)
 
 })
